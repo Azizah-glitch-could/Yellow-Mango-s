@@ -1,8 +1,6 @@
 -- Yellow Mango's: database MySQL / MariaDB (Tahap 2)
 -- Cara pakai: XAMPP/Laragon -> phpMyAdmin -> tab Import -> pilih file ini -> Import.
 -- Database dibuat otomatis dengan nama db_yellow_mangos.
-CREATE DATABASE IF NOT EXISTS db_yellow_mangos CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE db_yellow_mangos;
 
 DROP TABLE IF EXISTS retur_pesanan;
 DROP TABLE IF EXISTS log_pesanan;

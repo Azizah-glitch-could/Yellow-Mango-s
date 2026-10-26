@@ -4,10 +4,13 @@ date_default_timezone_set('Asia/Makassar');
 
 // Database. Untuk XAMPP/Laragon bawaan: user root, password kosong.
 define('DB_DRIVER', getenv('YM_DRIVER') ?: 'mysql');   // 'mysql' (normal) atau 'sqlite' (hanya untuk pengujian)
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'db_yellow_mangos');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_PORT', getenv('DB_PORT') ?: '3306');
+define('DB_NAME', getenv('DB_NAME') ?: 'db_yellow_mangos');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
+define('DB_SSL', getenv('DB_SSL') === '1');
+define('DB_SSL_CA', getenv('DB_SSL_CA') ?: '');
 define('DB_SQLITE', getenv('YM_SQLITE') ?: __DIR__ . '/test.sqlite');
 
 // Toko

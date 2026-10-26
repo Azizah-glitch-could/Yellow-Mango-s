@@ -24,8 +24,12 @@ function db(): PDO {
     $p = new PDO('sqlite:' . DB_SQLITE);
     $p->exec('PRAGMA foreign_keys=ON');
   } else {
-    $p = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4', DB_USER, DB_PASS);
-    $p->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    $opt = [];
+    if (DB_SSL) {
+      $opt[PDO::MYSQL_ATTR_SSL_CA] = DB_SSL_CA ?: '/etc/ssl/certs/ca-certificates.crt';
+      $opt[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = DB_SSL_CA !== '';
+    }
+    $p = new PDO('mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4', DB_USER, DB_PASS, $opt);    $p->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
   }
   $p->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $p->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
