@@ -15,11 +15,44 @@ $nama_user = $_SESSION['nama'] ?? 'Pelanggan Setia';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon website -->
+    <link rel="icon" type="image/png" href="uploads/logo_mangga_bersih.png">
     <title>Pesanan Saya - Yellow Mango's</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #1B3022; color: #ffffff; margin: 0; padding: 0; }
-        .navbar { background-color: #1B3022; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo { font-size: 22px; font-weight: bold; color: #FFC72C; text-decoration: none; }
+        .navbar { 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            background-color: #1B3022; 
+            padding: 20px 50px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            box-sizing: border-box;
+        }        
+        
+        /* Styling Logo di Navbar agar berdampingan rapi */
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            text-decoration: none; 
+        }
+        .logo img { 
+            height: 40px; 
+            width: 40px; 
+            object-fit: cover; 
+            border-radius: 50%; 
+            border: 2px solid #FFC72C;
+        }
+        .logo span { 
+            font-size: 22px; 
+            font-weight: bold; 
+            color: #FFC72C; 
+        }
+
         .nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; align-items: center; }
         .nav-links a { color: white; text-decoration: none; font-size: 15px; }
         .nav-links a:hover, .nav-links a.active { color: #FFC72C; }
@@ -37,35 +70,52 @@ $nama_user = $_SESSION['nama'] ?? 'Pelanggan Setia';
 <body>
 
     <header class="navbar">
-        <a href="user_dashboard.php" class="logo">Yellow Mango's</a>
+        <!-- Logo dan Teks Yellow Mango's -->
+        <a href="user_dashboard.php" class="logo">
+            <img src="uploads/logo_mangga_bersih.png" alt="Logo">
+            <span>Yellow Mango's</span>
+        </a>
+        
         <ul class="nav-links">
             <li><a href="user_dashboard.php">Beranda</a></li>
             <li><a href="user_menu.php">Menu</a></li>
-            <li><a href="user_pesanan.php" class="active">Pesanan Saya</a></li>
-            <li><a href="login.php" class="btn-keluar">Keluar (<?php echo htmlspecialchars($nama_user); ?>)</a></li>
+            <li><a href="user_articles.php">Artikel & Promo</a></li>
+            <li><a href="user_pesanan.php" style="color: #FFC72C; font-weight: bold;">Pesanan Saya</a></li>
+            <li><a href="login.php" class="btn-keluar">Keluar</a></li>
         </ul>
     </header>
 
     <div class="container">
         <h1>Riwayat Pesanan Saya</h1>
-        <p style="color: #d1d5db; margin-bottom: 25px;">Daftar produk yang telah kamu pesan dapat dipantau di sini.</p>
+        <p style="color: #d1d5db; margin-bottom: 25px;">Daftar produk yang telah kamu pesan dipantau secara real-time di sini.</p>
 
         <table>
             <thead>
                 <tr>
                     <th>ID Pesanan</th>
-                    <th>Menu</th>
+                    <th>Menu Dipesan</th>
                     <th>Total Harga</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>#ORD-001</td>
-                    <td>Smoothies Mangga Original</td>
-                    <td>Rp 18.000</td>
-                    <td><span class="badge">Menunggu Konfirmasi Admin</span></td>
-                </tr>
+                <?php
+                $result = mysqli_query($conn, "SELECT * FROM pesanan WHERE username = '$nama_user'");
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                ?>
+                    <tr>
+                        <td>#ORD-00<?php echo $row['id']; ?></td>
+                        <td><?php echo htmlspecialchars($row['nama_menu']); ?></td>
+                        <td>Rp <?php echo number_format($row['harga'], 0, ',', '.'); ?></td>
+                        <td><span class="badge"><?php echo htmlspecialchars($row['status']); ?></span></td>
+                    </tr>
+                <?php 
+                    }
+                } else {
+                    echo "<tr><td colspan='4' style='text-align: center; color: #aaa;'>Belum ada pesanan aktif. Yuk pesan menu favoritmu sekarang!</td></tr>";
+                }
+                ?>
             </tbody>
         </table>
     </div>

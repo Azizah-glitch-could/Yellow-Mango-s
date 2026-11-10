@@ -107,12 +107,13 @@ $nama_admin = $_SESSION['nama'] ?? 'Admin Yellow Mango';
     <!-- Navbar Admin -->
     <header class="navbar">
         <a href="admin_dashboard.php" class="logo">Yellow Mango's (Admin)</a>
-        <ul class="nav-links">
-            <li><a href="admin_dashboard.php">Beranda Admin</a></li>
-            <li><a href="admin_menu.php">Kelola Menu</a></li>
-            <li><a href="admin_pesanan.php" class="active">Pesanan Masuk</a></li>
-            <li><a href="login.php" class="btn-keluar">Keluar (<?php echo htmlspecialchars($nama_admin); ?>)</a></li>
-        </ul>
+       <ul class="nav-links" style="list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; align-items: center;">
+    <li><a href="admin_dashboard.php" style="color: #FFC72C; font-weight: bold; text-decoration: none;">Beranda Admin</a></li>
+    <li><a href="admin_menu.php" style="color: white; text-decoration: none;">Kelola Menu</a></li>
+    <li><a href="admin_articles.php" style="color: white; text-decoration: none;">Kelola Artikel</a></li>
+    <li><a href="admin_pesanan.php" style="color: white; text-decoration: none;">Pesanan Masuk</a></li>
+    <li><a href="login.php" class="btn-keluar">Keluar</a></li>
+</ul>
     </header>
 
     <!-- Konten Pesanan Masuk -->
