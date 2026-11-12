@@ -1,0 +1,101 @@
+<style>
+    /* Navbar Freeze / Sticky Global */
+    .ym-navbar {
+        position: sticky;
+        top: 0;
+        z-index: 9999;
+        background-color: #000000;
+        border-bottom: 2px solid #FFC107;
+        padding: 15px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .ym-brand {
+        color: #FFC107;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+        letter-spacing: 0.5px;
+    }
+    .ym-nav-links {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+    }
+    .ym-nav-links a {
+        color: #f5f5f5;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+    .ym-nav-links a:hover {
+        color: #FFC107;
+    }
+    /* Tombol Aksi Daftar / Masuk & Keluar */
+    .ym-btn-primary {
+        background-color: #FFC107;
+        color: #000000 !important;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: bold !important;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .ym-btn-primary:hover {
+        background-color: #e0a800;
+    }
+    .ym-btn-outline {
+        border: 1px solid #FFC107;
+        color: #FFC107 !important;
+        padding: 9px 18px;
+        border-radius: 6px;
+        font-weight: bold !important;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .ym-btn-outline:hover {
+        background-color: #FFC107;
+        color: #000000 !important;
+    }
+    @media (max-width: 768px) {
+        .ym-navbar {
+            flex-direction: column;
+            gap: 12px;
+            padding: 14px 20px;
+        }
+        .ym-nav-links {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+        }
+    }
+</style>
+
+<nav class="ym-navbar">
+    <a href="{% url 'index' %}" class="ym-brand">Yellow Mango's</a>
+
+    <div class="ym-nav-links">
+        <!-- Menu Utama yang Selalu Tampil -->
+        <a href="{% url 'index' %}">Beranda</a>
+        <a href="{% url 'menu' %}">Menu</a>
+        <a href="{% url 'index' %}#lokasi">Lokasi</a>
+        <a href="{% url 'index' %}#about">About Us</a>
+
+        {% if user.is_authenticated %}
+            <!-- Menu Khusus Jika Sudah Login -->
+            <a href="#keranjang">Keranjang</a>
+            <a href="#pesanan">Pesanan Saya</a>
+            <a href="/admin/logout/" class="ym-btn-outline">Keluar</a>
+        {% else %}
+            <!-- Menu Jika Belum Punya Akun / Belum Login -->
+            <a href="/admin/login/" class="ym-btn-primary">Daftar / Masuk</a>
+        {% endif %}
+    </div>
+</nav>
