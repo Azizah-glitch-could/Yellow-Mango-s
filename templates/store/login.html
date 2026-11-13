@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Yellow Mango's</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-card {
+            background-color: #1e1e1e;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            border: 1px solid #333;
+        }
+        .login-card h2 {
+            text-align: center;
+            color: #FFC107;
+            margin-bottom: 24px;
+            font-size: 26px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #ccc;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background-color: #2c2c2c;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        .form-control:focus {
+            border-color: #FFC107;
+            outline: none;
+        }
+        .role-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .role-option {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background-color: #2c2c2c;
+            border: 1px solid #444;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .role-option input {
+            display: none;
+        }
+        .role-option.active, .role-option:hover {
+            border-color: #FFC107;
+            color: #FFC107;
+            background-color: rgba(255, 193, 7, 0.05);
+        }
+        .btn-submit {
+            width: 100%;
+            background-color: #FFC107;
+            color: #000;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #e0a800;
+        }
+        .error-msg {
+            background-color: rgba(255, 77, 77, 0.1);
+            color: #ff4d4d;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 77, 77, 0.3);
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-link a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link a:hover {
+            color: #FFC107;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Yellow Mango's</h2>
+        
+        {% if error %}
+            <div class="error-msg">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>Masuk Sebagai:</label>
+                <div class="role-selector">
+                    <label class="role-option active" id="label-user">
+                        <input type="radio" name="role" value="user" checked onclick="selectRole('user')"> User
+                    </label>
+                    <label class="role-option" id="label-admin">
+                        <input type="radio" name="role" value="admin" onclick="selectRole('admin')"> Admin
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required placeholder="Masukkan username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required placeholder="Masukkan password">
+            </div>
+
+            <button type="submit" class="btn-submit">Masuk</button>
+        </form>
+
+        <div class="back-link">
+            <a href="{% url 'index' %}">&larr; Kembali ke Beranda</a>
+        </div>
+    </div>
+
+    <script>
+        function selectRole(role) {
+            document.getElementById('label-user').classList.remove('active');
+            document.getElementById('label-admin').classList.remove('active');
+            
+            if(role === 'user') {
+                document.getElementById('label-user').classList.add('active');
+            } else {
+                document.getElementById('label-admin').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

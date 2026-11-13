@@ -95,7 +95,7 @@
             <a href="/admin/logout/" class="ym-btn-outline">Keluar</a>
         {% else %}
             <!-- Menu Jika Belum Punya Akun / Belum Login -->
-            <a href="/admin/login/" class="ym-btn-primary">Daftar / Masuk</a>
+            <a href="{% url 'login' %}" class="ym-btn-primary">Daftar / Masuk</a>
         {% endif %}
     </div>
 </nav>
