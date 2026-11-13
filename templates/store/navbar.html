@@ -92,7 +92,7 @@
             <!-- Menu Khusus Jika Sudah Login -->
             <a href="#keranjang">Keranjang</a>
             <a href="#pesanan">Pesanan Saya</a>
-            <a href="/admin/logout/" class="ym-btn-outline">Keluar</a>
+            <a href="{% url 'login' %}" class="ym-btn-outline">Keluar</a>
         {% else %}
             <!-- Menu Jika Belum Punya Akun / Belum Login -->
             <a href="{% url 'login' %}" class="ym-btn-primary">Daftar / Masuk</a>
