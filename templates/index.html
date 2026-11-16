@@ -28,118 +28,42 @@
         .hero {
             position: relative;
             width: 100%;
-            height: calc(100vh - 70px);
-            min-height: 520px;
+            min-height: 580px;
             background-image: url('https://images.unsplash.com/photo-1546173159-315724a31696?q=80&w=1920&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
+        /* Lapisan transparan diperhalus agar foto tetap cerah dan kotak putih stand out */
         .hero::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.45);
+            background: rgba(37, 78, 6, 0.2); /* Nuansa hijau transparan yang elegan */
         }
 
         .hero-box {
             position: relative;
             z-index: 2;
-            background: rgba(17, 17, 17, 0.72);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 48px 56px;
-            border-radius: 16px;
+            background-color: #FFFFFF !important; 
+            padding: 45px; 
+            border-radius: 24px; 
+            max-width: 680px; 
+            width: 100%;
+            margin: 0 auto; 
+            box-shadow: 0 20px 50px rgba(37, 78, 6, 0.18); 
+            border: 2px solid #EAD465; /* Arylide Yellow */
             text-align: center;
-            max-width: 720px;
-            color: #ffffff;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
         }
 
-        .hero-subtitle-tag {
-            display: inline-block;
-            background-color: rgba(255, 193, 7, 0.2);
-            color: #FFC107;
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 50px;
-            margin-bottom: 16px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .hero-box h1 {
-            font-size: 2.85rem;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 16px;
-            letter-spacing: -0.5px;
-        }
-
-        .hero-box h1 span {
-            color: #FFC107;
-        }
-
-        .hero-box p {
-            font-size: 1.1rem;
-            color: #e0e0e0;
-            line-height: 1.6;
-            margin-bottom: 32px;
-            font-weight: 400;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            background-color: #FFC107;
-            color: #111111;
-            text-decoration: none;
-            padding: 14px 32px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 1rem;
-            transition: all 0.25s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: #ffca28;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.35);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 14px 28px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 1rem;
-            border: 1.5px solid rgba(255, 255, 255, 0.5);
-            transition: all 0.25s ease;
-        }
-
-        .btn-secondary:hover {
-            border-color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
+        /* Responsive Styles */
         @media (max-width: 960px) {
             .hero-box {
-                padding: 32px 24px;
-            }
-            .hero-box h1 {
-                font-size: 2rem;
+                padding: 32px 20px;
             }
         }
 
@@ -174,7 +98,6 @@
             line-height: 1.65;
         }
 
-        /* Grid 3 Kolom Produk Unggulan */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -235,7 +158,6 @@
             margin-bottom: 24px;
         }
 
-        /* Tombol pada Kartu */
         .btn-card {
             display: inline-block;
             padding: 10px 26px;
@@ -255,18 +177,14 @@
             color: #111111;
         }
 
-        /* Responsif Tablet & HP */
         @media (max-width: 900px) {
             .product-grid {
                 grid-template-columns: 1fr;
                 max-width: 450px;
             }
-            .section-header h2 {
-                font-size: 1.85rem;
-            }
         }
 
-        /* ================= CSS TESTIMONIALS ================= */
+        /* ================= TESTIMONIALS SECTION ================= */
         .testimonial-section {
             background-color: #fafafa;
             padding: 80px 5%;
@@ -551,172 +469,184 @@
             }
         }
 
-        /* ================= CSS FOOTER ================= */
-        .footer-section {
-            background-color: #f8f9fa;
-            border-top: 1px solid #eaeaea;
-            color: #222222;
-            padding: 70px 5% 30px 5%;
-        }
+        /* ================= CSS FOOTER PRESISI & KE TENGAH ================= */
+.footer-section {
+    background-color: #f8f9fa;
+    border-top: 1px solid #eaeaea;
+    color: #222222;
+    padding: 65px 20px 30px 20px;
+}
 
-        .footer-container {
-            max-width: 1250px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr 2fr;
-            gap: 40px;
-            margin-bottom: 50px;
-        }
+.footer-container {
+    max-width: 1120px; /* Ukuran pas agar lebih ke tengah */
+    margin: 0 auto 45px auto;
+    display: grid;
+    /* Proporsi kolom seimbang untuk 1 lokasi saja */
+    grid-template-columns: 1.6fr 1fr 1fr 1.1fr 1.3fr;
+    gap: 35px;
+    align-items: start;
+}
 
-        .footer-col h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #111111;
-            margin-bottom: 20px;
-            letter-spacing: -0.2px;
-        }
+.footer-col h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #111111;
+    margin-top: 0;
+    margin-bottom: 18px;
+    line-height: 1.4;
+}
 
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: #111111;
-            font-size: 1.35rem;
-            font-weight: 800;
-            margin-bottom: 14px;
-        }
+.footer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #111111;
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+    line-height: 1.2;
+}
 
-        .footer-brand i {
-            color: #e6a800;
-            font-size: 1.8rem;
-        }
+.footer-brand i {
+    color: #e6a800;
+    font-size: 1.6rem;
+}
 
-        .footer-tagline {
-            font-size: 0.9rem;
-            color: #666666;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
+.footer-tagline {
+    font-size: 0.9rem;
+    color: #666666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
 
-        .footer-socials {
-            display: flex;
-            gap: 12px;
-        }
+.footer-socials {
+    display: flex;
+    gap: 12px;
+}
 
-        .footer-socials a {
-            width: 36px;
-            height: 36px;
-            background-color: #111111;
-            color: #FFC107;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            text-decoration: none;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-        }
+.footer-socials a {
+    width: 36px;
+    height: 36px;
+    background-color: #111111;
+    color: #FFC107;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
 
-        .footer-socials a:hover {
-            background-color: #FFC107;
-            color: #111111;
-            transform: translateY(-2px);
-        }
+.footer-socials a:hover {
+    background-color: #FFC107;
+    color: #111111;
+    transform: translateY(-2px);
+}
 
-        .footer-col ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
-        .footer-col ul li {
-            margin-bottom: 12px;
-        }
+.footer-col ul li {
+    margin-bottom: 12px;
+}
 
-        .footer-col ul li a {
-            text-decoration: none;
-            color: #555555;
-            font-size: 0.93rem;
-            transition: color 0.2s ease;
-        }
+.footer-col ul li:last-child {
+    margin-bottom: 0;
+}
 
-        .footer-col ul li a:hover {
-            color: #e6a800;
-        }
+.footer-col ul li a {
+    text-decoration: none;
+    color: #555555;
+    font-size: 0.92rem;
+    transition: color 0.2s ease;
+}
 
-        .footer-contact-info {
-            font-size: 0.93rem;
-            color: #555555;
-            line-height: 1.6;
-        }
+.footer-col ul li a:hover {
+    color: #e6a800;
+}
 
-        .location-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
+.footer-contact-info {
+    font-size: 0.92rem;
+    color: #555555;
+    line-height: 1.7;
+}
 
-        .footer-locations h4 {
-            font-size: 0.92rem;
-            font-weight: 700;
-            color: #111111;
-            margin-bottom: 4px;
-        }
+.location-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Diubah dari 2 kolom menjadi 1 kolom penuh */
+    gap: 15px;
+}
 
-        .footer-locations p {
-            font-size: 0.85rem;
-            color: #666666;
-            line-height: 1.5;
-        }
+.footer-locations h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 6px;
+}
 
-        .footer-bottom {
-            max-width: 1250px;
-            margin: 0 auto;
-            border-top: 1px solid #e0e0e0;
-            padding-top: 24px;
-            text-align: center;
-            font-size: 0.88rem;
-            color: #777777;
-        }
+.footer-locations p {
+    font-size: 0.9rem;
+    color: #666666;
+    line-height: 1.6;
+    margin: 0;
+}
 
-        @media (max-width: 1024px) {
-            .footer-container {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 32px;
-            }
-            .footer-col.footer-locations {
-                grid-column: span 2;
-            }
-        }
+.footer-bottom {
+    max-width: 1120px;
+    margin: 0 auto;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 24px;
+    text-align: center;
+    font-size: 0.88rem;
+    color: #777777;
+}
 
-        @media (max-width: 600px) {
-            .footer-container {
-                grid-template-columns: 1fr;
-            }
-            .footer-col.footer-locations {
-                grid-column: span 1;
-            }
-            .location-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+@media (max-width: 1024px) {
+    .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+    }
+    .footer-col.footer-locations {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+    .footer-col.footer-locations {
+        grid-column: span 1;
+    }
+    .location-grid {
+        grid-template-columns: 1fr;
+    }
+}
     </style>
 </head>
 <body>
 
-    <!-- NAVIGATION BAR GLOBAL YANG FREEZE & SESUAI STATUS LOGIN -->
+    <!-- NAVIGATION BAR GLOBAL -->
     {% include 'store/navbar.html' %}
 
     <!-- HERO SECTION -->
     <section class="hero">
         <div class="hero-box">
-            <span class="hero-subtitle-tag">100% Mangga Pilihan & Segar</span>
-            <h1>Kesegaran <span>Mangga Asli</span> di Setiap Tegukan</h1>
-            <p>Nikmati perpaduan manis alami buah mangga segar dengan topping premium pilihan. Pesan sekarang dan kami antar langsung ke tempatmu.</p>
-            <div class="hero-buttons">
-                <a href="{% url 'menu' %}" class="btn-primary">Pesan Sekarang</a>
-                <a href="#lokasi" class="btn-secondary">Cek Lokasi Outlet</a>
+            <span style="display: inline-block; background-color: #F5EAB9; color: #254E06; font-size: 12px; font-weight: 700; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; margin-bottom: 16px;">100% MANGGA PILIHAN & SEGAR</span>
+            <h1 style="color: #254E06; font-size: 34px; font-weight: 800; margin: 0 0 16px 0; line-height: 1.2;">
+             Kesegaran <span style="color: #EAC800;">Mangga Asli</span> di Setiap Tegukan
+            </h1>
+            <p style="color: #7E8407; font-size: 15px; line-height: 1.6; margin-bottom: 32px;">
+             Nikmati perpaduan manis alami buah mangga segar dengan topping premium pilihan. Pesan sekarang dan kami antar langsung ke tempatmu.
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <a href="{% url 'menu' %}" style="background-color: #EAC800; color: #254E06; padding: 13px 26px; border-radius: 12px; font-weight: bold; text-decoration: none; box-shadow: 0 6px 16px rgba(234,200,0,0.35);">Pesan Sekarang</a>
+                <a href="#lokasi" style="background-color: #FFFFFF; color: #254E06; border: 2px solid #254E06; padding: 13px 26px; border-radius: 12px; font-weight: bold; text-decoration: none;">Cek Lokasi Outlet</a>
             </div>
         </div>
     </section>
@@ -732,7 +662,7 @@
         </div>
 
         <div class="product-grid">
-            <!-- Kartu 1: Smoothies Mangga -->
+            <!-- Kartu 1 -->
             <div class="product-card">
                 <div>
                     <div class="product-img-wrapper">
@@ -744,7 +674,7 @@
                 <a href="{% url 'menu' %}" class="btn-card">Pesan Menu</a>
             </div>
 
-            <!-- Kartu 2: Mango Sticky Rice -->
+            <!-- Kartu 2 -->
             <div class="product-card">
                 <div>
                     <div class="product-img-wrapper">
@@ -756,7 +686,7 @@
                 <a href="{% url 'menu' %}" class="btn-card">Pesan Menu</a>
             </div>
 
-            <!-- Kartu 3: Popsicle Mango -->
+            <!-- Kartu 3 -->
             <div class="product-card">
                 <div>
                     <div class="product-img-wrapper">
@@ -889,7 +819,7 @@
     <footer class="footer-section" id="about">
         <div class="footer-container">
             
-            <!-- Kolom 1: Logo & Brand -->
+            <!-- Kolom 1 -->
             <div class="footer-col footer-brand-col">
                 <a href="{% url 'index' %}" class="footer-brand">
                     <i class='bx bxs-drink'></i>
@@ -903,7 +833,7 @@
                 </div>
             </div>
 
-            <!-- Kolom 2: Learn More -->
+            <!-- Kolom 2 -->
             <div class="footer-col">
                 <h3>Learn More</h3>
                 <ul>
@@ -914,7 +844,7 @@
                 </ul>
             </div>
 
-            <!-- Kolom 3: About Us -->
+            <!-- Kolom 3 -->
             <div class="footer-col">
                 <h3>About Us</h3>
                 <ul>
@@ -924,7 +854,7 @@
                 </ul>
             </div>
 
-            <!-- Kolom 4: Contact -->
+            <!-- Kolom 4 -->
             <div class="footer-col">
                 <h3>Contact</h3>
                 <p class="footer-contact-info">
@@ -934,7 +864,7 @@
                 </p>
             </div>
 
-            <!-- Kolom 5: Local Services / Outlet -->
+            <!-- Kolom 5 -->
             <div class="footer-col footer-locations" id="lokasi">
                 <h3>Outlet Kami</h3>
                 <div class="location-grid">
@@ -942,24 +872,11 @@
                         <h4>Makassar Pusat</h4>
                         <p>Jl. Andi Pangeran Pettarani No. 45<br>Makassar, Sulawesi Selatan</p>
                     </div>
-                    <div>
-                        <h4>Tamalanrea</h4>
-                        <p>Jl. Perintis Kemerdekaan KM. 10<br>Makassar, Sulawesi Selatan</p>
-                    </div>
-                    <div>
-                        <h4>Gowa / Sungguminasa</h4>
-                        <p>Jl. Sultan Hasanuddin No. 88<br>Kabupaten Gowa</p>
-                    </div>
-                    <div>
-                        <h4>Maros</h4>
-                        <p>Jl. Poros Maros - Makassar<br>Kabupaten Maros</p>
-                    </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Copyright / Bottom Footer -->
         <div class="footer-bottom">
             <p>&copy; 2026 Yellow Mango's. All rights reserved. Powered by Reka Niskala.</p>
         </div>

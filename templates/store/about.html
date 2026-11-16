@@ -1,0 +1,53 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<!-- NAVBAR USER -->
+<nav style="background-color: #254E06; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; color: white;">
+    <div style="font-size: 1.25rem; font-weight: 700; color: white;">
+        Yellow Mango's
+    </div>
+    <div style="display: flex; align-items: center; gap: 28px;">
+        <a href="/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Beranda</a>
+        <a href="/menu/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Menu</a>
+        <a href="/lokasi/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Lokasi</a>
+        <a href="/about/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500; border-bottom: 2px solid #EAC800; padding-bottom: 2px;">About Us</a>
+        <a href="/login/" style="background-color: #EAC800; color: #1E293B; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem;">Daftar / Masuk</a>
+    </div>
+</nav>
+
+<!-- KONTEN ABOUT US -->
+<div style="background-color: #FAF8F5; padding: 60px 20px; min-height: 85vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <div style="max-width: 950px; margin: 0 auto;">
+        
+        <!-- Header Section -->
+        <div style="text-align: center; margin-bottom: 50px;">
+            <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #78716c; margin-bottom: 8px;">TENTANG KAMI</div>
+            <h2 style="font-size: 2.5rem; font-weight: 800; color: #1c1917; margin: 0 0 12px 0; font-family: Georgia, serif;">Di mana kesegaran bertemu kebersamaan</h2>
+            <p style="font-size: 1.05rem; color: #57534e; margin: 0 auto; max-width: 650px; line-height: 1.6;">
+                Yellow Mango's hadir sebagai destinasi kuliner unggulan di Makassar yang mengutamakan olahan mangga asli pilihan berkualitas tinggi dan teknik penyajian berstandar kafe premium.
+            </p>
+        </div>
+
+        <!-- Bagian Cerita & Founder / Chef -->
+        <div style="background: white; border-radius: 20px; border: 1px solid #e7e5e4; padding: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 30px;">
+            <div style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 280px;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: #1c1917; margin: 0 0 15px 0; font-family: Georgia, serif;">Filosofi & Komitmen Kami</h3>
+                    <p style="color: #57534e; line-height: 1.7; margin: 0 0 15px 0;">
+                        Setiap produk dan hidangan di Yellow Mango's dirancang khusus untuk memberikan pengalaman rasa yang berkesan. Dari pemilihan buah mangga segar harian hingga racikan minuman signature, kami berkomitmen menjaga kualitas dan keaslian rasa di setiap tegukan.
+                    </p>
+                    <p style="color: #57534e; line-height: 1.7; margin: 0;">
+                        Berpusat di jantung kota Makassar, kami ingin menjadi tempat bersantai yang nyaman, elegan, dan ramah bagi seluruh pencinta kuliner manis dan segar.
+                    </p>
+                </div>
+                <div style="flex-shrink: 0; text-align: center; background: #FAF8F5; padding: 30px; border-radius: 16px; border: 1px solid #e7e5e4; width: 280px;">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">🥭</div>
+                    <h4 style="font-size: 1.2rem; font-weight: 700; color: #1c1917; margin: 0 0 4px 0;">Yellow Mango's Team</h4>
+                    <p style="color: #78716c; font-size: 0.9rem; margin: 0;">Makassar Pusat</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    /* Background luar halaman */
+    body.login {
+        background-color: #F5EAB9;
+        font-family: 'Poppins', sans-serif, Arial, sans-serif;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Sembunyikan semua elemen bawaan Django yang mengganggu */
+    #header, .breadcrumbs, #nav-sidebar, .toggle-nav, div.breadcrumbs, .nav-sidebar {
+        display: none ;
+    }
+
+    /* Bungkus utama / Kartu Putih di tengah */
+    #container {
+        background: #ffffff ;
+        border-radius: 24px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) ;
+        border: 2px solid #EAD465 ;
+        padding: 40px 35px ;
+        width: 100% ;
+        max-width: 420px ;
+        box-sizing: border-box;
+        margin: auto ;
+        float: none ;
+    }
+
+    /* Area content */
+    #content {
+        background: transparent ;
+        padding: 0 ;
+        margin: 0 ;
+        width: 100% ;
+        box-shadow: none ;
+        border: none ;
+        float: none ;
+        display: block ;
+    }
+
+    #content-main {
+        width: 100% ;
+        float: none ;
+        display: block ;
+    }
+
+    /* Judul Kustom */
+    .custom-login-header {
+        text-align: center;
+        margin-bottom: 25px;
+        width: 100%;
+    }
+    .custom-login-header h1 {
+        color: #E6B325;
+        font-size: 24px;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: 0.5px;
+    }
+    .custom-login-header h2 {
+        color: #254E06;
+        font-size: 20px;
+        font-weight: 700;
+        margin: 8px 0 4px 0;
+    }
+    .custom-login-header p {
+        color: #7E8407;
+        font-size: 13px;
+        margin: 0;
+    }
+
+    /* Format Form */
+    form {
+        width: 100% ;
+    }
+
+    .login .form-row {
+        border-bottom: none ;
+        padding: 8px 0 ;
+        background: transparent ;
+        float: none ;
+        width: 100% ;
+    }
+
+    .login .form-row label {
+        color: #254E06 ;
+        font-weight: 600 ;
+        display: block ;
+        margin-bottom: 6px ;
+        font-size: 13px ;
+        text-align: left ;
+        float: none ;
+        width: 100% ;
+    }
+
+    .login input[type="text"], 
+    .login input[type="password"] {
+        width: 100% ;
+        padding: 13px 16px ;
+        border: 1.5px solid #EAD465 ;
+        border-radius: 12px ;
+        background: #FAFAFA ;
+        font-size: 14px ;
+        box-sizing: border-box ;
+        margin: 0 ;
+        float: none ;
+    }
+
+    .login input[type="text"]:focus, 
+    .login input[type="password"]:focus {
+        border-color: #254E06 ;
+        outline: none ;
+        background: #fff ;
+        box-shadow: 0 0 0 3px rgba(37, 78, 6, 0.1) ;
+    }
+
+    /* Tombol Login Hijau */
+    .login .submit-row {
+        background: transparent ;
+        border: none ;
+        padding: 15px 0 0 0 ;
+        margin: 0 ;
+        text-align: center ;
+        width: 100% ;
+    }
+
+    .login .submit-row input[type="submit"] {
+        width: 100% ;
+        background-color: #254E06 ;
+        color: #fff ;
+        border: none ;
+        border-radius: 12px ;
+        padding: 14px ;
+        font-weight: 600 ;
+        font-size: 15px ;
+        cursor: pointer ;
+        transition: background 0.3s ease ;
+        box-shadow: 0 4px 12px rgba(37, 78, 6, 0.25) ;
+        float: none ;
+    }
+
+    .login .submit-row input[type="submit"]:hover {
+        background-color: #1a3804 ;
+    }
+
+    /* Pesan Error */
+    p.errornote {
+        background-color: #fdf2f2 ;
+        color: #991b1b ;
+        border: 1px solid #fecaca ;
+        border-radius: 8px ;
+        font-size: 13px ;
+        padding: 10px ;
+        margin-bottom: 15px ;
+        text-align: center ;
+        width: 100% ;
+        box-sizing: border-box ;
+    }
+</style>
+{% endblock %}
+
+{% block branding %}
+{% endblock %}
+
+{% block content %}
+<div class="custom-login-header">
+    <h1>YELLOW MANGO'S</h1>
+    <h2>Admin Portal</h2>
+    <p>Login to manage your dashboard</p>
+</div>
+{{ block.super }}
+{% endblock %}

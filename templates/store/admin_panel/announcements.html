@@ -1,0 +1,323 @@
+{% extends 'store/admin_panel/admin_base.html' %}
+
+{% block title %}Agenda, Event & Pengumuman - Yellow Mango's{% endblock %}
+{% block page_title %}Manajemen Agenda, Event & Promo{% endblock %}
+
+{% block extra_css %}
+<style>
+    .top-action-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .btn-primary-mango {
+        background-color: var(--moss-green);
+        color: var(--white);
+        border: none;
+        padding: 11px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .alert-success {
+        background-color: #DCFCE7;
+        color: #166534;
+        padding: 14px 18px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border: 1px solid #BBF7D0;
+    }
+
+    .table-card {
+        background: var(--white);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background-color: #F8FAFC;
+        text-align: left;
+        padding: 15px 20px;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-muted);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+        padding: 16px 20px;
+        border-bottom: 1px solid #F1F5F9;
+        font-size: 0.9rem;
+        vertical-align: middle;
+    }
+
+    .ann-thumb {
+        width: 56px;
+        height: 56px;
+        border-radius: 10px;
+        object-fit: cover;
+        background-color: #FFFBEB;
+        border: 1px solid var(--border-color);
+    }
+
+    .type-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+    .badge-promo { background: #FEF3C7; color: #92400E; }
+    .badge-event { background: #E0F2FE; color: #0369A1; }
+    .badge-info { background: #F3E8FF; color: #6B21A8; }
+
+    .status-pill {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+    .status-active { background: #DCFCE7; color: #166534; }
+    .status-inactive { background: #F1F5F9; color: #475569; }
+
+    .action-btns {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        background: var(--white);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+    }
+
+    .btn-edit { color: #0284C7; }
+    .btn-edit:hover { background: #E0F2FE; }
+    .btn-del { color: #DC2626; }
+    .btn-del:hover { background: #FEE2E2; }
+
+    /* MODAL */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.55);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal-box {
+        background: var(--white);
+        width: 100%;
+        max-width: 580px;
+        border-radius: 16px;
+        padding: 28px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+    .form-control { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert-success">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="top-action-bar">
+    <p style="color: var(--text-muted); font-size: 0.92rem;">Atur pengumuman promo diskon, agenda event, dan informasi penting outlet.</p>
+    <button class="btn-primary-mango" onclick="openAddModal()">
+        <i class='bx bx-plus-circle'></i> Tambah Promo / Event
+    </button>
+</div>
+
+<div class="table-card">
+    <table>
+        <thead>
+            <tr>
+                <th>Gambar</th>
+                <th>Judul & Info</th>
+                <th>Jenis</th>
+                <th>Waktu Event</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in announcements %}
+            <tr>
+                <td>
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" class="ann-thumb" alt="{{ item.title }}">
+                    {% else %}
+                        <div class="ann-thumb" style="display:flex;align-items:center;justify-content:center;color:#EAC800;font-size:1.4rem;">
+                            <i class='bx bxs-megaphone'></i>
+                        </div>
+                    {% endif %}
+                </td>
+                <td>
+                    <strong>{{ item.title }}</strong><br>
+                    <small style="color: var(--text-muted);">{{ item.description|truncatewords:8 }}</small>
+                </td>
+                <td>
+                    <span class="type-badge badge-{{ item.announcement_type|lower }}">{{ item.get_announcement_type_display }}</span>
+                </td>
+                <td style="font-size:0.85rem; color: var(--text-muted);">
+                    {% if item.event_date %}
+                        {{ item.event_date|date:"d M Y, H:i" }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.is_active %}
+                        <span class="status-pill status-active">Aktif</span>
+                    {% else %}
+                        <span class="status-pill status-inactive">Nonaktif</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="action-btns">
+                        <button class="btn-icon btn-edit" title="Edit"
+                            onclick="openEditModal('{{ item.id }}', '{{ item.title|escapejs }}', '{{ item.announcement_type }}', '{{ item.description|escapejs }}', '{{ item.event_date|date:'Y-m-d\TH:i' }}', {{ item.is_active|yesno:'true,false' }})">
+                            <i class='bx bx-edit'></i>
+                        </button>
+                        <form method="POST" onsubmit="return confirm('Yakin ingin menghapus {{ item.title }}?');" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="announcement_id" value="{{ item.id }}">
+                            <button type="submit" class="btn-icon btn-del" title="Hapus">
+                                <i class='bx bx-trash'></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align:center; padding: 40px; color: var(--text-muted);">
+                    Belum ada agenda atau promo yang ditambahkan. Klik tombol di kanan atas.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- MODAL TAMBAH / EDIT -->
+<div class="modal-overlay" id="annModal">
+    <div class="modal-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <h3 id="modalTitle" style="color: var(--moss-green);">Tambah Promo / Event Baru</h3>
+            <button onclick="closeModal()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;">&times;</button>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="action" id="formAction" value="add">
+            <input type="hidden" name="announcement_id" id="annId">
+
+            <div class="form-group">
+                <label>Judul Pengumuman / Promo / Event *</label>
+                <input type="text" name="title" id="inputTitle" class="form-control" placeholder="Contoh: Promo Diskon Hari Kemerdekaan" required>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                <div class="form-group">
+                    <label>Jenis Konten *</label>
+                    <select name="announcement_type" id="inputType" class="form-control">
+                        {% for val, label in type_choices %}
+                            <option value="{{ val }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tanggal & Waktu Event (Opsional)</label>
+                    <input type="datetime-local" name="event_date" id="inputDate" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Deskripsi / Ketentuan *</label>
+                <textarea name="description" id="inputDesc" rows="4" class="form-control" placeholder="Tulis rincian promo atau agenda event..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Gambar Banner / Poster</label>
+                <input type="file" name="image" class="form-control" accept="image/*">
+            </div>
+
+            <div class="form-group" style="display:flex;align-items:center;gap:8px;">
+                <input type="checkbox" name="is_active" id="inputActive" checked>
+                <label for="inputActive" style="margin:0;">Aktifkan dan tampilkan di website</label>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;">
+                <button type="button" onclick="closeModal()" style="padding:10px 16px;border-radius:8px;border:1px solid #CBD5E1;background:#FFF;cursor:pointer;">Batal</button>
+                <button type="submit" class="btn-primary-mango">Simpan Pengumuman</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('annModal');
+
+    function openAddModal() {
+        document.getElementById('modalTitle').innerText = 'Tambah Promo / Event Baru';
+        document.getElementById('formAction').value = 'add';
+        document.getElementById('annId').value = '';
+        document.getElementById('inputTitle').value = '';
+        document.getElementById('inputType').value = 'PROMO';
+        document.getElementById('inputDesc').value = '';
+        document.getElementById('inputDate').value = '';
+        document.getElementById('inputActive').checked = true;
+        modal.style.display = 'flex';
+    }
+
+    function openEditModal(id, title, type, desc, dateStr, isActive) {
+        document.getElementById('modalTitle').innerText = 'Edit Promo / Event';
+        document.getElementById('formAction').value = 'edit';
+        document.getElementById('annId').value = id;
+        document.getElementById('inputTitle').value = title;
+        document.getElementById('inputType').value = type;
+        document.getElementById('inputDesc').value = desc;
+        document.getElementById('inputDate').value = dateStr;
+        document.getElementById('inputActive').checked = isActive;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+</script>
+{% endblock %}

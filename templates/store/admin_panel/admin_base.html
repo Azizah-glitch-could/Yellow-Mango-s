@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel - Yellow Mango's{% endblock %}</title>
+    <!-- Boxicons untuk Ikon Modern -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --moss-green: #254E06;
+            --moss-dark: #193603;
+            --mango-yellow: #EAC800;
+            --mango-soft: #FFFBEB;
+            --bg-main: #F6F8F5;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --white: #FFFFFF;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ================= SIDEBAR ================= */
+        .sidebar {
+            width: 270px;
+            background: linear-gradient(180deg, var(--moss-green) 0%, var(--moss-dark) 100%);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 26px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .sidebar-brand i {
+            font-size: 2rem;
+            color: var(--mango-yellow);
+        }
+
+        .sidebar-brand span {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-menu {
+            padding: 20px 16px;
+            flex: 1;
+        }
+
+        .menu-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 18px 0 8px 12px;
+            font-weight: 700;
+        }
+
+        .menu-label:first-child {
+            margin-top: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item i {
+            font-size: 1.25rem;
+            color: var(--mango-yellow);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(234, 200, 0, 0.18);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .nav-item.active {
+            border-left: 4px solid var(--mango-yellow);
+        }
+
+        /* ================= MAIN CONTENT ================= */
+        .main-content {
+            margin-left: 270px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background-color: var(--white);
+            height: 72px;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-title h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--moss-green);
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-site {
+            padding: 8px 16px;
+            border-radius: 8px;
+            background-color: var(--mango-soft);
+            color: var(--moss-green);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid var(--mango-yellow);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .avatar-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: var(--moss-green);
+            color: var(--mango-yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .content-body {
+            padding: 32px;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- SIDEBAR NAVIGASI 6 MODUL -->
+    <aside class="sidebar">
+        <a href="{% url 'admin_dashboard' %}" class="sidebar-brand">
+            <i class='bx bxs-drink'></i>
+            <span>Yellow Mango's</span>
+        </a>
+
+        <div class="sidebar-menu">
+    <!-- UTAMA -->
+    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.5); padding: 10px 15px 5px; font-weight: 700;">Utama</div>
+    <a href="{% url 'admin_dashboard' %}" class="nav-item">
+        <i class='bx bxs-dashboard'></i>
+        <span>Dashboard Ringkasan</span>
+    </a>
+
+    <!-- MANAJEMEN TOKO & MENU -->
+    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.5); padding: 15px 15px 5px; font-weight: 700;">Manajemen Toko</div>
+    <a href="{% url 'admin_products' %}" class="nav-item">
+        <i class='bx bxs-store'></i>
+        <span>Katalog Produk & Menu</span>
+    </a>
+    <a href="{% url 'admin_orders' %}" class="nav-item">
+        <i class='bx bxs-shopping-bag'></i>
+        <span>Daftar Pesanan</span>
+    </a>
+
+    <!-- MANAJEMEN KONTEN -->
+    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.5); padding: 15px 15px 5px; font-weight: 700;">Manajemen Konten</div>
+    <a href="{% url 'admin_pages' %}" class="nav-item">
+        <i class='bx bxs-file-blank'></i>
+        <span>Halaman (Page Builder)</span>
+    </a>
+    <a href="{% url 'admin_articles' %}" class="nav-item">
+        <i class='bx bxs-news'></i>
+        <span>Berita, Artikel & Blog</span>
+    </a>
+    <a href="{% url 'admin_announcements' %}" class="nav-item">
+        <i class='bx bxs-megaphone'></i>
+        <span>Agenda, Event & Promo</span>
+    </a>
+
+    <!-- MEDIA LIBRARY -->
+    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.5); padding: 15px 15px 5px; font-weight: 700;">Media Library</div>
+    <a href="{% url 'admin_media' %}" class="nav-item">
+        <i class='bx bxs-folder-open'></i>
+        <span>Penyimpanan Berkas</span>
+    </a>
+
+    <!-- DATA & PENGGUNA -->
+    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.5); padding: 15px 15px 5px; font-weight: 700;">Data & Pengguna</div>
+    <a href="{% url 'admin_users' %}" class="nav-item">
+        <i class='bx bxs-user-account'></i>
+        <span>Daftar Pengguna & Staf</span>
+    </a>
+    <a href="{% url 'admin_messages' %}" class="nav-item">
+        <i class='bx bxs-envelope'></i>
+        <span>Pesan Masuk & Ulasan</span>
+    </a>
+
+    <!-- PENGATURAN SISTEM -->
+    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.5); padding: 15px 15px 5px; font-weight: 700;">Pengaturan Sistem</div>
+    <a href="{% url 'admin_settings' %}" class="nav-item">
+        <i class='bx bxs-cog'></i>
+        <span>Pengaturan Umum & Outlet</span>
+    </a>
+    <a href="{% url 'admin_logs' %}" class="nav-item">
+        <i class='bx bxs-time-five'></i>
+        <span>Log & Backup Data</span>
+    </a>
+</div>
+    </aside>
+
+    <!-- AREA KONTEN UTAMA -->
+    <div class="main-content">
+        <header class="topbar">
+            <div class="topbar-title">
+                <h2>{% block page_title %}Dashboard Ringkasan{% endblock %}</h2>
+            </div>
+            <div class="topbar-actions">
+                <a href="{% url 'index' %}" target="_blank" class="btn-site">
+                    <i class='bx bx-globe'></i> Lihat Website
+                </a>
+                <div class="admin-profile">
+                    <div class="avatar-circle">{{ request.user.username|slice:":1"|upper }}</div>
+                    <span>{{ request.user.username }}</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="content-body">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+</body>
+</html>

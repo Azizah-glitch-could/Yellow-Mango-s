@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Yellow Mango's</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body.login {
+            background-color: #F5EAB9 !important;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-card {
+            background: #ffffff !important;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 2px solid #EAD465;
+            padding: 40px 35px;
+            width: 100%;
+            max-width: 420px;
+            box-sizing: border-box;
+        }
+
+        .custom-login-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .custom-login-header h1 {
+            color: #E6B325;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0;
+        }
+        .custom-login-header h2 {
+            color: #254E06;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 8px 0 4px 0;
+        }
+        .custom-login-header p {
+            color: #7E8407;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .login-tabs {
+            display: flex;
+            background: #FFF8D6;
+            border-radius: 30px;
+            padding: 4px;
+            margin-bottom: 25px;
+            border: 1px solid #EAD465;
+            justify-content: center;
+        }
+        .login-tab-item {
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 25px;
+            background-color: #E6B325;
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(230, 179, 37, 0.3);
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            color: #254E06;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid #EAD465;
+            border-radius: 12px;
+            background: #FAFAFA;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus {
+            border-color: #254E06;
+            outline: none;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(37, 78, 6, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #254E06;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 12px rgba(37, 78, 6, 0.25);
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background-color: #1a3804;
+        }
+
+        .error-message {
+            background-color: #fdf2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            font-size: 13px;
+            padding: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="login">
+
+    <div class="login-card">
+        <div class="custom-login-header">
+            <h1>YELLOW MANGO'S</h1>
+            <h2>Admin Portal</h2>
+            <p>Khusus Administrator & Staff</p>
+        </div>
+
+        <div class="login-tabs">
+            <div class="login-tab-item">Restricted Admin Access</div>
+        </div>
+
+        <!-- Tampilkan pesan error jika ada -->
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username Admin</label>
+                <input type="text" id="username" name="username" required placeholder="Masukkan username admin">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Masukkan password">
+            </div>
+
+            <button type="submit" class="btn-submit">Log In to Dashboard</button>
+        </form>
+    </div>
+
+</body>
+</html>

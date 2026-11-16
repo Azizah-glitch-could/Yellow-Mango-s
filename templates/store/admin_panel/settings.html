@@ -1,0 +1,137 @@
+{% extends 'store/admin_panel/admin_base.html' %}
+
+{% block title %}Pengaturan Umum & Outlet - Yellow Mango's{% endblock %}
+{% block page_title %}Pengaturan Umum & Informasi Outlet{% endblock %}
+
+{% block extra_css %}
+<style>
+    .settings-card {
+        background: var(--white);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        padding: 32px;
+        max-width: 800px;
+    }
+
+    .alert-success {
+        background-color: #DCFCE7;
+        color: #166534;
+        padding: 14px 18px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border: 1px solid #BBF7D0;
+        max-width: 800px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 0.95rem;
+        background-color: #FAFAFA;
+    }
+
+    .form-control:focus {
+        background-color: var(--white);
+        border-color: var(--moss-green);
+        outline: none;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .btn-save {
+        background-color: var(--moss-green);
+        color: var(--white);
+        border: none;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.2s;
+    }
+
+    .btn-save:hover {
+        background-color: var(--moss-dark);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert-success">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div style="margin-bottom: 24px;">
+    <p style="color: var(--text-muted); font-size: 0.92rem;">Sesuaikan identitas brand Yellow Mango's, nomor kontak layanan, serta informasi outlet resmi.</p>
+</div>
+
+<div class="settings-card">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nama Website / Brand *</label>
+                <input type="text" name="site_name" class="form-control" value="{{ setting.site_name }}" required>
+            </div>
+            <div class="form-group">
+                <label>Nomor WhatsApp CS (Awali 62) *</label>
+                <input type="text" name="whatsapp_number" class="form-control" value="{{ setting.whatsapp_number }}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+                <label>Tagline / Slogan Toko *</label>
+            <input type="text" name="tagline" class="form-control" value="{{ setting.tagline }}" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Jam Operasional Outlet *</label>
+                <input type="text" name="operational_hours" class="form-control" value="{{ setting.operational_hours }}" required>
+            </div>
+            <div class="form-group">
+                <label>Logo Website (Opsional)</label>
+                <input type="file" name="logo" class="form-control" accept="image/*">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Alamat Outlet Resmi *</label>
+            <textarea name="address" rows="3" class="form-control" required>{{ setting.address }}</textarea>
+        </div>
+
+        <div style="margin-top: 28px;">
+            <button type="submit" class="btn-save">
+                <i class='bx bx-save'></i> Simpan Perubahan Pengaturan
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

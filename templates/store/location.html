@@ -1,0 +1,69 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<!-- NAVBAR USER -->
+<nav style="background-color: #254E06; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; color: white;">
+    <div style="font-size: 1.25rem; font-weight: 700; color: white;">
+        Yellow Mango's
+    </div>
+    <div style="display: flex; align-items: center; gap: 28px;">
+        <a href="/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Beranda</a>
+        <a href="/menu/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Menu</a>
+        <a href="/lokasi/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500; border-bottom: 2px solid #EAC800; padding-bottom: 2px;">Lokasi</a>
+        <a href="/about/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">About Us</a>
+        <a href="/login/" style="background-color: #EAC800; color: #1E293B; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem;">Daftar / Masuk</a>
+    </div>
+</nav>
+
+<!-- KONTEN LOKASI & MAPS -->
+<div style="background-color: #FAF8F5; padding: 60px 20px; min-height: 85vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <div style="max-width: 950px; margin: 0 auto;">
+        
+        <!-- Header Info -->
+        <div style="text-align: center; margin-bottom: 40px;">
+            <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #78716c; margin-bottom: 8px;">KUNJUNGI OUTLET KAMI</div>
+            <h2 style="font-size: 2.5rem; font-weight: 800; color: #1c1917; margin: 0 0 10px 0; font-family: Georgia, serif;">Yellow Mango's Makassar Pusat</h2>
+            <p style="font-size: 1rem; color: #57534e; margin: 0;">Nikmati kesegaran olahan mangga langsung di tempat atau ambil pesananmu di outlet utama kami.</p>
+        </div>
+
+        <!-- Detail Card & Embed Maps -->
+        <div style="background: white; border-radius: 20px; border: 1px solid #e7e5e4; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            
+            <!-- Google Maps Embed untuk wilayah Makassar -->
+            <div style="width: 100%; height: 400px;">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.733074092306!2d119.432731!3d-5.147665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dbbee3821015555%3A0x403f74817a3a900!2sMakassar%2C%20South%20Sulawesi!5e0!3m2!1sen!2sid!4v1650000000000!5m2!1sen!2sid" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+
+            <!-- Informasi Alamat & Jam Operasional -->
+            <div style="padding: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <div>
+                    <h4 style="font-size: 1.2rem; font-weight: 700; color: #1c1917; margin: 0 0 6px 0;">Alamat Outlet</h4>
+                    <p style="color: #57534e; margin: 0; font-size: 0.95rem; line-height: 1.5;">
+                        Jl. Andi Pangeran Pettarani No. 45<br>Makassar, Sulawesi Selatan
+                    </p>
+                </div>
+                <div>
+                    <h4 style="font-size: 1.2rem; font-weight: 700; color: #1c1917; margin: 0 0 6px 0;">Jam Operasional</h4>
+                    <p style="color: #57534e; margin: 0; font-size: 0.95rem; line-height: 1.5;">
+                        Setiap Hari: 09.00 - 22.00 WITA
+                    </p>
+                </div>
+                <div>
+                    <a href="https://maps.google.com/?q=Makassar+Pusat" target="_blank" style="background-color: #254E06; color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 0.9rem; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        Buka di Google Maps
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

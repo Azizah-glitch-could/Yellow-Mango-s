@@ -78,24 +78,18 @@
     }
 </style>
 
-<nav class="ym-navbar">
-    <a href="{% url 'index' %}" class="ym-brand">Yellow Mango's</a>
+<nav style="background-color: #FFFFFF; border-bottom: 2px solid #EAD465; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(37,78,6,0.05);">
+    <!-- Logo Yellow Mango's -->
+    <a href="{% url 'index' %}" style="color: #254E06; font-size: 22px; font-weight: 800; text-decoration: none;">Yellow Mango's</a>
 
-    <div class="ym-nav-links">
-        <!-- Menu Utama yang Selalu Tampil -->
-        <a href="{% url 'index' %}">Beranda</a>
-        <a href="{% url 'menu' %}">Menu</a>
-        <a href="{% url 'index' %}#lokasi">Lokasi</a>
-        <a href="{% url 'index' %}#about">About Us</a>
-
-        {% if user.is_authenticated %}
-            <!-- Menu Khusus Jika Sudah Login -->
-            <a href="#keranjang">Keranjang</a>
-            <a href="#pesanan">Pesanan Saya</a>
-            <a href="{% url 'login' %}" class="ym-btn-outline">Keluar</a>
-        {% else %}
-            <!-- Menu Jika Belum Punya Akun / Belum Login -->
-            <a href="{% url 'login' %}" class="ym-btn-primary">Daftar / Masuk</a>
-        {% endif %}
+    <!-- Menu Links -->
+    <div style="display: flex; gap: 24px; align-items: center;">
+        <a href="{% url 'index' %}" style="color: #254E06; text-decoration: none; font-weight: 600;">Beranda</a>
+        <a href="{% url 'menu' %}" style="color: #254E06; text-decoration: none; font-weight: 600;">Menu</a>
+        <a href="#lokasi" style="color: #254E06; text-decoration: none; font-weight: 600;">Lokasi</a>
+        <a href="#about" style="color: #254E06; text-decoration: none; font-weight: 600;">About Us</a>
+        
+        <!-- Tombol Daftar / Masuk -->
+        <a href="{% url 'login' %}" style="background-color: #EAC800; color: #254E06; padding: 10px 20px; border-radius: 8px; font-weight: bold; text-decoration: none; box-shadow: 0 4px 12px rgba(234,200,0,0.3);">Daftar / Masuk</a>
     </div>
 </nav>
