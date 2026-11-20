@@ -3,162 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Yellow Mango's</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Admin Portal - Yellow Mango's</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body.login {
-            background-color: #F5EAB9 !important;
-            font-family: 'Poppins', sans-serif, Arial, sans-serif;
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(160deg, #0F1F04 0%, #1B3804 40%, #0A1403 100%);
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+            position: relative; overflow: hidden;
         }
 
-        .login-card {
-            background: #ffffff !important;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            border: 2px solid #EAD465;
-            padding: 40px 35px;
-            width: 100%;
-            max-width: 420px;
-            box-sizing: border-box;
+        /* Background decoration */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(circle at 15% 85%, rgba(255,183,3,0.12) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(255,183,3,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(37,78,6,0.5) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-        .custom-login-header {
-            text-align: center;
-            margin-bottom: 25px;
+        /* Floating orbs */
+        .orb {
+            position: fixed; border-radius: 50%;
+            filter: blur(80px); opacity: 0.15;
+            animation: floatOrb 8s ease-in-out infinite;
         }
-        .custom-login-header h1 {
-            color: #E6B325;
-            font-size: 24px;
-            font-weight: 800;
-            margin: 0;
+        .orb-1 {
+            width: 300px; height: 300px;
+            background: #FFB703; top: -80px; left: -80px;
+            animation-delay: 0s;
         }
-        .custom-login-header h2 {
-            color: #254E06;
-            font-size: 20px;
-            font-weight: 700;
-            margin: 8px 0 4px 0;
+        .orb-2 {
+            width: 250px; height: 250px;
+            background: #3A6B09; bottom: -60px; right: -60px;
+            animation-delay: 4s;
         }
-        .custom-login-header p {
-            color: #7E8407;
-            font-size: 13px;
-            margin: 0;
-        }
-
-        .login-tabs {
-            display: flex;
-            background: #FFF8D6;
-            border-radius: 30px;
-            padding: 4px;
-            margin-bottom: 25px;
-            border: 1px solid #EAD465;
-            justify-content: center;
-        }
-        .login-tab-item {
-            text-align: center;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 25px;
-            background-color: #E6B325;
-            color: #ffffff;
-            box-shadow: 0 4px 10px rgba(230, 179, 37, 0.3);
-            width: 100%;
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, -20px); }
         }
 
-        .form-group {
-            margin-bottom: 15px;
+        /* CARD */
+        .admin-login-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 28px;
+            width: 100%; max-width: 440px;
+            padding: 48px 44px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+            position: relative;
+            animation: slideUp 0.5s ease;
         }
-        .form-group label {
-            color: #254E06;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 6px;
-            font-size: 13px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 13px 16px;
-            border: 1.5px solid #EAD465;
-            border-radius: 12px;
-            background: #FAFAFA;
-            font-size: 14px;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-        }
-        .form-group input:focus {
-            border-color: #254E06;
-            outline: none;
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(37, 78, 6, 0.1);
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .btn-submit {
-            width: 100%;
-            background-color: #254E06;
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            box-shadow: 0 4px 12px rgba(37, 78, 6, 0.25);
-            margin-top: 10px;
+        /* HEADER */
+        .admin-header { text-align: center; margin-bottom: 36px; }
+        .admin-logo-ring {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, #FFB703, #FB8500);
+            border-radius: 22px; display: flex; align-items: center;
+            justify-content: center; font-size: 2.2rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(255,183,3,0.5);
         }
-        .btn-submit:hover {
-            background-color: #1a3804;
+        .admin-brand {
+            font-size: 1.1rem; font-weight: 800; color: #FFB703;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .admin-title {
+            font-size: 1.7rem; font-weight: 800; color: #FFFFFF;
+            margin-bottom: 8px; letter-spacing: -0.3px;
+        }
+        .restricted-badge {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.4);
+            color: #FCA5A5; padding: 6px 16px; border-radius: 25px;
+            font-size: 0.78rem; font-weight: 700; letter-spacing: 0.5px;
         }
 
-        .error-message {
-            background-color: #fdf2f2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
-            border-radius: 8px;
-            font-size: 13px;
-            padding: 10px;
-            margin-bottom: 15px;
-            text-align: center;
+        /* ERROR */
+        .error-box {
+            background: rgba(220, 38, 38, 0.15); border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 12px; padding: 13px 16px; margin-bottom: 20px;
+            font-size: 0.88rem; color: #FCA5A5;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        /* FORM */
+        .form-group { margin-bottom: 20px; }
+        .form-label {
+            display: block; font-size: 0.84rem; font-weight: 700;
+            color: rgba(255,255,255,0.65); margin-bottom: 8px;
+        }
+        .input-wrap { position: relative; }
+        .input-wrap i {
+            position: absolute; left: 14px; top: 50%;
+            transform: translateY(-50%); font-size: 1.15rem;
+            color: rgba(255,255,255,0.3);
+        }
+        .form-input {
+            width: 100%; padding: 13px 14px 13px 44px;
+            background: rgba(255,255,255,0.07);
+            border: 1.5px solid rgba(255,255,255,0.12);
+            border-radius: 12px; color: #FFFFFF;
+            font-size: 0.95rem; font-family: inherit;
+            transition: all 0.2s;
+        }
+        .form-input::placeholder { color: rgba(255,255,255,0.3); }
+        .form-input:focus {
+            border-color: #FFB703; outline: none;
+            box-shadow: 0 0 0 3px rgba(255,183,3,0.15);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .btn-login {
+            width: 100%; padding: 15px;
+            background: linear-gradient(135deg, #FFB703, #FB8500);
+            color: #1B3804; border: none; border-radius: 14px;
+            font-weight: 800; font-size: 1rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 8px 25px rgba(255,183,3,0.4);
+            transition: all 0.2s; margin-top: 12px; font-family: inherit;
+            letter-spacing: 0.3px;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,183,3,0.5);
+        }
+
+        /* FOOTER */
+        .card-footer {
+            margin-top: 28px; padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .footer-lnk {
+            font-size: 0.84rem; text-decoration: none; font-weight: 600;
+            display: flex; align-items: center; gap: 5px; transition: color 0.2s;
+        }
+        .footer-lnk.home { color: rgba(255,255,255,0.45); }
+        .footer-lnk.home:hover { color: rgba(255,255,255,0.75); }
+        .footer-lnk.user { color: #FFB703; }
+        .footer-lnk.user:hover { color: #FCD34D; }
+
+        /* SECURITY CHIP */
+        .security-chip {
+            margin-top: 24px; text-align: center;
+            font-size: 0.78rem; color: rgba(255,255,255,0.3);
+            display: flex; align-items: center; justify-content: center; gap: 6px;
         }
     </style>
 </head>
-<body class="login">
+<body>
 
-    <div class="login-card">
-        <div class="custom-login-header">
-            <h1>YELLOW MANGO'S</h1>
-            <h2>Admin Portal</h2>
-            <p>Khusus Administrator & Staff</p>
+    <!-- Floating Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="admin-login-card">
+        <!-- HEADER -->
+        <div class="admin-header">
+            <div class="admin-logo-ring">🛡️</div>
+            <div class="admin-brand">Yellow Mango's</div>
+            <div class="admin-title">Admin Portal</div>
+            <div class="restricted-badge">
+                <i class='bx bx-lock-alt'></i> Restricted Access
+            </div>
         </div>
 
-        <div class="login-tabs">
-            <div class="login-tab-item">Restricted Admin Access</div>
-        </div>
-
-        <!-- Tampilkan pesan error jika ada -->
+        <!-- ERROR -->
         {% if error %}
-            <div class="error-message">{{ error }}</div>
+        <div class="error-box">
+            <i class='bx bx-error-circle' style="font-size:1.3rem;"></i>
+            {{ error }}
+        </div>
         {% endif %}
 
+        <!-- FORM -->
         <form method="POST">
             {% csrf_token %}
             <div class="form-group">
-                <label for="username">Username Admin</label>
-                <input type="text" id="username" name="username" required placeholder="Masukkan username admin">
+                <label class="form-label">Username Admin</label>
+                <div class="input-wrap">
+                    <i class='bx bx-user-shield'></i>
+                    <input type="text" name="username" class="form-input"
+                        placeholder="Masukkan username administrator" required autofocus>
+                </div>
             </div>
-
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Masukkan password">
+                <label class="form-label">Kata Sandi</label>
+                <div class="input-wrap">
+                    <i class='bx bx-lock-alt'></i>
+                    <input type="password" name="password" class="form-input"
+                        placeholder="Masukkan kata sandi admin" required>
+                </div>
             </div>
-
-            <button type="submit" class="btn-submit">Log In to Dashboard</button>
+            <button type="submit" class="btn-login">
+                <i class='bx bxs-dashboard'></i>
+                Masuk ke Dashboard
+            </button>
         </form>
+
+        <!-- FOOTER LINKS -->
+        <div class="card-footer">
+            <a href="{% url 'index' %}" class="footer-lnk home">
+                <i class='bx bx-arrow-back'></i> Ke Beranda
+            </a>
+            <a href="{% url 'login' %}" class="footer-lnk user">
+                Login Pelanggan <i class='bx bx-right-arrow-alt'></i>
+            </a>
+        </div>
+
+        <!-- SECURITY NOTE -->
+        <div class="security-chip">
+            <i class='bx bx-shield-quarter'></i>
+            Halaman ini hanya untuk staf & administrator resmi
+        </div>
     </div>
 
 </body>

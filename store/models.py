@@ -6,14 +6,8 @@ from django.utils.text import slugify
 # 1. MODEL PRODUK / MENU
 class Product(models.Model):
     CATEGORY_CHOICES = [
-        ('Coffee', 'Coffee'),
-        ('Signature Coffee', 'Signature Coffee'),
-        ('Non-Coffee', 'Non-Coffee'),
-        ('Tea', 'Tea'),
-        ('Minuman Tradisional', 'Minuman Tradisional'),
-        ('Snack', 'Snack'),
-        ('Indomie', 'Indomie'),
-        ('Main Course', 'Main Course'),
+        ('Smoothies & Jus', 'Smoothies & Jus'),
+        ('Dessert & Es Krim', 'Dessert & Es Krim'),
         ('Lain-Lain', 'Lain-Lain'),
     ]
 
@@ -244,3 +238,19 @@ class ActivityLog(models.Model):
 
     def __str__(self):
         return f"{self.action} ({self.created_at.strftime('%d/%m/%Y %H:%M')})"
+
+
+# 10. MODEL PROFIL & PENGATURAN PENGGUNA (USER PROFILE & SETTINGS)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    phone = models.CharField(max_length=25, blank=True, null=True, verbose_name="Nomor WhatsApp/HP")
+    default_address = models.TextField(blank=True, null=True, verbose_name="Alamat Pengiriman Utama")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Profil Pengguna"
+        verbose_name_plural = "Profil Pengguna"
+
+    def __str__(self):
+        return f"Profil: {self.user.username}"

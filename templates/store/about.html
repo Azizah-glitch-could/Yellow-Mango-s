@@ -1,19 +1,7 @@
 {% extends 'store/base.html' %}
 
 {% block content %}
-<!-- NAVBAR USER -->
-<nav style="background-color: #254E06; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; color: white;">
-    <div style="font-size: 1.25rem; font-weight: 700; color: white;">
-        Yellow Mango's
-    </div>
-    <div style="display: flex; align-items: center; gap: 28px;">
-        <a href="/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Beranda</a>
-        <a href="/menu/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Menu</a>
-        <a href="/lokasi/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Lokasi</a>
-        <a href="/about/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500; border-bottom: 2px solid #EAC800; padding-bottom: 2px;">About Us</a>
-        <a href="/login/" style="background-color: #EAC800; color: #1E293B; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem;">Daftar / Masuk</a>
-    </div>
-</nav>
+{% include 'store/navbar.html' %}
 
 <!-- KONTEN ABOUT US -->
 <div style="background-color: #FAF8F5; padding: 60px 20px; min-height: 85vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">

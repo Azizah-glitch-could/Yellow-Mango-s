@@ -225,13 +225,18 @@
                     {% endif %}
                 </td>
                 <td>
-                    <strong>{{ item.name }}</strong><br>
-                    <small style="color: var(--text-muted);">{{ item.description|truncatewords:10 }}</small>
+                    <strong>{{ item.name }}</strong>
                 </td>
-                <td><strong>Rp {{ item.price }}</strong></td>
+                <td>
+                    <span class="badge-tag">{{ item.get_category_display|default:item.category }}</span>
+                </td>
+                <td>
+                    <small style="color: var(--text-muted);">{{ item.description|truncatewords:8|default:"-" }}</small>
+                </td>
+                <td><strong>Rp {{ item.price|floatformat:0 }}</strong></td>
                 <td>
                     {% if item.badge_primary != 'NONE' %}
-                        <span class="badge-tag">{{ item.get_badge_primary_display }}</span>
+                        <span class="badge-tag" style="background:#DCFCE7; color:#166534;">{{ item.get_badge_primary_display }}</span>
                     {% else %}
                         <span style="color:#94A3B8;font-size:0.8rem;">-</span>
                     {% endif %}
@@ -246,7 +251,7 @@
                 <td>
                     <div class="action-btns">
                         <button class="btn-icon btn-edit" title="Edit Menu"
-                            onclick="openEditModal('{{ item.id }}', '{{ item.name|escapejs }}', '{{ item.price }}', '{{ item.description|escapejs }}', '{{ item.badge_primary }}', '{{ item.badge_secondary }}', '{{ item.image_url|default:''|escapejs }}', {{ item.is_available|yesno:'true,false' }})">
+                            onclick="openEditModal('{{ item.id }}', '{{ item.name|escapejs }}', '{{ item.category|escapejs }}', '{{ item.price }}', '{{ item.description|escapejs }}', '{{ item.badge_primary }}', '{{ item.badge_secondary }}', '{{ item.image_url|default:''|escapejs }}', {{ item.is_available|yesno:'true,false' }})">
                             <i class='bx bx-edit'></i>
                         </button>
                         <form method="POST" onsubmit="return confirm('Yakin ingin menghapus menu {{ item.name }}?');" style="display:inline;">
@@ -262,7 +267,7 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="6" style="text-align:center; padding: 40px; color: var(--text-muted);">
+                <td colspan="8" style="text-align:center; padding: 40px; color: var(--text-muted);">
                     Belum ada produk menu yang ditambahkan. Klik tombol <strong>+ Tambah Menu Baru</strong> di kanan atas.
                 </td>
             </tr>
@@ -283,9 +288,19 @@
             <input type="hidden" name="action" id="formAction" value="add">
             <input type="hidden" name="product_id" id="productId">
 
-            <div class="form-group">
-                <label>Nama Menu *</label>
-                <input type="text" name="name" id="inputName" class="form-control" placeholder="Contoh: Mango Sticky Rice" required>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nama Menu *</label>
+                    <input type="text" name="name" id="inputName" class="form-control" placeholder="Contoh: Mango Sticky Rice" required>
+                </div>
+                <div class="form-group">
+                    <label>Kategori *</label>
+                    <select name="category" id="inputCategory" class="form-control">
+                        {% for val, label in category_choices %}
+                            <option value="{{ val }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
 
             <div class="form-row">
@@ -340,6 +355,7 @@
         document.getElementById('formAction').value = 'add';
         document.getElementById('productId').value = '';
         document.getElementById('inputName').value = '';
+        document.getElementById('inputCategory').value = 'Smoothies & Jus';
         document.getElementById('inputPrice').value = '';
         document.getElementById('inputDesc').value = '';
         document.getElementById('inputBadge1').value = 'NONE';
@@ -348,11 +364,14 @@
         modal.style.display = 'flex';
     }
 
-    function openEditModal(id, name, price, desc, badge1, badge2, imgUrl, isAvail) {
+    function openEditModal(id, name, cat, price, desc, badge1, badge2, imgUrl, isAvail) {
         document.getElementById('modalTitle').innerText = 'Edit Menu';
         document.getElementById('formAction').value = 'edit';
         document.getElementById('productId').value = id;
         document.getElementById('inputName').value = name;
+        if (cat) {
+            document.getElementById('inputCategory').value = cat;
+        }
         document.getElementById('inputPrice').value = price;
         document.getElementById('inputDesc').value = desc;
         document.getElementById('inputBadge1').value = badge1;

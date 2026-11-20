@@ -1,0 +1,309 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Artikel & Blog - Yellow Mango's{% endblock %}
+
+{% block content %}
+{% include 'store/navbar.html' %}
+
+<style>
+    :root {
+        --primary: #FFB703;
+        --primary-hover: #FB8500;
+        --secondary: #254E06;
+        --secondary-dark: #1B3804;
+        --bg-page: #FFFDF7;
+        --text-main: #1E293B;
+        --text-muted: #64748B;
+        --border-soft: #F1E5C6;
+    }
+
+    body { background-color: var(--bg-page); }
+
+    /* HERO */
+    .article-hero {
+        background: linear-gradient(135deg, #1B3804 0%, #254E06 55%, #3A6B09 100%);
+        padding: 70px 24px 90px 24px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .article-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.4;
+    }
+    .article-hero-inner { position: relative; max-width: 760px; margin: 0 auto; }
+    .article-hero-badge {
+        display: inline-flex; align-items: center; gap: 7px;
+        background: rgba(255,183,3,0.15); border: 1px solid rgba(255,183,3,0.4);
+        color: #FFD54F; padding: 7px 18px; border-radius: 30px;
+        font-size: 0.82rem; font-weight: 700; letter-spacing: 0.5px;
+        margin-bottom: 20px; text-transform: uppercase;
+    }
+    .article-hero-title {
+        font-size: 2.8rem; font-weight: 800; color: #FFFFFF;
+        margin-bottom: 16px; line-height: 1.2;
+    }
+    .article-hero-title span { color: #FFB703; }
+    .article-hero-desc {
+        font-size: 1.05rem; color: rgba(255,255,255,0.75);
+        max-width: 540px; margin: 0 auto;
+    }
+
+    /* FILTER BAR */
+    .articles-filter-wrap {
+        max-width: 1180px; margin: -32px auto 50px auto; padding: 0 20px;
+    }
+    .filter-search-card {
+        background: #FFFFFF; border-radius: 20px;
+        padding: 28px 32px; box-shadow: 0 12px 35px rgba(37,78,6,0.1);
+        border: 2px solid #EAD465;
+    }
+    .filter-row-top {
+        display: grid; grid-template-columns: 1fr auto auto; gap: 14px;
+        align-items: center; margin-bottom: 18px;
+    }
+    .search-wrap { position: relative; }
+    .search-wrap i {
+        position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+        font-size: 1.25rem; color: #94A3B8;
+    }
+    .search-input {
+        width: 100%; padding: 13px 18px 13px 46px;
+        border: 1.5px solid #E2E8F0; border-radius: 12px;
+        font-size: 0.95rem; transition: all 0.2s;
+        background: #FAFAFA;
+    }
+    .search-input:focus {
+        border-color: var(--secondary); outline: none;
+        box-shadow: 0 0 0 3px rgba(37,78,6,0.1); background: #FFFFFF;
+    }
+    .btn-search {
+        padding: 13px 24px; background: linear-gradient(135deg, #FFB703, #FB8500);
+        color: #FFFFFF; border: none; border-radius: 12px;
+        font-weight: 700; font-size: 0.95rem; cursor: pointer;
+        display: flex; align-items: center; gap: 7px; white-space: nowrap;
+        transition: transform 0.2s;
+    }
+    .btn-search:hover { transform: translateY(-2px); }
+    .btn-reset-filter {
+        padding: 13px 18px; background: #F8FAFC;
+        border: 1.5px solid #E2E8F0; border-radius: 12px;
+        color: #64748B; font-weight: 600; font-size: 0.9rem;
+        cursor: pointer; text-decoration: none; display: flex;
+        align-items: center; gap: 6px; white-space: nowrap;
+        transition: all 0.2s;
+    }
+    .btn-reset-filter:hover { border-color: #CBD5E1; color: #334155; }
+
+    .cat-tabs-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .cat-tab {
+        padding: 7px 18px; border-radius: 25px;
+        border: 1.5px solid #E2E8F0; background: #F8FAFC;
+        color: #475569; font-size: 0.85rem; font-weight: 700;
+        text-decoration: none; white-space: nowrap; transition: all 0.2s;
+    }
+    .cat-tab:hover, .cat-tab.active {
+        background: var(--secondary); border-color: var(--secondary);
+        color: #FFFFFF; box-shadow: 0 4px 10px rgba(37,78,6,0.2);
+    }
+
+    /* GRID ARTIKEL */
+    .articles-container {
+        max-width: 1180px; margin: 0 auto; padding: 0 20px 80px;
+    }
+    .articles-meta-bar {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 28px; color: var(--text-muted); font-size: 0.92rem;
+    }
+    .articles-grid {
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;
+    }
+    .article-card {
+        background: #FFFFFF; border-radius: 20px; overflow: hidden;
+        border: 1px solid #F1E5C6;
+        box-shadow: 0 4px 16px rgba(37,78,6,0.05);
+        display: flex; flex-direction: column;
+        transition: all 0.3s ease;
+        text-decoration: none; color: inherit;
+    }
+    .article-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(37,78,6,0.12);
+        border-color: var(--primary);
+    }
+    .article-thumb {
+        width: 100%; height: 200px; overflow: hidden;
+        background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+        display: flex; align-items: center; justify-content: center;
+        position: relative;
+    }
+    .article-thumb img {
+        width: 100%; height: 100%; object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+    .article-card:hover .article-thumb img { transform: scale(1.06); }
+    .article-thumb-placeholder { font-size: 3.5rem; }
+    .article-cat-badge {
+        position: absolute; top: 12px; left: 12px;
+        background: rgba(37,78,6,0.85); color: #FFD54F;
+        padding: 4px 12px; border-radius: 15px;
+        font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px;
+        backdrop-filter: blur(4px);
+    }
+    .article-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+    .article-date-row {
+        font-size: 0.8rem; color: var(--text-muted);
+        margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+    }
+    .article-title {
+        font-size: 1.1rem; font-weight: 800; color: var(--text-main);
+        margin-bottom: 10px; line-height: 1.4;
+    }
+    .article-excerpt {
+        font-size: 0.88rem; color: var(--text-muted);
+        line-height: 1.65; flex: 1;
+    }
+    .article-read-link {
+        display: inline-flex; align-items: center; gap: 6px;
+        color: var(--secondary); font-weight: 700; font-size: 0.88rem;
+        margin-top: 16px; text-decoration: none;
+        transition: gap 0.2s;
+    }
+    .article-read-link:hover { gap: 10px; }
+
+    /* EMPTY STATE */
+    .empty-articles {
+        grid-column: 1 / -1; text-align: center; padding: 80px 20px;
+    }
+    .empty-icon { font-size: 4rem; margin-bottom: 16px; }
+    .empty-title {
+        font-size: 1.5rem; font-weight: 800; color: var(--secondary);
+        margin-bottom: 10px;
+    }
+    .empty-desc { color: var(--text-muted); font-size: 0.95rem; }
+
+    @media (max-width: 1000px) { .articles-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) {
+        .articles-grid { grid-template-columns: 1fr; }
+        .filter-row-top { grid-template-columns: 1fr; }
+        .article-hero-title { font-size: 2rem; }
+    }
+</style>
+
+<!-- HERO -->
+<div class="article-hero">
+    <div class="article-hero-inner">
+        <div class="article-hero-badge">📝 Inspirasi & Kuliner</div>
+        <h1 class="article-hero-title">Artikel <span>&</span> Blog</h1>
+        <p class="article-hero-desc">
+            Temukan tips, resep, cerita di balik sajian segar Yellow Mango's, dan
+            ragam inspirasi kuliner mangga dari Makassar untuk dunia.
+        </p>
+    </div>
+</div>
+
+<!-- FILTER & SEARCH -->
+<div class="articles-filter-wrap">
+    <div class="filter-search-card">
+        <form method="GET" action="{% url 'articles_list' %}">
+            <div class="filter-row-top">
+                <div class="search-wrap">
+                    <i class='bx bx-search'></i>
+                    <input type="text" name="q" value="{{ search_query }}" class="search-input"
+                        placeholder="Cari artikel, resep, atau tips (misal: smoothies, mango, sehat)...">
+                </div>
+                <button type="submit" class="btn-search">
+                    <i class='bx bx-search-alt-2'></i> Cari
+                </button>
+                {% if search_query or selected_category %}
+                    <a href="{% url 'articles_list' %}" class="btn-reset-filter">
+                        <i class='bx bx-x'></i> Reset
+                    </a>
+                {% endif %}
+            </div>
+            <div class="cat-tabs-row">
+                <a href="{% url 'articles_list' %}" class="cat-tab {% if not selected_category %}active{% endif %}">
+                    📚 Semua Artikel
+                </a>
+                {% for cat in category_list %}
+                <a href="{% url 'articles_list' %}?category={{ cat|urlencode }}{% if search_query %}&q={{ search_query }}{% endif %}"
+                   class="cat-tab {% if selected_category == cat %}active{% endif %}">
+                    {{ cat }}
+                </a>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- DAFTAR ARTIKEL -->
+<div class="articles-container">
+    <div class="articles-meta-bar">
+        <div>
+            Menampilkan <strong>{{ total_articles }}</strong> artikel
+            {% if selected_category %}dalam kategori <em>"{{ selected_category }}"</em>{% endif %}
+            {% if search_query %}untuk kata kunci <em>"{{ search_query }}"</em>{% endif %}
+        </div>
+        {% if selected_category or search_query %}
+            <a href="{% url 'articles_list' %}" style="color:#D97706; font-weight:700; font-size:0.88rem; text-decoration:none;">
+                × Tampilkan Semua
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="articles-grid">
+        {% if articles %}
+            {% for article in articles %}
+            <a href="{% url 'article_detail' article.slug %}" class="article-card">
+                <div class="article-thumb">
+                    {% if article.thumbnail %}
+                        <img src="{{ article.thumbnail.url }}" alt="{{ article.title }}">
+                    {% else %}
+                        <span class="article-thumb-placeholder">🥭</span>
+                    {% endif %}
+                    <span class="article-cat-badge">{{ article.category }}</span>
+                </div>
+                <div class="article-body">
+                    <div class="article-date-row">
+                        <i class='bx bx-calendar'></i>
+                        {{ article.created_at|date:"d M Y" }}
+                        {% if article.author %}
+                        <span style="margin-left:6px; color:#94A3B8;">• {{ article.author.get_full_name|default:article.author.username }}</span>
+                        {% endif %}
+                    </div>
+                    <h3 class="article-title">{{ article.title }}</h3>
+                    <p class="article-excerpt">{{ article.content|striptags|truncatewords:22 }}</p>
+                    <span class="article-read-link">
+                        Baca Selengkapnya <i class='bx bx-right-arrow-alt'></i>
+                    </span>
+                </div>
+            </a>
+            {% endfor %}
+        {% else %}
+            <div class="empty-articles">
+                <div class="empty-icon">📭</div>
+                <h3 class="empty-title">Belum Ada Artikel Tersedia</h3>
+                <p class="empty-desc">
+                    {% if search_query or selected_category %}
+                        Tidak ada artikel yang cocok dengan filter kamu.<br>
+                        Coba reset filter atau gunakan kata kunci lain.
+                    {% else %}
+                        Konten artikel sedang disiapkan oleh tim redaksi Yellow Mango's.<br>
+                        Pantau terus halaman ini ya!
+                    {% endif %}
+                </p>
+                <a href="{% url 'index' %}" style="display:inline-block; margin-top:24px; padding:12px 28px;
+                   background: linear-gradient(135deg, #FFB703, #FB8500); color:#fff;
+                   border-radius:12px; font-weight:700; text-decoration:none;">
+                    ← Kembali ke Beranda
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

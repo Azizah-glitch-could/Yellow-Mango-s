@@ -1,0 +1,369 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - Detail Menu Yellow Mango's{% endblock %}
+
+{% block content %}
+<!-- NAVBAR GLOBAL -->
+{% include 'store/navbar.html' %}
+
+<style>
+    .detail-container {
+        max-width: 1140px;
+        margin: 40px auto 80px auto;
+        padding: 0 20px;
+    }
+
+    .breadcrumb-nav {
+        margin-bottom: 25px;
+        font-size: 0.9rem;
+        color: #64748B;
+    }
+
+    .breadcrumb-nav a {
+        color: #254E06;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .detail-card-grid {
+        background: #FFFFFF;
+        border-radius: 28px;
+        overflow: hidden;
+        border: 2px solid #EAD465;
+        box-shadow: 0 10px 30px rgba(37, 78, 6, 0.08);
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: 40px;
+        padding: 40px;
+        align-items: start;
+    }
+
+    .detail-img-box {
+        position: relative;
+        width: 100%;
+        height: 440px;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #FFFDF7;
+        border: 1px solid #F1E5C6;
+    }
+
+    .detail-img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .detail-badge-pill {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: #254E06;
+        color: #FFFFFF;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .detail-category {
+        color: #D97706;
+        font-size: 0.85rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .detail-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.3rem;
+        color: #254E06;
+        margin-bottom: 12px;
+        line-height: 1.25;
+    }
+
+    .detail-price {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #1E293B;
+        margin-bottom: 18px;
+    }
+
+    .detail-desc {
+        color: #475569;
+        font-size: 1rem;
+        line-height: 1.7;
+        margin-bottom: 28px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #F1F5F9;
+    }
+
+    .opt-group-title {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: #254E06;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .opt-pill-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .opt-label-item {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .opt-label-item input[type="radio"] {
+        display: none;
+    }
+
+    .opt-label-box {
+        display: block;
+        padding: 10px 14px;
+        border: 1.5px solid #CBD5E1;
+        border-radius: 12px;
+        text-align: center;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #334155;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .opt-label-item input[type="radio"]:checked + .opt-label-box {
+        background: #FEF3C7;
+        border-color: #D97706;
+        color: #92400E;
+        font-weight: 700;
+    }
+
+    .qty-box {
+        display: inline-flex;
+        align-items: center;
+        border: 1.5px solid #CBD5E1;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .qty-btn {
+        width: 40px;
+        height: 40px;
+        background: #F8FAFC;
+        border: none;
+        font-size: 1.2rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .qty-num {
+        width: 45px;
+        text-align: center;
+        border: none;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .action-btn-row {
+        display: flex;
+        gap: 14px;
+        margin-top: 30px;
+    }
+
+    .btn-add-cart-large {
+        flex: 1;
+        padding: 15px;
+        background: linear-gradient(135deg, #FFB703, #FB8500);
+        color: #FFFFFF;
+        border: none;
+        border-radius: 14px;
+        font-weight: 800;
+        font-size: 1.02rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 6px 18px rgba(251, 133, 0, 0.3);
+    }
+
+    .btn-direct-buy {
+        padding: 15px 26px;
+        background-color: #254E06;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 0.98rem;
+        cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+        .detail-card-grid {
+            grid-template-columns: 1fr;
+        }
+        .detail-img-box {
+            height: 320px;
+        }
+    }
+</style>
+
+<div class="detail-container">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-nav">
+        <a href="{% url 'index' %}">Beranda</a> &rsaquo; 
+        <a href="{% url 'menu' %}">Menu</a> &rsaquo; 
+        <span>{{ product.name }}</span>
+    </div>
+
+    <div class="detail-card-grid">
+        <!-- Foto Menu -->
+        <div class="detail-img-box">
+            {% if product.badge_primary != 'NONE' %}
+                <span class="detail-badge-pill">{{ product.get_badge_primary_display }}</span>
+            {% endif %}
+
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% elif product.image_url %}
+                <img src="{{ product.image_url }}" alt="{{ product.name }}">
+            {% else %}
+                <img src="{% static 'images/mangga.jpg' %}" alt="{{ product.name }}">
+            {% endif %}
+        </div>
+
+        <!-- Rincian & Kustomisasi -->
+        <div>
+            <span class="detail-category">{{ product.get_category_display|default:product.category }}</span>
+            <h1 class="detail-title">{{ product.name }}</h1>
+            <div class="detail-price" id="displayPrice">Rp {{ product.price|floatformat:0 }}</div>
+            <p class="detail-desc">{{ product.description|default:"Racikan spesial dari Yellow Mango's menggunakan bahan mangga berkualitas tinggi dengan rasa segar yang otentik." }}</p>
+
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="direct_checkout" id="directInput" value="false">
+
+                <!-- 1. Pilihan Ukuran -->
+                <div class="opt-group-title">
+                    <span>Pilihan Ukuran Cup</span>
+                    <span style="font-size: 0.8rem; color: #64748B;">Large +Rp 4.000</span>
+                </div>
+                <div class="opt-pill-row">
+                    <div class="opt-label-item">
+                        <input type="radio" name="size" id="size1" value="Reguler" checked onchange="calcPrice()">
+                        <label for="size1" class="opt-label-box">Reguler Cup</label>
+                    </div>
+                    <div class="opt-label-item">
+                        <input type="radio" name="size" id="size2" value="Large" onchange="calcPrice()">
+                        <label for="size2" class="opt-label-box">Large Cup (+4rb)</label>
+                    </div>
+                </div>
+
+                <!-- 2. Tingkat Manis -->
+                <div class="opt-group-title">
+                    <span>Tingkat Kemanisan (Sugar Level)</span>
+                </div>
+                <div class="opt-pill-row">
+                    <div class="opt-label-item">
+                        <input type="radio" name="sugar" id="sug1" value="Normal" checked>
+                        <label for="sug1" class="opt-label-box">Normal (100%)</label>
+                    </div>
+                    <div class="opt-label-item">
+                        <input type="radio" name="sugar" id="sug2" value="Less Sugar">
+                        <label for="sug2" class="opt-label-box">Less Sugar (50%)</label>
+                    </div>
+                    <div class="opt-label-item">
+                        <input type="radio" name="sugar" id="sug3" value="No Sugar">
+                        <label for="sug3" class="opt-label-box">Tanpa Gula (0%)</label>
+                    </div>
+                </div>
+
+                <!-- 3. Level Es -->
+                <div class="opt-group-title">
+                    <span>Level Dingin (Ice Level)</span>
+                </div>
+                <div class="opt-pill-row">
+                    <div class="opt-label-item">
+                        <input type="radio" name="ice" id="ice1" value="Normal" checked>
+                        <label for="ice1" class="opt-label-box">Normal Ice</label>
+                    </div>
+                    <div class="opt-label-item">
+                        <input type="radio" name="ice" id="ice2" value="Less Ice">
+                        <label for="ice2" class="opt-label-box">Less Ice</label>
+                    </div>
+                    <div class="opt-label-item">
+                        <input type="radio" name="ice" id="ice3" value="No Ice">
+                        <label for="ice3" class="opt-label-box">Tanpa Es</label>
+                    </div>
+                </div>
+
+                <!-- 4. Catatan Khusus & Kuantitas -->
+                <div style="display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: flex-end; margin-bottom: 20px;">
+                    <div>
+                        <label style="display:block; font-size: 0.88rem; font-weight:700; margin-bottom:6px; color:#254E06;">Catatan Khusus</label>
+                        <input type="text" name="notes" placeholder="Contoh: es dipisah, ekstra topping..." style="width: 100%; padding: 11px 14px; border: 1.5px solid #CBD5E1; border-radius: 12px; font-size: 0.9rem;">
+                    </div>
+                    <div>
+                        <label style="display:block; font-size: 0.88rem; font-weight:700; margin-bottom:6px; color:#254E06;">Kuantitas</label>
+                        <div class="qty-box">
+                            <button type="button" class="qty-btn" onclick="stepQty(-1)">&minus;</button>
+                            <input type="number" name="quantity" id="detailQty" value="1" min="1" class="qty-num" readonly>
+                            <button type="button" class="qty-btn" onclick="stepQty(1)">&plus;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Aksi -->
+                <div class="action-btn-row">
+                    <button type="submit" class="btn-add-cart-large" onclick="setCheckout(false)">
+                        <i class='bx bx-cart-add' style="font-size: 1.35rem;"></i>
+                        <span id="btnCartText">Tambah ke Keranjang • Rp {{ product.price|floatformat:0 }}</span>
+                    </button>
+                    <button type="submit" class="btn-direct-buy" onclick="setCheckout(true)">
+                        Beli Sekarang
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const basePrice = {{ product.price }};
+
+    function stepQty(delta) {
+        const input = document.getElementById('detailQty');
+        let val = parseInt(input.value) || 1;
+        val += delta;
+        if (val < 1) val = 1;
+        input.value = val;
+        calcPrice();
+    }
+
+    function calcPrice() {
+        const isLarge = document.getElementById('size2').checked;
+        const extra = isLarge ? 4000 : 0;
+        const qty = parseInt(document.getElementById('detailQty').value) || 1;
+        const total = (basePrice + extra) * qty;
+
+        document.getElementById('displayPrice').innerText = 'Rp ' + (basePrice + extra).toLocaleString('id-ID');
+        document.getElementById('btnCartText').innerText = 'Tambah ke Keranjang • Rp ' + total.toLocaleString('id-ID');
+    }
+
+    function setCheckout(isDirect) {
+        document.getElementById('directInput').value = isDirect ? 'true' : 'false';
+    }
+</script>
+{% endblock %}

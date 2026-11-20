@@ -1,125 +1,837 @@
 {% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Katalog Menu Lengkap - Yellow Mango's{% endblock %}
 
 {% block content %}
-<!-- NAVBAR USER -->
-<nav style="background-color: #254E06; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; color: white;">
-    <div style="font-size: 1.25rem; font-weight: 700; color: white;">
-        Yellow Mango's
-    </div>
-    <div style="display: flex; align-items: center; gap: 28px;">
-        <a href="/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Beranda</a>
-        <a href="/menu/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Menu</a>
-        <a href="/lokasi/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Lokasi</a>
-        <a href="/about/" style="color: white; text-decoration: none; font-size: 0.95rem; font-weight: 500;">About Us</a>
-        <a href="/login/" style="background-color: #EAC800; color: #1E293B; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem;">Daftar / Masuk</a>
-    </div>
-</nav>
+<!-- NAVBAR GLOBAL -->
+{% include 'store/navbar.html' %}
 
-<!-- KONTEN UTAMA KATALOG MENU -->
-<div style="background-color: #FAF8F5; padding: 60px 20px; min-height: 85vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-    
-    <!-- HEADER SECTION -->
-    <div style="max-width: 950px; margin: 0 auto 50px auto; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
+<style>
+    :root {
+        --primary: #FFB703;
+        --primary-hover: #FB8500;
+        --secondary: #254E06;
+        --accent-yellow: #EAD465;
+        --bg-page: #FAF8F5;
+        --bg-card: #FFFFFF;
+        --text-main: #1E293B;
+        --text-muted: #64748B;
+        --border-soft: #F1E5C6;
+    }
+
+    .menu-page-header {
+        background: linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 100%);
+        padding: 50px 20px 40px 20px;
+        border-bottom: 2px solid var(--accent-yellow);
+        text-align: center;
+    }
+
+    .menu-header-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .menu-header-badge {
+        display: inline-block;
+        background: #DCFCE7;
+        color: #166534;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .menu-header-title {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 2.8rem;
+        color: var(--secondary);
+        font-weight: 800;
+        margin-bottom: 14px;
+        line-height: 1.2;
+    }
+
+    .menu-header-desc {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+
+    /* SEARCH & FILTER BAR */
+    .filter-bar-container {
+        max-width: 1200px;
+        margin: -25px auto 40px auto;
+        padding: 0 20px;
+    }
+
+    .search-filter-card {
+        background: #FFFFFF;
+        padding: 24px 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(37, 78, 6, 0.08);
+        border: 2px solid var(--accent-yellow);
+    }
+
+    .search-form-row {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 16px;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .search-input-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .search-input-wrap i {
+        position: absolute;
+        left: 16px;
+        font-size: 1.3rem;
+        color: #94A3B8;
+    }
+
+    .search-input-field {
+        width: 100%;
+        padding: 13px 18px 13px 48px;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+    }
+
+    .search-input-field:focus {
+        border-color: var(--secondary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 78, 6, 0.1);
+    }
+
+    .filter-select {
+        padding: 13px 18px;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 12px;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #334155;
+        background-color: #FAFAFA;
+        cursor: pointer;
+    }
+
+    .btn-search-submit {
+        padding: 13px 26px;
+        background: linear-gradient(135deg, #FFB703, #FB8500);
+        color: #FFFFFF;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: transform 0.2s;
+    }
+
+    .btn-search-submit:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Kategori Pill Tabs */
+    .category-tabs {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 6px;
+        scrollbar-width: thin;
+    }
+
+    .cat-tab-btn {
+        padding: 8px 18px;
+        border-radius: 25px;
+        border: 1px solid #E2E8F0;
+        background: #F8FAFC;
+        color: #475569;
+        text-decoration: none;
+        font-size: 0.88rem;
+        font-weight: 700;
+        white-space: nowrap;
+        transition: all 0.2s;
+    }
+
+    .cat-tab-btn:hover, .cat-tab-btn.active {
+        background-color: var(--secondary);
+        border-color: var(--secondary);
+        color: #FFFFFF;
+        box-shadow: 0 4px 10px rgba(37, 78, 6, 0.2);
+    }
+
+    /* GRID MENU PRODUK */
+    .menu-content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px 80px 20px;
+    }
+
+    .catalog-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+
+    .menu-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+
+    .menu-item-card {
+        background: #FFFFFF;
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .menu-item-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 30px rgba(37, 78, 6, 0.1);
+        border-color: var(--primary);
+    }
+
+    .menu-thumb-box {
+        position: relative;
+        width: 100%;
+        height: 220px;
+        background: #FFFDF7;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .menu-thumb-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .menu-item-card:hover .menu-thumb-box img {
+        transform: scale(1.06);
+    }
+
+    .menu-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(37, 78, 6, 0.9);
+        color: #FFFFFF;
+        padding: 4px 10px;
+        border-radius: 14px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .menu-card-body {
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .menu-cat-name {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #D97706;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    .menu-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1E293B;
+        margin-bottom: 8px;
+        line-height: 1.35;
+    }
+
+    .menu-description {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        line-height: 1.55;
+        margin-bottom: 20px;
+        flex: 1;
+    }
+
+    .menu-card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 16px;
+        border-top: 1px solid #F1F5F9;
+        gap: 10px;
+    }
+
+    .menu-price-text {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--secondary);
+    }
+
+    .btn-detail-modal {
+        padding: 9px 14px;
+        background-color: #FEF3C7;
+        color: #92400E;
+        border: 1px solid #FDE68A;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+    }
+
+    .btn-detail-modal:hover {
+        background-color: #FDE68A;
+    }
+
+    .btn-quick-add {
+        padding: 9px 15px;
+        background: linear-gradient(135deg, #FFB703, #FB8500);
+        color: #FFFFFF;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: transform 0.2s;
+    }
+
+    .btn-quick-add:hover {
+        transform: translateY(-2px);
+    }
+
+    /* ================= MODAL DETAIL & KUSTOMISASI PRODUK ================= */
+    .product-modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
+        z-index: 99999;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .product-modal-content {
+        background: #FFFFFF;
+        border-radius: 26px;
+        max-width: 680px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+        border: 2px solid var(--accent-yellow);
+        position: relative;
+        animation: zoomIn 0.25s ease;
+    }
+
+    @keyframes zoomIn {
+        from { transform: scale(0.95); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close-btn {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        background: #F1F5F9;
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        cursor: pointer;
+        z-index: 10;
+        color: #475569;
+        transition: all 0.2s;
+    }
+
+    .modal-close-btn:hover {
+        background: #E2E8F0;
+        color: #000;
+    }
+
+    .modal-header-img {
+        width: 100%;
+        height: 250px;
+        background: #FEF3C7;
+        position: relative;
+    }
+
+    .modal-header-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .modal-inner-body {
+        padding: 30px;
+    }
+
+    .modal-opt-group {
+        margin-bottom: 20px;
+    }
+
+    .modal-opt-title {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--secondary);
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .opt-pill-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .opt-pill-item {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .opt-pill-item input[type="radio"] {
+        display: none;
+    }
+
+    .opt-pill-label {
+        display: block;
+        padding: 10px 14px;
+        border: 1.5px solid #CBD5E1;
+        border-radius: 12px;
+        text-align: center;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #334155;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .opt-pill-item input[type="radio"]:checked + .opt-pill-label {
+        background: #FEF3C7;
+        border-color: #D97706;
+        color: #92400E;
+        font-weight: 700;
+        box-shadow: 0 2px 8px rgba(217, 119, 6, 0.2);
+    }
+
+    .qty-counter-box {
+        display: inline-flex;
+        align-items: center;
+        border: 1.5px solid #CBD5E1;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .qty-btn {
+        width: 38px;
+        height: 38px;
+        background: #F8FAFC;
+        border: none;
+        font-size: 1.2rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+    }
+
+    .qty-btn:hover {
+        background: #E2E8F0;
+    }
+
+    .qty-input-num {
+        width: 45px;
+        text-align: center;
+        border: none;
+        font-size: 1rem;
+        font-weight: 700;
+        background: transparent;
+    }
+
+    .modal-actions-bar {
+        display: flex;
+        gap: 12px;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #F1F5F9;
+    }
+
+    .btn-modal-add {
+        flex: 1;
+        padding: 14px;
+        background: linear-gradient(135deg, #FFB703, #FB8500);
+        color: #FFFFFF;
+        border: none;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-modal-direct {
+        padding: 14px 20px;
+        background: var(--secondary);
+        color: #FFFFFF;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+    }
+
+    @media (max-width: 960px) {
+        .menu-cards-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .search-form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .menu-cards-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<!-- HEADER KATALOG -->
+<div class="menu-page-header">
+    <div class="menu-header-container">
+        <span class="menu-header-badge">🥭 Katalog Sajian Segar</span>
+        <h1 class="menu-header-title">Eksplorasi Varian Menu Pilihan</h1>
+        <p class="menu-header-desc">
+            Pilih kreasi mangga favoritmu! Dibuat dari buah mangga segar matang pohon dengan perpaduan resep kafe berkelas.
+        </p>
+    </div>
+</div>
+
+<!-- SEARCH & FILTER BAR SECTION -->
+<div class="filter-bar-container">
+    <div class="search-filter-card">
+        <form method="GET" action="{% url 'menu' %}">
+            <div class="search-form-row">
+                <!-- Search Bar Input -->
+                <div class="search-input-wrap">
+                    <i class='bx bx-search'></i>
+                    <input type="text" name="q" value="{{ search_query }}" class="search-input-field" placeholder="Cari menu, rasa, atau bahan (misal: smoothies, sticky rice, es krim)...">
+                </div>
+
+                <!-- Sort Filter -->
+                <select name="sort" class="filter-select">
+                    <option value="default" {% if selected_sort == 'default' %}selected{% endif %}>Urutkan: Rekomendasi</option>
+                    <option value="popular" {% if selected_sort == 'popular' %}selected{% endif %}>Paling Laris (Best Seller)</option>
+                    <option value="price_asc" {% if selected_sort == 'price_asc' %}selected{% endif %}>Harga: Termurah</option>
+                    <option value="price_desc" {% if selected_sort == 'price_desc' %}selected{% endif %}>Harga: Tertinggi</option>
+                    <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Menu Terbaru</option>
+                </select>
+
+                <!-- Tombol Submit Cari -->
+                <button type="submit" class="btn-search-submit">
+                    <i class='bx bx-filter-alt'></i>
+                    <span>Terapkan</span>
+                </button>
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="category-tabs">
+                <a href="{% url 'menu' %}" class="cat-tab-btn {% if not selected_category or selected_category == 'ALL' %}active{% endif %}">
+                    Semua ({{ products|length }})
+                </a>
+                {% for cat_name in category_list %}
+                    <a href="{% url 'menu' %}?category={{ cat_name|urlencode }}{% if search_query %}&q={{ search_query }}{% endif %}" class="cat-tab-btn {% if selected_category == cat_name %}active{% endif %}">
+                        {{ cat_name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- KONTEN DAFTAR PRODUK -->
+<div class="menu-content-container">
+    <div class="catalog-summary">
         <div>
-            <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #78716c; margin-bottom: 8px;">MENU PILIHAN</div>
-            <h2 style="font-size: 2.5rem; font-weight: 800; color: #1c1917; margin: 0 0 10px 0; font-family: Georgia, serif;">Sajian unggulan musim ini</h2>
-            <p style="font-size: 1rem; color: #57534e; margin: 0; max-width: 520px; line-height: 1.5;">
-                Eksplorasi hidangan terbaik kami yang diolah dari bahan-bahan premium pilihan, disajikan dengan presentasi yang memanjakan mata dan lidah.
-            </p>
+            Menampilkan <strong>{{ products|length }}</strong> menu 
+            {% if selected_category %}dalam kategori <em>"{{ selected_category }}"</em>{% endif %}
+            {% if search_query %}dengan kata kunci <em>"{{ search_query }}"</em>{% endif %}
         </div>
-        <div>
-            <a href="#" style="border: 1.5px solid #1c1917; color: #1c1917; padding: 10px 26px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: inline-block;">Selengkapnya</a>
-        </div>
+        {% if selected_category or search_query %}
+            <a href="{% url 'menu' %}" style="color: #D97706; text-decoration: none; font-weight: 700; font-size: 0.88rem;">&times; Reset Filter</a>
+        {% endif %}
     </div>
 
-    <!-- DAFTAR CARD PRODUK ZIG-ZAG -->
-    <div style="max-width: 950px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px;">
+    <div class="menu-cards-grid">
         {% for product in products %}
-            {% if forloop.counter|divisibleby:2 %}
-                <!-- BARIS GENAP: Teks di Kiri, Gambar Ber-lengkung di Kanan -->
-                <div style="display: flex; gap: 40px; align-items: center;">
-                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-                        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 20px; margin-bottom: 8px;">
-                            <h3 style="font-size: 1.4rem; font-weight: 700; color: #1c1917; margin: 0; font-family: Georgia, serif;">{{ product.name }}</h3>
-                            <span style="font-size: 1.25rem; font-weight: 700; color: #1c1917; white-space: nowrap;">Rp {{ product.price }}</span>
-                        </div>
-                        <p style="font-size: 0.95rem; color: #57534e; margin: 0 0 18px 0; line-height: 1.6;">
-                            {{ product.description|default:"Disajikan dengan bahan berkualitas tinggi, perpaduan sempurna antara rasa dan estetika." }}
-                        </p>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                {% if product.badge_primary and product.badge_primary != 'NONE' %}
-                                <span style="border: 1px solid #1c1917; color: #1c1917; padding: 5px 16px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px;">
-                                    {{ product.get_badge_primary_display|upper }}
-                                </span>
-                                {% endif %}
-                                <span style="background: #fef3c7; color: #92400e; padding: 5px 14px; border-radius: 20px; font-size: 0.72rem; font-weight: 700;">
-                                    {{ product.get_category_display|default:product.category }}
-                                </span>
-                            </div>
-                            <a href="#" style="background-color: #EAC800; color: #1c1917; padding: 8px 20px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 0.85rem;">
-                                + Pesan
-                            </a>
-                        </div>
-                    </div>
+        <div class="menu-item-card">
+            <!-- Foto Menu -->
+            <div class="menu-thumb-box" onclick="openProductModal('{{ product.id }}', '{{ product.name|escapejs }}', '{{ product.category|escapejs }}', '{{ product.price|floatformat:0 }}', '{{ product.description|default:''|escapejs }}', '{% if product.image %}{{ product.image.url }}{% elif product.image_url %}{{ product.image_url }}{% else %}{% static 'images/mangga.jpg' %}{% endif %}')">
+                {% if product.badge_primary != 'NONE' %}
+                    <span class="menu-badge">{{ product.get_badge_primary_display }}</span>
+                {% endif %}
 
-                    <!-- Foto di Kanan (Lengkung di Kiri) -->
-                    <div style="flex-shrink: 0;">
-                        {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 320px; height: 210px; border-top-left-radius: 120px; border-bottom-left-radius: 120px; border-top-right-radius: 16px; border-bottom-right-radius: 16px; object-fit: cover;">
-                        {% elif product.image_url %}
-                        <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 320px; height: 210px; border-top-left-radius: 120px; border-bottom-left-radius: 120px; border-top-right-radius: 16px; border-bottom-right-radius: 16px; object-fit: cover;">
-                        {% else %}
-                        <div style="width: 320px; height: 210px; border-top-left-radius: 120px; border-bottom-left-radius: 120px; border-top-right-radius: 16px; border-bottom-right-radius: 16px; background: #e7e5e4; display: flex; align-items: center; justify-content: center; color: #78716c;">No Image</div>
-                        {% endif %}
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% elif product.image_url %}
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                {% else %}
+                    <img src="{% static 'images/mangga.jpg' %}" alt="{{ product.name }}">
+                {% endif %}
+            </div>
+
+            <div class="menu-card-body">
+                <span class="menu-cat-name">{{ product.get_category_display|default:product.category }}</span>
+                <h3 class="menu-title">{{ product.name }}</h3>
+                <p class="menu-description">{{ product.description|default:"Dibuat dari bahan segar berkualitas tinggi dengan rasa manis mangga asli yang memanjakan lidah." }}</p>
+
+                <div class="menu-card-footer">
+                    <span class="menu-price-text">Rp {{ product.price|floatformat:0 }}</span>
+                    <div style="display:flex; gap:6px;">
+                        <button type="button" class="btn-detail-modal" onclick="openProductModal('{{ product.id }}', '{{ product.name|escapejs }}', '{{ product.category|escapejs }}', '{{ product.price|floatformat:0 }}', '{{ product.description|default:''|escapejs }}', '{% if product.image %}{{ product.image.url }}{% elif product.image_url %}{{ product.image_url }}{% else %}{% static 'images/mangga.jpg' %}{% endif %}')">
+                            <i class='bx bx-slider-alt'></i> Detail
+                        </button>
+                        <form method="POST" action="{% url 'add_to_cart' product.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="size" value="Reguler">
+                            <button type="submit" class="btn-quick-add" title="Pesan Cepat">
+                                <i class='bx bx-plus'></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
-            {% else %}
-                <!-- BARIS GANJIL: Gambar Ber-lengkung di Kiri, Teks di Kanan -->
-                <div style="display: flex; gap: 40px; align-items: center;">
-                    <!-- Foto di Kiri (Lengkung di Kanan) -->
-                    <div style="flex-shrink: 0;">
-                        {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 320px; height: 210px; border-top-right-radius: 120px; border-bottom-right-radius: 120px; border-top-left-radius: 16px; border-bottom-left-radius: 16px; object-fit: cover;">
-                        {% elif product.image_url %}
-                        <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 320px; height: 210px; border-top-right-radius: 120px; border-bottom-right-radius: 120px; border-top-left-radius: 16px; border-bottom-left-radius: 16px; object-fit: cover;">
-                        {% else %}
-                        <div style="width: 320px; height: 210px; border-top-right-radius: 120px; border-bottom-right-radius: 120px; border-top-left-radius: 16px; border-bottom-left-radius: 16px; background: #e7e5e4; display: flex; align-items: center; justify-content: center; color: #78716c;">No Image</div>
-                        {% endif %}
-                    </div>
-
-                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-                        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 20px; margin-bottom: 8px;">
-                            <h3 style="font-size: 1.4rem; font-weight: 700; color: #1c1917; margin: 0; font-family: Georgia, serif;">{{ product.name }}</h3>
-                            <span style="font-size: 1.25rem; font-weight: 700; color: #1c1917; white-space: nowrap;">Rp {{ product.price }}</span>
-                        </div>
-                        <p style="font-size: 0.95rem; color: #57534e; margin: 0 0 18px 0; line-height: 1.6;">
-                            {{ product.description|default:"Disajikan dengan bahan berkualitas tinggi, perpaduan sempurna antara rasa dan estetika." }}
-                        </p>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                {% if product.badge_primary and product.badge_primary != 'NONE' %}
-                                <span style="border: 1px solid #1c1917; color: #1c1917; padding: 5px 16px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px;">
-                                    {{ product.get_badge_primary_display|upper }}
-                                </span>
-                                {% endif %}
-                                <span style="background: #fef3c7; color: #92400e; padding: 5px 14px; border-radius: 20px; font-size: 0.72rem; font-weight: 700;">
-                                    {{ product.get_category_display|default:product.category }}
-                                </span>
-                            </div>
-                            <a href="#" style="background-color: #EAC800; color: #1c1917; padding: 8px 20px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 0.85rem;">
-                                + Pesan
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
+            </div>
+        </div>
         {% empty %}
-        <div style="text-align: center; padding: 60px; color: #78716c;">
-            <p style="font-size: 1.1rem; font-weight: 600;">Belum ada menu produk yang tersedia.</p>
+        <div style="grid-column: span 3; text-align: center; padding: 60px 20px; background: #fff; border-radius: 20px; border: 1.5px dashed var(--border-soft);">
+            <div style="font-size: 3.5rem; margin-bottom: 12px;">🥭</div>
+            <h3 style="color: var(--secondary); margin-bottom: 8px; font-size: 1.45rem;">
+                {% if search_query or selected_category %}
+                    Menu tidak ditemukan
+                {% else %}
+                    Daftar Menu Sedang Disiapkan
+                {% endif %}
+            </h3>
+            <p style="color: var(--text-muted); margin-bottom: 22px; max-width: 480px; margin-left: auto; margin-right: auto;">
+                {% if search_query or selected_category %}
+                    Maaf, tidak ada sajian yang cocok dengan filter atau pencarian Anda.
+                {% else %}
+                    Belum ada menu yang ditampilkan. Administrator dapat menambahkan menu dan foto sajian melalui Dashboard Admin.
+                {% endif %}
+            </p>
+            {% if user.is_staff %}
+                <a href="{% url 'admin_products' %}" class="btn-search-submit" style="display: inline-flex;">
+                    <i class='bx bx-plus-circle'></i> Kelola Menu di Panel Admin
+                </a>
+            {% elif search_query or selected_category %}
+                <a href="{% url 'menu' %}" class="btn-search-submit" style="display: inline-flex;">Lihat Semua Menu</a>
+            {% else %}
+                <a href="{% url 'index' %}" class="btn-search-submit" style="display: inline-flex;">Kembali ke Beranda</a>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
-
 </div>
+
+<!-- ================= MODAL DETAIL & KUSTOMISASI RASA / UKURAN ================= -->
+<div class="product-modal-backdrop" id="productDetailModal">
+    <div class="product-modal-content">
+        <button class="modal-close-btn" onclick="closeProductModal()">&times;</button>
+        
+        <div class="modal-header-img">
+            <img id="modalImg" src="{% static 'images/mangga.jpg' %}" alt="Product Image">
+        </div>
+
+        <div class="modal-inner-body">
+            <span id="modalCat" style="color: #D97706; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">CATEGORY</span>
+            <h2 id="modalTitle" style="font-size: 1.6rem; color: var(--secondary); margin: 6px 0 10px 0;">Product Name</h2>
+            <p id="modalDesc" style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">Deskripsi</p>
+
+            <form method="POST" id="modalForm" action="">
+                {% csrf_token %}
+                <input type="hidden" name="direct_checkout" id="directCheckoutInput" value="false">
+
+                <!-- 1. Pilihan Ukuran -->
+                <div class="modal-opt-group">
+                    <div class="modal-opt-title">
+                        <span>Pilihan Ukuran</span>
+                        <span style="font-weight: 500; font-size: 0.82rem; color: #64748B;">Large +Rp 4.000</span>
+                    </div>
+                    <div class="opt-pill-group">
+                        <div class="opt-pill-item">
+                            <input type="radio" name="size" id="sizeReg" value="Reguler" checked onchange="updateModalPrice()">
+                            <label for="sizeReg" class="opt-pill-label">Reguler Cup</label>
+                        </div>
+                        <div class="opt-pill-item">
+                            <input type="radio" name="size" id="sizeLarge" value="Large" onchange="updateModalPrice()">
+                            <label for="sizeLarge" class="opt-pill-label">Large Cup (+4rb)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Pilihan Tingkat Manis (Sugar Level) -->
+                <div class="modal-opt-group">
+                    <div class="modal-opt-title">
+                        <span>Tingkat Kemanisan (Sugar Level)</span>
+                    </div>
+                    <div class="opt-pill-group">
+                        <div class="opt-pill-item">
+                            <input type="radio" name="sugar" id="sugarNorm" value="Normal" checked>
+                            <label for="sugarNorm" class="opt-pill-label">Normal (100%)</label>
+                        </div>
+                        <div class="opt-pill-item">
+                            <input type="radio" name="sugar" id="sugarLess" value="Less Sugar">
+                            <label for="sugarLess" class="opt-pill-label">Less Sugar (50%)</label>
+                        </div>
+                        <div class="opt-pill-item">
+                            <input type="radio" name="sugar" id="sugarNo" value="No Sugar">
+                            <label for="sugarNo" class="opt-pill-label">Tanpa Gula (0%)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Pilihan Level Es -->
+                <div class="modal-opt-group">
+                    <div class="modal-opt-title">
+                        <span>Level Dingin / Es (Ice Level)</span>
+                    </div>
+                    <div class="opt-pill-group">
+                        <div class="opt-pill-item">
+                            <input type="radio" name="ice" id="iceNorm" value="Normal" checked>
+                            <label for="iceNorm" class="opt-pill-label">Normal Ice</label>
+                        </div>
+                        <div class="opt-pill-item">
+                            <input type="radio" name="ice" id="iceLess" value="Less Ice">
+                            <label for="iceLess" class="opt-pill-label">Less Ice</label>
+                        </div>
+                        <div class="opt-pill-item">
+                            <input type="radio" name="ice" id="iceNo" value="No Ice">
+                            <label for="iceNo" class="opt-pill-label">Tanpa Es</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Catatan Khusus & Kuantitas -->
+                <div style="display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: flex-end; margin-bottom: 20px;">
+                    <div>
+                        <label style="display:block; font-size: 0.88rem; font-weight:700; margin-bottom:6px; color:var(--secondary);">Catatan Tambahan (Opsional)</label>
+                        <input type="text" name="notes" placeholder="Contoh: es dipisah, ekstra sendok..." style="width: 100%; padding: 11px 14px; border: 1.5px solid #CBD5E1; border-radius: 12px; font-size: 0.9rem;">
+                    </div>
+                    <div>
+                        <label style="display:block; font-size: 0.88rem; font-weight:700; margin-bottom:6px; color:var(--secondary);">Jumlah</label>
+                        <div class="qty-counter-box">
+                            <button type="button" class="qty-btn" onclick="adjustModalQty(-1)">&minus;</button>
+                            <input type="number" name="quantity" id="modalQty" value="1" min="1" class="qty-input-num" readonly>
+                            <button type="button" class="qty-btn" onclick="adjustModalQty(1)">&plus;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Aksi Tambah ke Keranjang / Beli Sekarang -->
+                <div class="modal-actions-bar">
+                    <button type="submit" class="btn-modal-add" onclick="setCheckoutMode(false)">
+                        <i class='bx bx-cart-add' style="font-size: 1.3rem;"></i>
+                        <span id="modalAddLabel">Tambah ke Keranjang • Rp 18.000</span>
+                    </button>
+                    <button type="submit" class="btn-modal-direct" onclick="setCheckoutMode(true)">
+                        Beli Sekarang
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentBasePrice = 0;
+    const modal = document.getElementById('productDetailModal');
+
+    function openProductModal(id, name, cat, price, desc, imgUrl) {
+        currentBasePrice = parseInt(price) || 0;
+        document.getElementById('modalForm').action = '/cart/add/' + id + '/';
+        document.getElementById('modalTitle').innerText = name;
+        document.getElementById('modalCat').innerText = cat;
+        document.getElementById('modalDesc').innerText = desc || 'Sajian spesial Yellow Mango\'s dengan standar kesegaran buah mangga asli.';
+        document.getElementById('modalImg').src = imgUrl;
+        document.getElementById('sizeReg').checked = true;
+        document.getElementById('sugarNorm').checked = true;
+        document.getElementById('iceNorm').checked = true;
+        document.getElementById('modalQty').value = 1;
+        updateModalPrice();
+        modal.style.display = 'flex';
+    }
+
+    function closeProductModal() {
+        modal.style.display = 'none';
+    }
+
+    function adjustModalQty(delta) {
+        const qtyInput = document.getElementById('modalQty');
+        let val = parseInt(qtyInput.value) || 1;
+        val += delta;
+        if (val < 1) val = 1;
+        qtyInput.value = val;
+        updateModalPrice();
+    }
+
+    function updateModalPrice() {
+        const isLarge = document.getElementById('sizeLarge').checked;
+        const extra = isLarge ? 4000 : 0;
+        const qty = parseInt(document.getElementById('modalQty').value) || 1;
+        const total = (currentBasePrice + extra) * qty;
+        document.getElementById('modalAddLabel').innerText = 'Tambah ke Keranjang • Rp ' + total.toLocaleString('id-ID');
+    }
+
+    function setCheckoutMode(isDirect) {
+        document.getElementById('directCheckoutInput').value = isDirect ? 'true' : 'false';
+    }
+
+    // Tutup modal jika klik di luar box
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeProductModal();
+        }
+    }
+</script>
 {% endblock %}

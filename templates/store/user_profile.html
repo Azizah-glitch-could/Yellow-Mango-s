@@ -1,0 +1,603 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Profil Saya - Yellow Mango's{% endblock %}
+
+{% block content %}
+{% include 'store/navbar.html' %}
+
+<style>
+    :root {
+        --primary: #FFB703;
+        --primary-hover: #FB8500;
+        --primary-light: #FFF8E1;
+        --secondary: #254E06;
+        --secondary-dark: #1B3804;
+        --bg-page: #F7FBF4;
+        --bg-card: #FFFFFF;
+        --text-main: #1E293B;
+        --text-muted: #64748B;
+        --border-soft: #E2E8F0;
+        --success: #16A34A;
+        --danger: #DC2626;
+        --warn: #D97706;
+    }
+    body { background: var(--bg-page); }
+
+    /* PAGE HEADER */
+    .profile-hero {
+        background: linear-gradient(135deg, #1B3804, #254E06, #3A6B09);
+        padding: 48px 24px 70px;
+        position: relative; overflow: hidden;
+    }
+    .profile-hero::after {
+        content: '';
+        position: absolute; bottom: -1px; left: 0; right: 0;
+        height: 60px;
+        background: var(--bg-page);
+        clip-path: ellipse(60% 100% at 50% 100%);
+    }
+    .profile-hero-inner {
+        max-width: 1200px; margin: 0 auto;
+        display: flex; align-items: center; gap: 24px;
+        position: relative;
+    }
+    .profile-avatar-ring {
+        width: 90px; height: 90px; flex-shrink: 0;
+        background: linear-gradient(135deg, #FFB703, #FB8500);
+        border-radius: 50%; display: flex; align-items: center;
+        justify-content: center; font-size: 2.4rem; color: #FFFFFF;
+        box-shadow: 0 8px 25px rgba(255,183,3,0.4);
+        border: 3px solid rgba(255,255,255,0.3);
+        font-weight: 800;
+    }
+    .profile-hero-text { flex: 1; }
+    .profile-hero-name {
+        font-size: 1.8rem; font-weight: 800; color: #FFFFFF;
+        margin-bottom: 4px;
+    }
+    .profile-hero-email { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+    .profile-hero-badges {
+        margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .hero-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+        color: #FFD54F; padding: 5px 14px; border-radius: 25px;
+        font-size: 0.8rem; font-weight: 700;
+    }
+
+    /* STATS GRID */
+    .stats-grid {
+        max-width: 1200px; margin: -32px auto 0;
+        padding: 0 24px; position: relative; z-index: 10;
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .stat-card {
+        background: #FFFFFF; border-radius: 18px; padding: 22px 24px;
+        box-shadow: 0 8px 25px rgba(37,78,6,0.08);
+        border: 1.5px solid var(--border-soft);
+        display: flex; align-items: center; gap: 16px;
+    }
+    .stat-icon {
+        width: 52px; height: 52px; border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.5rem; flex-shrink: 0;
+    }
+    .stat-icon.orders { background: #FEF3C7; }
+    .stat-icon.spent { background: #DCFCE7; }
+    .stat-icon.active { background: #EDE9FE; }
+    .stat-num { font-size: 1.7rem; font-weight: 800; color: var(--text-main); }
+    .stat-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+
+    /* MAIN LAYOUT */
+    .profile-layout {
+        max-width: 1200px; margin: 36px auto 80px;
+        padding: 0 24px;
+        display: grid; grid-template-columns: 260px 1fr; gap: 28px;
+        align-items: start;
+    }
+
+    /* SIDEBAR TABS */
+    .sidebar-nav {
+        background: #FFFFFF; border-radius: 20px; overflow: hidden;
+        box-shadow: 0 4px 20px rgba(37,78,6,0.07);
+        border: 1.5px solid var(--border-soft);
+        position: sticky; top: 90px;
+    }
+    .sidebar-nav-header {
+        background: linear-gradient(135deg, #254E06, #3A6B09);
+        padding: 20px 22px; color: #FFFFFF;
+    }
+    .sidebar-nav-header h4 { font-size: 0.88rem; font-weight: 700; opacity: 0.75; margin-bottom: 2px; }
+    .sidebar-nav-header p { font-size: 1rem; font-weight: 800; }
+    .nav-item {
+        display: flex; align-items: center; gap: 12px;
+        padding: 14px 22px; text-decoration: none;
+        color: var(--text-muted); font-weight: 600; font-size: 0.9rem;
+        border-left: 3px solid transparent;
+        transition: all 0.2s;
+    }
+    .nav-item:hover { background: #F8FAFC; color: var(--secondary); border-left-color: var(--primary); }
+    .nav-item.active { background: #FFFBEB; color: var(--secondary); border-left-color: var(--primary); font-weight: 700; }
+    .nav-item i { font-size: 1.25rem; width: 22px; }
+    .nav-divider { height: 1px; background: var(--border-soft); }
+
+    /* CONTENT PANEL */
+    .content-panel {
+        background: #FFFFFF; border-radius: 20px; padding: 36px;
+        box-shadow: 0 4px 20px rgba(37,78,6,0.07);
+        border: 1.5px solid var(--border-soft);
+    }
+    .panel-title {
+        font-size: 1.35rem; font-weight: 800; color: var(--secondary);
+        margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
+    }
+    .panel-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px; }
+    .panel-divider { height: 1px; background: var(--border-soft); margin: 28px 0; }
+
+    /* OVERVIEW PANEL */
+    .overview-welcome-banner {
+        background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+        border: 2px solid #FDE68A; border-radius: 16px; padding: 24px;
+        margin-bottom: 28px;
+        display: flex; align-items: center; gap: 20px;
+    }
+    .welcome-icon { font-size: 3rem; }
+    .welcome-text h3 { font-size: 1.1rem; font-weight: 800; color: var(--secondary); margin-bottom: 4px; }
+    .welcome-text p { color: var(--text-muted); font-size: 0.9rem; }
+
+    .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+    .quick-action-btn {
+        padding: 16px 20px; border-radius: 14px;
+        text-decoration: none; font-weight: 700; font-size: 0.9rem;
+        display: flex; align-items: center; gap: 10px;
+        border: 2px solid; transition: all 0.2s;
+    }
+    .qa-order { background: #FFFBEB; border-color: #FDE68A; color: #92400E; }
+    .qa-order:hover { background: #FEF3C7; }
+    .qa-menu { background: #ECFDF5; border-color: #6EE7B7; color: #065F46; }
+    .qa-menu:hover { background: #D1FAE5; }
+    .qa-settings { background: #EEF2FF; border-color: #A5B4FC; color: #3730A3; }
+    .qa-settings:hover { background: #E0E7FF; }
+    .qa-wa { background: #ECFDF5; border-color: #86EFAC; color: #166534; }
+    .qa-wa:hover { background: #DCFCE7; }
+
+    /* ORDER TABLE */
+    .orders-table { width: 100%; border-collapse: collapse; }
+    .orders-table th {
+        text-align: left; padding: 12px 16px; font-size: 0.8rem;
+        font-weight: 700; color: var(--text-muted); text-transform: uppercase;
+        background: #F8FAFC; border-bottom: 2px solid var(--border-soft);
+    }
+    .orders-table td {
+        padding: 16px; font-size: 0.9rem; color: var(--text-main);
+        border-bottom: 1px solid #F1F5F9; vertical-align: middle;
+    }
+    .orders-table tr:hover td { background: #FAFAFA; }
+    .order-num-link {
+        font-weight: 700; color: var(--secondary);
+        text-decoration: none;
+    }
+    .order-num-link:hover { text-decoration: underline; }
+    .status-pill {
+        display: inline-block; padding: 4px 12px;
+        border-radius: 25px; font-size: 0.75rem; font-weight: 700;
+    }
+    .status-PENDING { background: #FEF9C3; color: #854D0E; }
+    .status-PROCESSING { background: #DBEAFE; color: #1E40AF; }
+    .status-READY { background: #DCFCE7; color: #166534; }
+    .status-COMPLETED { background: #F0FDF4; color: #15803D; }
+    .status-CANCELLED { background: #FEE2E2; color: #991B1B; }
+    .btn-reorder {
+        padding: 7px 14px; background: var(--secondary); color: #FFFFFF;
+        border: none; border-radius: 8px; font-size: 0.8rem; font-weight: 700;
+        cursor: pointer; text-decoration: none; display: inline-block;
+        transition: background 0.2s;
+    }
+    .btn-reorder:hover { background: var(--secondary-dark); }
+    .empty-orders {
+        text-align: center; padding: 60px 20px; color: var(--text-muted);
+    }
+    .empty-orders i { font-size: 3.5rem; margin-bottom: 14px; color: #CBD5E1; }
+
+    /* FORM STYLES */
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-group { margin-bottom: 22px; }
+    .form-label {
+        display: block; font-size: 0.88rem; font-weight: 700;
+        color: var(--text-main); margin-bottom: 8px;
+    }
+    .form-label span { color: #DC2626; margin-left: 3px; }
+    .form-input, .form-textarea {
+        width: 100%; padding: 12px 16px;
+        border: 1.5px solid var(--border-soft); border-radius: 12px;
+        font-size: 0.95rem; transition: all 0.2s;
+        background: #FAFAFA; color: var(--text-main);
+    }
+    .form-input:focus, .form-textarea:focus {
+        border-color: var(--secondary); outline: none;
+        box-shadow: 0 0 0 3px rgba(37,78,6,0.1); background: #FFFFFF;
+    }
+    .form-textarea { resize: vertical; min-height: 100px; }
+    .form-hint { font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; }
+    .btn-save-primary {
+        padding: 13px 32px;
+        background: linear-gradient(135deg, #FFB703, #FB8500);
+        color: #FFFFFF; border: none; border-radius: 12px;
+        font-weight: 700; font-size: 0.95rem; cursor: pointer;
+        display: inline-flex; align-items: center; gap: 8px;
+        box-shadow: 0 6px 18px rgba(255,183,3,0.35);
+        transition: all 0.2s;
+    }
+    .btn-save-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(255,183,3,0.45); }
+    .btn-save-secondary {
+        padding: 13px 24px; background: #F1F5F9;
+        color: var(--text-main); border: 1.5px solid var(--border-soft);
+        border-radius: 12px; font-weight: 700; font-size: 0.95rem;
+        cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+        transition: all 0.2s;
+    }
+    .btn-save-secondary:hover { background: #E2E8F0; }
+
+    /* PASSWORD FIELD */
+    .password-strength-bar {
+        height: 4px; border-radius: 2px; margin-top: 8px;
+        background: #E2E8F0; overflow: hidden;
+    }
+    .password-strength-fill {
+        height: 100%; border-radius: 2px; transition: width 0.3s, background 0.3s;
+        width: 0%; background: #DC2626;
+    }
+
+    /* ALERTS */
+    .alert-success, .alert-error {
+        padding: 14px 18px; border-radius: 12px; margin-bottom: 24px;
+        display: flex; align-items: center; gap: 10px;
+        font-size: 0.9rem; font-weight: 600;
+    }
+    .alert-success { background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; }
+    .alert-error { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+
+    @media (max-width: 1000px) {
+        .profile-layout { grid-template-columns: 1fr; }
+        .sidebar-nav { position: relative; top: 0; }
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .form-grid-2 { grid-template-columns: 1fr; }
+        .quick-actions { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+        .stats-grid { grid-template-columns: 1fr; }
+        .content-panel { padding: 24px 18px; }
+    }
+</style>
+
+<!-- PROFILE HERO -->
+<div class="profile-hero">
+    <div class="profile-hero-inner">
+        <div class="profile-avatar-ring">
+            {{ user.first_name|first|upper|default:user.username|first|upper }}
+        </div>
+        <div class="profile-hero-text">
+            <div class="profile-hero-name">
+                {{ user.get_full_name|default:user.username }}
+            </div>
+            <div class="profile-hero-email">{{ user.email|default:"Pelanggan Yellow Mango's" }}</div>
+            <div class="profile-hero-badges">
+                <div class="hero-badge">🛒 {{ total_orders }} Pesanan</div>
+                <div class="hero-badge">💛 Pelanggan Sejak {{ user.date_joined|date:"M Y" }}</div>
+                {% if active_orders > 0 %}
+                <div class="hero-badge">⏳ {{ active_orders }} Aktif</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon orders">🛒</div>
+        <div>
+            <div class="stat-num">{{ total_orders }}</div>
+            <div class="stat-label">Total Pesanan</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon spent">💰</div>
+        <div>
+            <div class="stat-num">Rp {{ total_spent|floatformat:0 }}</div>
+            <div class="stat-label">Total Belanja</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon active">⚡</div>
+        <div>
+            <div class="stat-num">{{ active_orders }}</div>
+            <div class="stat-label">Pesanan Aktif</div>
+        </div>
+    </div>
+</div>
+
+<!-- MESSAGES -->
+{% if messages %}
+<div style="max-width: 1200px; margin: 20px auto 0; padding: 0 24px;">
+    {% for msg in messages %}
+        {% if msg.tags == 'success' %}
+        <div class="alert-success">✅ {{ msg }}</div>
+        {% else %}
+        <div class="alert-error">❌ {{ msg }}</div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- MAIN LAYOUT -->
+<div class="profile-layout">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <nav class="sidebar-nav">
+        <div class="sidebar-nav-header">
+            <h4>Menu Profil</h4>
+            <p>{{ user.first_name|default:user.username }}</p>
+        </div>
+        <a href="?tab=overview" class="nav-item {% if active_tab == 'overview' %}active{% endif %}">
+            <i class='bx bx-home-smile'></i> Ringkasan Akun
+        </a>
+        <a href="?tab=pesanan" class="nav-item {% if active_tab == 'pesanan' %}active{% endif %}">
+            <i class='bx bx-receipt'></i> Riwayat Pesanan
+            {% if active_orders > 0 %}
+            <span style="margin-left:auto; background:#DC2626; color:#fff; border-radius:10px; padding:2px 8px; font-size:0.72rem;">{{ active_orders }}</span>
+            {% endif %}
+        </a>
+        <div class="nav-divider"></div>
+        <a href="?tab=pengaturan" class="nav-item {% if active_tab == 'pengaturan' %}active{% endif %}">
+            <i class='bx bx-user-circle'></i> Edit Profil
+        </a>
+        <a href="?tab=keamanan" class="nav-item {% if active_tab == 'keamanan' %}active{% endif %}">
+            <i class='bx bx-lock-alt'></i> Keamanan
+        </a>
+        <div class="nav-divider"></div>
+        <a href="{% url 'menu' %}" class="nav-item">
+            <i class='bx bx-food-menu'></i> Pesan Sekarang
+        </a>
+        <a href="{% url 'logout' %}" class="nav-item" style="color:#EF4444;">
+            <i class='bx bx-log-out' style="color:#EF4444;"></i> Keluar
+        </a>
+    </nav>
+
+    <!-- CONTENT PANELS -->
+    <div>
+
+        <!-- OVERVIEW TAB -->
+        {% if active_tab == 'overview' %}
+        <div class="content-panel">
+            <div class="panel-title"><i class='bx bx-home-smile'></i> Selamat Datang!</div>
+            <p class="panel-desc">Ini adalah ringkasan aktivitas akun dan belanja kamu di Yellow Mango's.</p>
+
+            <div class="overview-welcome-banner">
+                <div class="welcome-icon">🥭</div>
+                <div class="welcome-text">
+                    <h3>Hai, {{ user.first_name|default:user.username }}!</h3>
+                    <p>
+                        {% if total_orders == 0 %}
+                            Belum ada pesanan? Yuk eksplorasi menu segar kami dan buat pesanan pertamamu!
+                        {% else %}
+                            Kamu sudah membuat {{ total_orders }} pesanan. Terima kasih sudah mempercayai Yellow Mango's!
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <a href="{% url 'menu' %}" class="quick-action-btn qa-menu">
+                    <i class='bx bx-food-menu'></i> Lihat Menu
+                </a>
+                <a href="?tab=pesanan" class="quick-action-btn qa-order">
+                    <i class='bx bx-receipt'></i> Riwayat Pesanan
+                </a>
+                <a href="?tab=pengaturan" class="quick-action-btn qa-settings">
+                    <i class='bx bx-cog'></i> Edit Profil
+                </a>
+                <a href="https://wa.me/" target="_blank" class="quick-action-btn qa-wa">
+                    <i class='bx bxl-whatsapp'></i> Hubungi Admin
+                </a>
+            </div>
+        </div>
+
+        <!-- RIWAYAT PESANAN TAB -->
+        {% elif active_tab == 'pesanan' %}
+        <div class="content-panel">
+            <div class="panel-title"><i class='bx bx-receipt'></i> Riwayat Pesanan</div>
+            <p class="panel-desc">Semua pesanan yang pernah kamu buat di Yellow Mango's.</p>
+
+            {% if orders %}
+            <div style="overflow-x: auto;">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>No. Pesanan</th>
+                            <th>Tanggal</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>
+                                <span class="order-num-link">#{{ order.order_number }}</span>
+                            </td>
+                            <td>{{ order.created_at|date:"d M Y, H:i" }}</td>
+                            <td><strong>Rp {{ order.total_amount|floatformat:0 }}</strong></td>
+                            <td>
+                                <span class="status-pill status-{{ order.status }}">
+                                    {{ order.get_status_display }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if order.status == 'PENDING' %}
+                                <a href="{% url 'menu' %}" class="btn-reorder">🛒 Pesan Lagi</a>
+                                {% else %}
+                                <span style="color:#94A3B8; font-size:0.82rem;">—</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-orders">
+                <div><i class='bx bx-cart-alt'></i></div>
+                <h4 style="font-size:1.2rem; font-weight:800; color:#1E293B; margin-bottom:8px;">Belum Ada Pesanan</h4>
+                <p>Kamu belum pernah memesan di Yellow Mango's.<br>Yuk mulai eksplorasi menu kami!</p>
+                <a href="{% url 'menu' %}" style="display:inline-block; margin-top:20px; padding:12px 28px;
+                   background: linear-gradient(135deg, #FFB703, #FB8500); color:#fff;
+                   border-radius:12px; font-weight:700; text-decoration:none;">
+                    🍹 Lihat Menu Sekarang
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- EDIT PROFIL TAB -->
+        {% elif active_tab == 'pengaturan' %}
+        <div class="content-panel">
+            <div class="panel-title"><i class='bx bx-user-circle'></i> Edit Profil & Alamat</div>
+            <p class="panel-desc">Perbarui informasi identitas dan alamat pengiriman default kamu.</p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="update_profile">
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label">Nama Depan</label>
+                        <input type="text" name="first_name" class="form-input"
+                            value="{{ user.first_name }}" placeholder="Nama depan">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Belakang</label>
+                        <input type="text" name="last_name" class="form-input"
+                            value="{{ user.last_name }}" placeholder="Nama belakang">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Username<span>*</span></label>
+                    <input type="text" class="form-input" value="{{ user.username }}" disabled
+                        style="background:#F1F5F9; cursor:not-allowed; color:#94A3B8;">
+                    <div class="form-hint">Username tidak dapat diubah.</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Alamat Email</label>
+                    <input type="email" name="email" class="form-input"
+                        value="{{ user.email }}" placeholder="Alamat email aktif">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nomor WhatsApp / HP</label>
+                    <input type="text" name="phone" class="form-input"
+                        value="{{ profile.phone|default:'' }}" placeholder="08xxxxxxxxxx">
+                    <div class="form-hint">Digunakan untuk konfirmasi pesanan via WhatsApp.</div>
+                </div>
+
+                <div class="panel-divider"></div>
+
+                <div class="form-group">
+                    <label class="form-label">Alamat Pengiriman Default</label>
+                    <textarea name="default_address" class="form-textarea"
+                        placeholder="Tulis alamat lengkap kamu (nama jalan, no. rumah, kecamatan, kota)...">{{ profile.default_address|default:'' }}</textarea>
+                    <div class="form-hint">Alamat ini otomatis diisi saat checkout.</div>
+                </div>
+
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                    <button type="submit" class="btn-save-primary">
+                        <i class='bx bx-save'></i> Simpan Perubahan
+                    </button>
+                    <a href="?tab=overview" class="btn-save-secondary">Batal</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- KEAMANAN / GANTI PASSWORD TAB -->
+        {% elif active_tab == 'keamanan' %}
+        <div class="content-panel">
+            <div class="panel-title"><i class='bx bx-lock-alt'></i> Keamanan Akun</div>
+            <p class="panel-desc">Ganti kata sandi secara berkala untuk menjaga keamanan akunmu.</p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="change_password">
+
+                <div class="form-group">
+                    <label class="form-label">Kata Sandi Saat Ini<span>*</span></label>
+                    <input type="password" name="current_password" class="form-input"
+                        placeholder="Masukkan kata sandi lama" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Kata Sandi Baru<span>*</span></label>
+                    <input type="password" name="new_password" class="form-input"
+                        placeholder="Minimal 6 karakter" required id="newPwdInput"
+                        oninput="checkStrength(this.value)">
+                    <div class="password-strength-bar">
+                        <div class="password-strength-fill" id="strengthFill"></div>
+                    </div>
+                    <div class="form-hint" id="strengthText">Masukkan password baru</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Konfirmasi Kata Sandi Baru<span>*</span></label>
+                    <input type="password" name="confirm_password" class="form-input"
+                        placeholder="Ulangi kata sandi baru" required>
+                </div>
+
+                <div style="background:#FEF3C7; border:1.5px solid #FDE68A; border-radius:12px;
+                     padding:16px; margin-bottom:24px; font-size:0.88rem; color:#92400E;">
+                    <strong>⚠️ Tips Keamanan:</strong>
+                    Gunakan kombinasi huruf besar, huruf kecil, angka, dan simbol agar lebih aman.
+                    Jangan gunakan kata sandi yang sama di banyak platform.
+                </div>
+
+                <button type="submit" class="btn-save-primary">
+                    <i class='bx bx-shield-quarter'></i> Perbarui Kata Sandi
+                </button>
+            </form>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+function checkStrength(password) {
+    const fill = document.getElementById('strengthFill');
+    const text = document.getElementById('strengthText');
+    let score = 0;
+    if (password.length >= 6) score++;
+    if (password.length >= 10) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    const levels = [
+        { w: '0%', bg: '#E2E8F0', label: 'Masukkan password baru' },
+        { w: '25%', bg: '#DC2626', label: '😬 Sangat Lemah' },
+        { w: '50%', bg: '#D97706', label: '😐 Lemah' },
+        { w: '75%', bg: '#16A34A', label: '👍 Cukup Kuat' },
+        { w: '90%', bg: '#15803D', label: '💪 Kuat' },
+        { w: '100%', bg: '#14532D', label: '🔒 Sangat Kuat' },
+    ];
+    const lvl = levels[Math.min(score, 5)];
+    fill.style.width = lvl.w;
+    fill.style.background = lvl.bg;
+    text.textContent = lvl.label;
+    text.style.color = lvl.bg;
+}
+</script>
+
+{% endblock %}

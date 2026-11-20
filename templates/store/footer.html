@@ -1,0 +1,217 @@
+<!-- ================= REUSABLE LIGHT FOOTER (YELLOW MANGO'S) ================= -->
+<style>
+    .ym-footer-section {
+        background-color: #f8f9fa;
+        border-top: 1px solid #eaeaea;
+        color: #222222;
+        padding: 65px 20px 30px 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .ym-footer-container {
+        max-width: 1120px;
+        margin: 0 auto 45px auto;
+        display: grid;
+        grid-template-columns: 1.6fr 1fr 1fr 1.1fr 1.3fr;
+        gap: 35px;
+        align-items: start;
+    }
+
+    .ym-footer-col h3 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #111111;
+        margin-top: 0;
+        margin-bottom: 18px;
+        line-height: 1.4;
+    }
+
+    .ym-footer-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: #111111;
+        font-size: 1.3rem;
+        font-weight: 800;
+        margin-bottom: 14px;
+        line-height: 1.2;
+    }
+
+    .ym-footer-brand i {
+        color: #e6a800;
+        font-size: 1.6rem;
+    }
+
+    .ym-footer-tagline {
+        font-size: 0.9rem;
+        color: #666666;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .ym-footer-socials {
+        display: flex;
+        gap: 12px;
+    }
+
+    .ym-footer-socials a {
+        width: 36px;
+        height: 36px;
+        background-color: #111111;
+        color: #FFC107;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+        text-decoration: none;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .ym-footer-socials a:hover {
+        background-color: #FFC107;
+        color: #111111;
+        transform: translateY(-2px);
+    }
+
+    .ym-footer-col ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .ym-footer-col ul li {
+        margin-bottom: 12px;
+    }
+
+    .ym-footer-col ul li:last-child {
+        margin-bottom: 0;
+    }
+
+    .ym-footer-col ul li a {
+        text-decoration: none;
+        color: #555555;
+        font-size: 0.92rem;
+        transition: color 0.2s ease;
+    }
+
+    .ym-footer-col ul li a:hover {
+        color: #e6a800;
+    }
+
+    .ym-footer-contact-info {
+        font-size: 0.92rem;
+        color: #555555;
+        line-height: 1.7;
+    }
+
+    .ym-footer-locations h4 {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #111111;
+        margin-bottom: 6px;
+    }
+
+    .ym-footer-locations p {
+        font-size: 0.9rem;
+        color: #666666;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .ym-footer-bottom {
+        max-width: 1120px;
+        margin: 0 auto;
+        border-top: 1px solid #e0e0e0;
+        padding-top: 24px;
+        text-align: center;
+        font-size: 0.88rem;
+        color: #777777;
+    }
+
+    @media (max-width: 1024px) {
+        .ym-footer-container {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+        .ym-footer-col.ym-footer-locations {
+            grid-column: span 2;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ym-footer-container {
+            grid-template-columns: 1fr;
+        }
+        .ym-footer-col.ym-footer-locations {
+            grid-column: span 1;
+        }
+    }
+</style>
+
+<footer class="ym-footer-section">
+    <div class="ym-footer-container">
+        <!-- Kolom 1: Brand & Tagline -->
+        <div class="ym-footer-col">
+            <a href="{% url 'index' %}" class="ym-footer-brand">
+                <i class='bx bxs-drink'></i>
+                <span>{{ site_setting.site_name|default:"Yellow Mango's" }}</span>
+            </a>
+            <p class="ym-footer-tagline">
+                {{ site_setting.tagline|default:"Kesegaran mangga asli pilihan berkualitas tinggi di setiap tegukan dan gigitan untuk harimu." }}
+            </p>
+            <div class="ym-footer-socials">
+                <a href="#" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
+                <a href="#" aria-label="TikTok"><i class='bx bxl-tiktok'></i></a>
+                <a href="{{ site_setting.whatsapp_url|default:'#' }}" target="_blank" aria-label="WhatsApp"><i class='bx bxl-whatsapp'></i></a>
+            </div>
+        </div>
+
+        <!-- Kolom 2: Navigasi Toko -->
+        <div class="ym-footer-col">
+            <h3>Navigasi Toko</h3>
+            <ul>
+                <li><a href="{% url 'index' %}">Beranda</a></li>
+                <li><a href="{% url 'menu' %}">Menu & Katalog</a></li>
+                <li><a href="{% url 'cart' %}">Keranjang Belanja</a></li>
+                <li><a href="{% url 'checkout' %}">Alur Checkout</a></li>
+                <li><a href="{% url 'articles_list' %}">Blog & Artikel</a></li>
+            </ul>
+        </div>
+
+        <!-- Kolom 3: About Us & Legal -->
+        <div class="ym-footer-col">
+            <h3>About Us</h3>
+            <ul>
+                <li><a href="{% url 'about' %}">Tentang Kami</a></li>
+                <li><a href="{% url 'privacy' %}">Kebijakan Privasi</a></li>
+                <li><a href="{% url 'terms' %}">Syarat & Ketentuan</a></li>
+                <li><a href="{% url 'disclaimer' %}">Disclaimer</a></li>
+                <li><a href="{% url 'faq' %}">FAQ</a></li>
+            </ul>
+        </div>
+
+        <!-- Kolom 4: Contact -->
+        <div class="ym-footer-col">
+            <h3>Contact</h3>
+            <p class="ym-footer-contact-info">
+                <strong>Layanan Pelanggan:</strong><br>
+                {{ site_setting.phone_primary|default:"0821-YELLOW-M" }}<br>
+                (0411) 123-4567
+            </p>
+        </div>
+
+        <!-- Kolom 5: Outlet Makassar -->
+        <div class="ym-footer-col ym-footer-locations" id="lokasi-footer">
+            <h3>Outlet Kami</h3>
+            <h4>{{ site_setting.outlet_name|default:"Makassar Pusat" }}</h4>
+            <p>{{ site_setting.outlet_address|default:"Jl. Andi Pangeran Pettarani No. 45\nMakassar, Sulawesi Selatan"|linebreaksbr }}</p>
+        </div>
+    </div>
+
+    <div class="ym-footer-bottom">
+        <p>&copy; 2026 {{ site_setting.site_name|default:"Yellow Mango's" }}. All rights reserved. Powered by Reka Niskala.</p>
+    </div>
+</footer>

@@ -1,95 +1,445 @@
+{% load static %}
+<!-- ================= NAVBAR YELLOW MANGO'S (RESPONSIVE & CLEAN) ================= -->
 <style>
-    /* Navbar Freeze / Sticky Global */
-    .ym-navbar {
+    :root {
+        --ym-primary: #FFB703;
+        --ym-primary-hover: #FB8500;
+        --ym-green: #254E06;
+        --ym-green-dark: #1B3804;
+        --ym-bg-light: #FFFDF7;
+        --ym-text-dark: #1E293B;
+        --ym-border: #EAD465;
+    }
+
+    .ym-navbar-wrapper {
         position: sticky;
         top: 0;
-        z-index: 9999;
-        background-color: #000000;
-        border-bottom: 2px solid #FFC107;
-        padding: 15px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        background-color: #FFFFFF;
+        border-bottom: 2px solid #F5EAB9;
+        box-shadow: 0 4px 16px rgba(37, 78, 6, 0.05);
         width: 100%;
-        box-sizing: border-box;
     }
-    .ym-brand {
-        color: #FFC107;
-        font-size: 24px;
-        font-weight: bold;
-        text-decoration: none;
-        letter-spacing: 0.5px;
-    }
-    .ym-nav-links {
+
+    .ym-navbar-container {
+        max-width: 1260px;
+        margin: 0 auto;
+        padding: 12px 20px;
         display: flex;
-        gap: 24px;
         align-items: center;
+        justify-content: space-between;
+        gap: 15px;
     }
-    .ym-nav-links a {
-        color: #f5f5f5;
+
+    /* Brand Logo */
+    .ym-brand-logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
         text-decoration: none;
-        font-size: 15px;
-        font-weight: 500;
-        transition: color 0.3s ease;
+        color: var(--ym-green);
+        font-size: 1.3rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        white-space: nowrap;
+        flex-shrink: 0;
     }
-    .ym-nav-links a:hover {
-        color: #FFC107;
+
+    .ym-brand-icon {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #FFC107, #FF8F00);
+        color: #ffffff;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        box-shadow: 0 4px 8px rgba(255, 143, 0, 0.3);
     }
-    /* Tombol Aksi Daftar / Masuk & Keluar */
-    .ym-btn-primary {
-        background-color: #FFC107;
-        color: #000000 !important;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: bold !important;
-        transition: background-color 0.3s ease;
+
+    /* Navigation Links */
+    .ym-nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .ym-nav-link {
         text-decoration: none;
-        display: inline-block;
+        color: #334155;
+        font-size: 0.92rem;
+        font-weight: 600;
+        white-space: nowrap;
+        padding: 6px 2px;
+        position: relative;
+        transition: color 0.2s ease;
     }
-    .ym-btn-primary:hover {
-        background-color: #e0a800;
+
+    .ym-nav-link:hover,
+    .ym-nav-link.active {
+        color: var(--ym-green);
     }
-    .ym-btn-outline {
-        border: 1px solid #FFC107;
-        color: #FFC107 !important;
-        padding: 9px 18px;
-        border-radius: 6px;
-        font-weight: bold !important;
+
+    .ym-nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background-color: var(--ym-primary);
+        border-radius: 2px;
+        transition: width 0.2s ease;
+    }
+
+    .ym-nav-link:hover::after,
+    .ym-nav-link.active::after {
+        width: 100%;
+    }
+
+    /* Action Bar (Cart & User) */
+    .ym-nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+    }
+
+    /* Cart Button with Counter */
+    .ym-cart-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        background-color: #FEF3C7;
+        color: #92400E;
+        border: 1px solid #FDE68A;
+        border-radius: 10px;
         text-decoration: none;
-        display: inline-block;
+        font-weight: 700;
+        font-size: 0.88rem;
+        white-space: nowrap;
+        transition: all 0.2s ease;
     }
-    .ym-btn-outline:hover {
-        background-color: #FFC107;
-        color: #000000 !important;
+
+    .ym-cart-btn:hover {
+        background-color: #FDE68A;
+        transform: translateY(-1px);
     }
-    @media (max-width: 768px) {
-        .ym-navbar {
-            flex-direction: column;
-            gap: 12px;
-            padding: 14px 20px;
+
+    .ym-cart-badge {
+        background-color: #DC2626;
+        color: #ffffff;
+        font-size: 0.7rem;
+        font-weight: 800;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 4px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Guest Login Button */
+    .ym-guest-login-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, #EAC800, #F59E0B);
+        color: #1E293B;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.88rem;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(234, 200, 0, 0.25);
+        transition: all 0.2s ease;
+    }
+
+    .ym-guest-login-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(234, 200, 0, 0.35);
+    }
+
+    /* User Profile Dropdown Pill */
+    .ym-user-menu-wrapper {
+        position: relative;
+    }
+
+    .ym-user-pill-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 14px;
+        background-color: #F8FAFC;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 12px;
+        color: var(--ym-green);
+        font-weight: 700;
+        font-size: 0.88rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .ym-user-pill-btn:hover {
+        background-color: #F1F5F9;
+        border-color: #CBD5E1;
+    }
+
+    .ym-user-dropdown-panel {
+        display: none;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: #FFFFFF;
+        border: 1.5px solid #EAD465;
+        border-radius: 16px;
+        min-width: 230px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        padding: 10px 0;
+        z-index: 10001;
+    }
+
+    .ym-user-dropdown-panel.show {
+        display: block;
+        animation: dropFade 0.2s ease;
+    }
+
+    @keyframes dropFade {
+        from {
+            opacity: 0;
+            transform: translateY(-6px);
         }
-        .ym-nav-links {
-            flex-wrap: wrap;
-            justify-content: center;
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .ym-user-panel-header {
+        padding: 10px 18px 12px 18px;
+        border-bottom: 1px solid #F1F5F9;
+        margin-bottom: 6px;
+    }
+
+    .ym-user-panel-name {
+        font-weight: 800;
+        color: #1E293B;
+        font-size: 0.95rem;
+    }
+
+    .ym-user-panel-sub {
+        font-size: 0.8rem;
+        color: #64748B;
+        word-break: break-all;
+    }
+
+    .ym-panel-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 18px;
+        color: #334155;
+        text-decoration: none;
+        font-size: 0.88rem;
+        font-weight: 600;
+        transition: background 0.15s;
+    }
+
+    .ym-panel-item:hover {
+        background-color: #FFFDF7;
+        color: var(--ym-green);
+    }
+
+    .ym-panel-item i {
+        font-size: 1.15rem;
+        color: #D97706;
+    }
+
+    .ym-panel-divider {
+        height: 1px;
+        background: #F1F5F9;
+        margin: 6px 0;
+    }
+
+    .ym-panel-item.logout {
+        color: #EF4444;
+    }
+
+    .ym-panel-item.logout:hover {
+        background-color: #FEF2F2;
+    }
+
+    .ym-panel-item.logout i {
+        color: #EF4444;
+    }
+
+    /* Mobile Hamburger */
+    .ym-mobile-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        color: var(--ym-green);
+        cursor: pointer;
+    }
+
+    @media (max-width: 960px) {
+        .ym-nav-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            flex-direction: column;
+            padding: 20px;
+            border-bottom: 2px solid #F5EAB9;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             gap: 14px;
+            align-items: flex-start;
+        }
+
+        .ym-nav-menu.show {
+            display: flex;
+        }
+
+        .ym-mobile-toggle {
+            display: block;
         }
     }
 </style>
 
-<nav style="background-color: #FFFFFF; border-bottom: 2px solid #EAD465; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(37,78,6,0.05);">
-    <!-- Logo Yellow Mango's -->
-    <a href="{% url 'index' %}" style="color: #254E06; font-size: 22px; font-weight: 800; text-decoration: none;">Yellow Mango's</a>
+<header class="ym-navbar-wrapper">
+    <div class="ym-navbar-container">
+        <!-- Logo Brand -->
+        <a href="{% url 'index' %}" class="ym-brand-logo">
+            <div class="ym-brand-icon">
+                <i class='bx bxs-drink'></i>
+            </div>
+            <span>Yellow Mango's</span>
+        </a>
 
-    <!-- Menu Links -->
-    <div style="display: flex; gap: 24px; align-items: center;">
-        <a href="{% url 'index' %}" style="color: #254E06; text-decoration: none; font-weight: 600;">Beranda</a>
-        <a href="{% url 'menu' %}" style="color: #254E06; text-decoration: none; font-weight: 600;">Menu</a>
-        <a href="#lokasi" style="color: #254E06; text-decoration: none; font-weight: 600;">Lokasi</a>
-        <a href="#about" style="color: #254E06; text-decoration: none; font-weight: 600;">About Us</a>
-        
-        <!-- Tombol Daftar / Masuk -->
-        <a href="{% url 'login' %}" style="background-color: #EAC800; color: #254E06; padding: 10px 20px; border-radius: 8px; font-weight: bold; text-decoration: none; box-shadow: 0 4px 12px rgba(234,200,0,0.3);">Daftar / Masuk</a>
+        <!-- Desktop Navigation Menu -->
+        <nav>
+            <ul class="ym-nav-menu" id="ymNavMenu">
+                <li><a href="{% url 'index' %}" class="ym-nav-link">Beranda</a></li>
+                <li><a href="{% url 'menu' %}" class="ym-nav-link">Menu & Katalog</a></li>
+                <li><a href="{% url 'menu' %}?badge=BEST_SELLER" class="ym-nav-link">Terlaris 🔥</a></li>
+                <li><a href="{% url 'index' %}#artikel" class="ym-nav-link">Artikel & Blog</a></li>
+                <li><a href="{% url 'about' %}" class="ym-nav-link">Tentang Kami</a></li>
+                <li><a href="{% url 'lokasi' %}" class="ym-nav-link">Lokasi</a></li>
+            </ul>
+        </nav>
+
+        <!-- Right Action Items -->
+        <div class="ym-nav-actions">
+            <!-- Keranjang Belanja -->
+            <a href="{% url 'cart' %}" class="ym-cart-btn" title="Keranjang Belanja">
+                <i class='bx bx-shopping-bag' style="font-size: 1.2rem;"></i>
+                <span>Keranjang</span>
+                <span class="ym-cart-badge" id="navCartCount">{{ cart_count }}</span>
+            </a>
+
+            <!-- Status Pengguna / Login -->
+            {% if user.is_authenticated %}
+            <div class="ym-user-menu-wrapper">
+                <button type="button" class="ym-user-pill-btn" id="userMenuToggle">
+                    <i class='bx bx-user-circle' style="font-size: 1.2rem;"></i>
+                    <span>{{ user.first_name|default:user.username|truncatechars:14 }}</span>
+                    <i class='bx bx-chevron-down' style="font-size: 1rem; color:#94A3B8;"></i>
+                </button>
+
+                <div class="ym-user-dropdown-panel" id="userDropdownPanel">
+                    <div class="ym-user-panel-header">
+                        <div class="ym-user-panel-name">{{ user.get_full_name|default:user.username }}</div>
+                        <div class="ym-user-panel-sub">{{ user.email|default:"Pelanggan Terdaftar" }}</div>
+                    </div>
+
+                    <a href="{% url 'user_profile' %}" class="ym-panel-item">
+                        <i class='bx bx-user'></i>
+                        <span>Profil & Dashboard Saya</span>
+                    </a>
+
+                    <a href="{% url 'user_profile' %}#pesanan" class="ym-panel-item">
+                        <i class='bx bx-receipt'></i>
+                        <span>Riwayat Pesanan</span>
+                    </a>
+
+                    <a href="{% url 'user_profile' %}#pengaturan" class="ym-panel-item">
+                        <i class='bx bx-cog'></i>
+                        <span>Pengaturan Akun</span>
+                    </a>
+
+                    {% if user.is_staff or user.is_superuser %}
+                    <div class="ym-panel-divider"></div>
+                    <a href="{% url 'admin_dashboard' %}" class="ym-panel-item" style="color: #254E06;">
+                        <i class='bx bxs-dashboard' style="color: #254E06;"></i>
+                        <span>Panel Dashboard Admin</span>
+                    </a>
+                    {% endif %}
+
+                    <div class="ym-panel-divider"></div>
+                    <a href="{% url 'logout' %}" class="ym-panel-item logout">
+                        <i class='bx bx-log-out'></i>
+                        <span>Keluar (Logout)</span>
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="ym-guest-login-btn">
+                <i class='bx bx-user' style="font-size: 1.1rem;"></i>
+                <span>Masuk / Daftar</span>
+            </a>
+            {% endif %}
+
+            <!-- Mobile Hamburger Button -->
+            <button class="ym-mobile-toggle" id="ymMobileToggle" aria-label="Toggle Navigation">
+                <i class='bx bx-menu'></i>
+            </button>
+        </div>
     </div>
-</nav>
+</header>
+
+<script>
+    // Toggle Mobile Nav
+    const toggleBtn = document.getElementById('ymMobileToggle');
+    const navMenu = document.getElementById('ymNavMenu');
+    if (toggleBtn && navMenu) {
+        toggleBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
+            const icon = toggleBtn.querySelector('i');
+            if (navMenu.classList.contains('show')) {
+                icon.className = 'bx bx-x';
+            } else {
+                icon.className = 'bx bx-menu';
+            }
+        });
+    }
+
+    // Toggle User Dropdown
+    const userToggle = document.getElementById('userMenuToggle');
+    const userDropdown = document.getElementById('userDropdownPanel');
+    if (userToggle && userDropdown) {
+        userToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userDropdown.classList.toggle('show');
+        });
+
+        // Tutup jika klik di luar
+        document.addEventListener('click', (e) => {
+            if (!userDropdown.contains(e.target) && !userToggle.contains(e.target)) {
+                userDropdown.classList.remove('show');
+            }
+        });
+    }
+</script>

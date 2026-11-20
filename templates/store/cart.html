@@ -1,0 +1,345 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Keranjang Belanja - Yellow Mango's{% endblock %}
+
+{% block content %}
+<!-- NAVBAR GLOBAL -->
+{% include 'store/navbar.html' %}
+
+<style>
+    .cart-page-wrapper {
+        max-width: 1180px;
+        margin: 40px auto 80px auto;
+        padding: 0 20px;
+    }
+
+    .cart-header-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.2rem;
+        color: #254E06;
+        margin-bottom: 25px;
+    }
+
+    .cart-grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 32px;
+        align-items: start;
+    }
+
+    .cart-table-card {
+        background: #FFFFFF;
+        border-radius: 20px;
+        border: 1px solid #EAD465;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(37, 78, 6, 0.05);
+    }
+
+    .cart-item-row {
+        display: grid;
+        grid-template-columns: 80px 1fr auto auto auto;
+        gap: 20px;
+        align-items: center;
+        padding: 22px 24px;
+        border-bottom: 1px solid #F1F5F9;
+    }
+
+    .cart-item-row:last-child {
+        border-bottom: none;
+    }
+
+    .cart-thumb-img {
+        width: 80px;
+        height: 80px;
+        border-radius: 14px;
+        object-fit: cover;
+        background: #FFFBEB;
+    }
+
+    .cart-item-info h4 {
+        font-size: 1.1rem;
+        color: #1E293B;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .cart-item-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: 0.8rem;
+        color: #64748B;
+    }
+
+    .cart-opt-pill {
+        background: #F1F5F9;
+        padding: 2px 8px;
+        border-radius: 6px;
+    }
+
+    .cart-qty-ctrl {
+        display: inline-flex;
+        align-items: center;
+        border: 1.5px solid #CBD5E1;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .cart-qty-btn {
+        width: 32px;
+        height: 32px;
+        background: #F8FAFC;
+        border: none;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #1E293B;
+    }
+
+    .cart-qty-btn:hover {
+        background: #E2E8F0;
+    }
+
+    .cart-qty-text {
+        width: 36px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 0.95rem;
+    }
+
+    .cart-item-subtotal {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #254E06;
+        min-width: 100px;
+        text-align: right;
+    }
+
+    .cart-btn-del {
+        background: none;
+        border: none;
+        color: #EF4444;
+        font-size: 1.3rem;
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 8px;
+        transition: background 0.2s;
+    }
+
+    .cart-btn-del:hover {
+        background: #FEE2E2;
+    }
+
+    /* Summary Card */
+    .cart-summary-card {
+        background: #FFFFFF;
+        border-radius: 20px;
+        border: 2px solid #EAD465;
+        padding: 28px;
+        box-shadow: 0 10px 30px rgba(37, 78, 6, 0.08);
+    }
+
+    .summary-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #254E06;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #F1F5F9;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        font-size: 0.95rem;
+        color: #475569;
+    }
+
+    .summary-total-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px 0;
+        padding-top: 16px;
+        border-top: 2px dashed #E2E8F0;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #1E293B;
+    }
+
+    .btn-checkout-now {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #FFB703, #FB8500);
+        color: #FFFFFF;
+        border: none;
+        border-radius: 14px;
+        font-weight: 800;
+        font-size: 1rem;
+        text-decoration: none;
+        box-shadow: 0 6px 18px rgba(251, 133, 0, 0.35);
+        transition: all 0.2s;
+    }
+
+    .btn-checkout-now:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(251, 133, 0, 0.45);
+    }
+
+    .btn-continue-shopping {
+        display: block;
+        text-align: center;
+        margin-top: 14px;
+        color: #254E06;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    .btn-continue-shopping:hover {
+        text-decoration: underline;
+    }
+
+    /* Empty Cart State */
+    .empty-cart-box {
+        text-align: center;
+        padding: 80px 20px;
+        background: #FFFFFF;
+        border-radius: 24px;
+        border: 2px dashed #EAD465;
+    }
+
+    @media (max-width: 900px) {
+        .cart-grid-layout {
+            grid-template-columns: 1fr;
+        }
+        .cart-item-row {
+            grid-template-columns: 70px 1fr;
+            gap: 14px;
+        }
+        .cart-item-subtotal {
+            text-align: left;
+        }
+    }
+</style>
+
+<div class="cart-page-wrapper">
+    <h1 class="cart-header-title">Keranjang Belanja Kamu</h1>
+
+    {% if cart %}
+    <div class="cart-grid-layout">
+        <!-- List Item Keranjang -->
+        <div class="cart-table-card">
+            <div style="padding: 16px 24px; background: #FFFDF7; border-bottom: 1px solid #F1E5C6; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 700; color: #254E06; font-size: 0.92rem;">Daftar Menu ({{ total_items }} item)</span>
+                <a href="{% url 'clear_cart' %}" onclick="return confirm('Apakah Anda yakin ingin mengosongkan keranjang?')" style="color: #EF4444; font-size: 0.85rem; text-decoration: none; font-weight: 600;">
+                    <i class='bx bx-trash'></i> Kosongkan Keranjang
+                </a>
+            </div>
+
+            {% for key, item in cart.items %}
+            <div class="cart-item-row">
+                <!-- Foto -->
+                <img src="{{ item.image }}" alt="{{ item.name }}" class="cart-thumb-img">
+
+                <!-- Informasi Item & Opsi -->
+                <div class="cart-item-info">
+                    <h4>{{ item.name }}</h4>
+                    <div class="cart-item-options">
+                        <span class="cart-opt-pill">{{ item.size }}</span>
+                        {% if item.sugar and item.sugar != 'Normal' %}
+                            <span class="cart-opt-pill">Gula: {{ item.sugar }}</span>
+                        {% endif %}
+                        {% if item.ice and item.ice != 'Normal' %}
+                            <span class="cart-opt-pill">Es: {{ item.ice }}</span>
+                        {% endif %}
+                        {% if item.notes %}
+                            <span class="cart-opt-pill" style="color:#D97706;">Catatan: {{ item.notes }}</span>
+                        {% endif %}
+                    </div>
+                    <div style="font-size: 0.88rem; color: #64748B; margin-top: 4px;">
+                        @ Rp {{ item.price|floatformat:0 }}
+                    </div>
+                </div>
+
+                <!-- Quantity Control -->
+                <div>
+                    <div class="cart-qty-ctrl">
+                        <a href="{% url 'update_cart' key %}?action=decrease" class="cart-qty-btn">&minus;</a>
+                        <span class="cart-qty-text">{{ item.quantity }}</span>
+                        <a href="{% url 'update_cart' key %}?action=increase" class="cart-qty-btn">&plus;</a>
+                    </div>
+                </div>
+
+                <!-- Subtotal Item -->
+                <div class="cart-item-subtotal">
+                    Rp {{ item.subtotal|floatformat:0 }}
+                </div>
+
+                <!-- Tombol Hapus -->
+                <div>
+                    <a href="{% url 'remove_from_cart' key %}" class="cart-btn-del" title="Hapus dari Keranjang">
+                        <i class='bx bx-trash'></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Ringkasan Belanja Sidebar -->
+        <div class="cart-summary-card">
+            <h3 class="summary-title">Ringkasan Pesanan</h3>
+
+            <div class="summary-row">
+                <span>Subtotal Menu</span>
+                <strong>Rp {{ subtotal|floatformat:0 }}</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Biaya Kemasan & Layanan</span>
+                <span style="color: #16A34A; font-weight: 700;">GRATIS</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Metode Pesan</span>
+                <span>WhatsApp Checkout</span>
+            </div>
+
+            <div class="summary-total-row">
+                <span>Total Pembayaran</span>
+                <span style="color: #254E06;">Rp {{ grand_total|floatformat:0 }}</span>
+            </div>
+
+            <a href="{% url 'checkout' %}" class="btn-checkout-now">
+                <i class='bx bxs-check-shield' style="font-size: 1.25rem;"></i>
+                <span>Lanjut ke Checkout</span>
+            </a>
+
+            <a href="{% url 'menu' %}" class="btn-continue-shopping">
+                &larr; Tambah Menu Lain
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <!-- State Keranjang Kosong -->
+    <div class="empty-cart-box">
+        <div style="font-size: 4rem; margin-bottom: 16px;">🥭</div>
+        <h2 style="color: #254E06; font-size: 1.8rem; margin-bottom: 10px;">Keranjang Belanja Kamu Kosong</h2>
+        <p style="color: #64748B; font-size: 1.05rem; margin-bottom: 30px;">Yuk pilih sajian mangga segar dan olahan lezat lainnya di menu kami.</p>
+        <a href="{% url 'menu' %}" class="btn-checkout-now" style="display: inline-flex; width: auto; padding: 14px 32px;">
+            <i class='bx bx-shopping-bag'></i>
+            <span>Jelajahi Menu Sekarang</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

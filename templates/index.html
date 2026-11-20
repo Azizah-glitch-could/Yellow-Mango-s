@@ -4,16 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yellow Mango's - Segar & Nikmat</title>
-    <!-- Menggunakan Boxicons untuk ikon keranjang dan merek -->
+    <title>{{ site_setting.site_name|default:"Yellow Mango's" }} - Segar & Nikmat Setiap Hari</title>
+    
+    <!-- Boxicons & Google Fonts -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --primary: #FFB703;
+            --primary-hover: #FB8500;
+            --primary-light: #FFF8E1;
+            --secondary: #254E06;
+            --secondary-dark: #1B3804;
+            --accent-yellow: #EAD465;
+            --bg-page: #FFFDF7;
+            --bg-card: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border-soft: #F1E5C6;
+            --shadow-sm: 0 4px 12px rgba(37, 78, 6, 0.05);
+            --shadow-md: 0 10px 25px rgba(37, 78, 6, 0.08);
+            --shadow-lg: 0 20px 40px rgba(37, 78, 6, 0.12);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         html {
@@ -21,866 +40,1392 @@
         }
 
         body {
-            background-color: #fafafa;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            overflow-x: hidden;
         }
 
-        /* ================= HERO SECTION ================= */
-        .hero {
-            position: relative;
-            width: 100%;
-            min-height: 580px;
-            background-image: url('https://images.unsplash.com/photo-1546173159-315724a31696?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
+        /* Container Standard */
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Flash Message Alert */
+        .alert-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #254E06;
+            color: #ffffff;
+            padding: 16px 24px;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.18);
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
+            gap: 12px;
+            animation: slideUp 0.35s ease;
         }
 
-        /* Lapisan transparan diperhalus agar foto tetap cerah dan kotak putih stand out */
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(37, 78, 6, 0.2); /* Nuansa hijau transparan yang elegan */
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .hero-box {
+        /* ================= HERO SECTION (TWO-COLUMN SPLIT) ================= */
+        .hero-section {
             position: relative;
-            z-index: 2;
-            background-color: #FFFFFF !important; 
-            padding: 45px; 
-            border-radius: 24px; 
-            max-width: 680px; 
-            width: 100%;
-            margin: 0 auto; 
-            box-shadow: 0 20px 50px rgba(37, 78, 6, 0.18); 
-            border: 2px solid #EAD465; /* Arylide Yellow */
-            text-align: center;
+            padding: 70px 0 90px 0;
+            background: radial-gradient(circle at 85% 20%, rgba(255, 224, 138, 0.35) 0%, rgba(255, 253, 247, 0) 65%);
+            overflow: hidden;
         }
 
-        /* Responsive Styles */
-        @media (max-width: 960px) {
-            .hero-box {
-                padding: 32px 20px;
-            }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            align-items: center;
+            gap: 60px;
         }
 
-        /* ================= FEATURED PRODUCTS SECTION ================= */
-        .featured-section {
-            background-color: #ffffff;
-            padding: 80px 5%;
-            text-align: center;
-        }
-
-        .section-header {
-            max-width: 780px;
-            margin: 0 auto 50px auto;
-        }
-
-        .section-header h2 {
-            font-size: 2.35rem;
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #FEF3C7;
+            color: #92400E;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
             font-weight: 700;
-            color: #111111;
-            margin-bottom: 16px;
+            letter-spacing: 0.3px;
+            margin-bottom: 24px;
+            border: 1px solid #FDE68A;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.4rem;
+            line-height: 1.18;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 22px;
             letter-spacing: -0.5px;
         }
 
-        .section-header h2 span {
-            font-style: italic;
-            color: #e6a800;
+        .hero-title span {
+            color: #D97706;
+            position: relative;
+            display: inline-block;
         }
 
-        .section-header p {
-            font-size: 1.05rem;
-            color: #555555;
-            line-height: 1.65;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-            max-width: 1120px;
-            margin: 0 auto;
-        }
-
-        .product-card {
-            background-color: #ffffff;
-            border: 1px solid #eaeaea;
-            border-radius: 12px;
-            padding: 32px 24px;
-            text-align: center;
-            transition: all 0.25s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .product-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
-            border-color: #FFC107;
-        }
-
-        .product-img-wrapper {
+        .hero-title span::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 0;
             width: 100%;
-            height: 220px;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 24px;
-            background-color: #fffdf5;
+            height: 12px;
+            background-color: rgba(255, 183, 3, 0.3);
+            z-index: -1;
+            border-radius: 4px;
         }
 
-        .product-img-wrapper img {
+        .hero-desc {
+            font-size: 1.12rem;
+            color: #475569;
+            line-height: 1.7;
+            margin-bottom: 34px;
+            max-width: 580px;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .btn-hero-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #FFB703, #FB8500);
+            color: #FFFFFF;
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1.02rem;
+            text-decoration: none;
+            box-shadow: 0 8px 24px rgba(251, 133, 0, 0.35);
+            transition: all 0.25s ease;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(251, 133, 0, 0.45);
+        }
+
+        .btn-hero-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #FFFFFF;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-hero-outline:hover {
+            background-color: #F0FDF4;
+            transform: translateY(-3px);
+        }
+
+        .hero-badges-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .hero-badge-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-badge-item i {
+            color: #16A34A;
+            font-size: 1.2rem;
+        }
+
+        /* Hero Right: Product Visual Showcase */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-img-card {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+            background: #FFFFFF;
+            padding: 16px;
+            border-radius: 30px;
+            box-shadow: var(--shadow-lg);
+            border: 3px solid var(--accent-yellow);
+        }
+
+        .hero-img-inner {
+            width: 100%;
+            height: 480px;
+            border-radius: 22px;
+            overflow: hidden;
+            background: #FEF3C7;
+        }
+
+        .hero-img-inner img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease;
         }
 
-        .product-card:hover .product-img-wrapper img {
+        .hero-img-card:hover .hero-img-inner img {
             transform: scale(1.05);
         }
 
-        .product-card h3 {
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: #111111;
-            margin-bottom: 10px;
+        /* Floating Cards */
+        .floating-badge {
+            position: absolute;
+            background: #FFFFFF;
+            padding: 14px 18px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--border-soft);
+            animation: floatSlow 4s ease-in-out infinite alternate;
         }
 
-        .product-card p {
-            font-size: 0.95rem;
-            color: #666666;
-            line-height: 1.55;
-            margin-bottom: 24px;
+        .badge-pos-1 {
+            top: 25px;
+            left: -35px;
         }
 
-        .btn-card {
-            display: inline-block;
-            padding: 10px 26px;
-            border: 1.5px solid #222222;
-            border-radius: 6px;
-            color: #111111;
+        .badge-pos-2 {
+            bottom: 30px;
+            right: -25px;
+            animation-delay: 2s;
+        }
+
+        @keyframes floatSlow {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-10px); }
+        }
+
+        .floating-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #FEF3C7;
+            color: #D97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        /* ================= QUICK CATEGORY BAR ================= */
+        .quick-categories-section {
+            padding: 20px 0 60px 0;
+        }
+
+        .category-pills-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .cat-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #FFFFFF;
+            border: 1.5px solid var(--border-soft);
+            color: #334155;
             text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
             font-size: 0.92rem;
-            font-weight: 700;
-            transition: all 0.2s ease;
-            align-self: center;
+            transition: all 0.25s ease;
+            box-shadow: var(--shadow-sm);
         }
 
-        .btn-card:hover {
-            background-color: #FFC107;
-            border-color: #FFC107;
-            color: #111111;
+        .cat-pill:hover {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: #1E293B;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 183, 3, 0.3);
         }
 
-        @media (max-width: 900px) {
-            .product-grid {
-                grid-template-columns: 1fr;
-                max-width: 450px;
-            }
+        /* ================= MENU TERLARIS SECTION ================= */
+        .section-padding {
+            padding: 85px 0;
         }
 
-        /* ================= TESTIMONIALS SECTION ================= */
-        .testimonial-section {
-            background-color: #fafafa;
-            padding: 80px 5%;
+        .section-header {
             text-align: center;
-        }
-
-        .testimonial-header {
-            max-width: 700px;
-            margin: 0 auto 48px auto;
-        }
-
-        .testimonial-header h2 {
-            font-size: 2.35rem;
-            font-weight: 700;
-            color: #111111;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        .testimonial-header p {
-            font-size: 1.05rem;
-            color: #666666;
-            line-height: 1.6;
-        }
-
-        .testimonial-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 32px;
-            width: 100%;
-        }
-
-        .testimonial-card {
-            background-color: #ffffff;
-            border: 1px solid #eaeaea;
-            border-radius: 16px;
-            padding: 40px;
-            text-align: left;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-        }
-
-        .testimonial-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
-            border-color: #FFC107;
-        }
-
-        .testimonial-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .stars {
-            color: #FFC107;
-            font-size: 1.1rem;
-            display: flex;
-            gap: 2px;
-        }
-
-        .quote-icon {
-            font-size: 2rem;
-            color: #f0f0f0;
-        }
-
-        .testimonial-card h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #111111;
-            margin-bottom: 14px;
-        }
-
-        .testimonial-card p {
-            font-size: 1rem;
-            color: #555555;
-            line-height: 1.65;
-            margin-bottom: 30px;
-        }
-
-        .customer-info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            border-top: 1px solid #f2f2f2;
-            padding-top: 20px;
-        }
-
-        .avatar-placeholder {
-            width: 45px;
-            height: 45px;
-            background-color: #FFC107;
-            color: #111111;
-            font-weight: 700;
-            font-size: 0.95rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .customer-name {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #111111;
-        }
-
-        .customer-status {
-            font-size: 0.82rem;
-            color: #888888;
-        }
-
-        .testi-nav-btn {
-            background-color: #ffffff;
-            border: 1.5px solid #dcdcdc;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            color: #111111;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .testi-nav-btn:hover {
-            background-color: #FFC107;
-            border-color: #FFC107;
-            color: #111111;
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 900px) {
-            .testimonial-grid {
-                grid-template-columns: 1fr;
-            }
-            .testi-nav-btn {
-                display: none;
-            }
-        }
-
-        /* ================= CSS BLOG SECTION ================= */
-        .blog-section {
-            background-color: #ffffff;
-            padding: 80px 5%;
-            text-align: center;
-        }
-
-        .blog-header {
-            max-width: 750px;
+            max-width: 680px;
             margin: 0 auto 50px auto;
         }
 
-        .blog-header h2 {
-            font-size: 2.35rem;
-            font-weight: 700;
-            color: #111111;
-            margin-bottom: 14px;
-            letter-spacing: -0.5px;
+        .section-subtitle {
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #D97706;
+            margin-bottom: 10px;
+            display: block;
         }
 
-        .blog-header p {
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 14px;
+            line-height: 1.25;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
             font-size: 1.05rem;
-            color: #666666;
-            line-height: 1.6;
+            line-height: 1.65;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-bottom: 45px;
+        }
+
+        .product-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-soft);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .product-card-img-wrap {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            background: #FFFBEB;
+            overflow: hidden;
+        }
+
+        .product-card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-card-img-wrap img {
+            transform: scale(1.08);
+        }
+
+        .product-badge-tag {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            padding: 5px 12px;
+            background: rgba(37, 78, 6, 0.9);
+            backdrop-filter: blur(4px);
+            color: #FFFFFF;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .product-card-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-category-text {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #D97706;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .product-card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+
+        .product-card-desc {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .product-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid #F1F5F9;
+            gap: 10px;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .product-btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-view-detail {
+            padding: 9px 14px;
+            border: 1.5px solid var(--secondary);
+            color: var(--secondary);
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-view-detail:hover {
+            background-color: var(--secondary);
+            color: #FFFFFF;
+        }
+
+        .btn-add-cart {
+            padding: 9px 16px;
+            background-color: var(--primary);
+            color: #1E293B;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-add-cart:hover {
+            background-color: var(--primary-hover);
+            color: #FFFFFF;
+        }
+
+        /* ================= ABOUT US (CERITA KAMI) ================= */
+        .about-section {
+            background-color: #FFFFFF;
+            border-top: 1px solid var(--border-soft);
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-story h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--secondary);
+            margin-bottom: 18px;
+            line-height: 1.3;
+        }
+
+        .about-story p {
+            color: #475569;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: #FFFDF7;
+            border: 1.5px solid var(--border-soft);
+            padding: 22px;
+            border-radius: 18px;
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        .feature-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: #FEF3C7;
+            color: #D97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .feature-text h4 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .feature-text p {
+            font-size: 0.92rem;
+            color: #64748B;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* ================= TESTIMONI SECTION ================= */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            margin-bottom: 40px;
+        }
+
+        .testi-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-soft);
+            padding: 32px 26px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .testi-stars {
+            color: #FFB703;
+            font-size: 1.15rem;
+            display: flex;
+            gap: 2px;
+            margin-bottom: 14px;
+        }
+
+        .testi-msg {
+            font-size: 0.98rem;
+            color: #334155;
+            line-height: 1.65;
+            font-style: italic;
+            margin-bottom: 24px;
+        }
+
+        .testi-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid #F1F5F9;
+            padding-top: 16px;
+        }
+
+        .testi-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #EAC800;
+            color: var(--secondary);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+
+        .testi-name {
+            font-weight: 700;
+            color: #1E293B;
+            font-size: 0.98rem;
+        }
+
+        .testi-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Form Modal Testimoni */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: #FFFFFF;
+            max-width: 500px;
+            width: 100%;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border: 2px solid var(--accent-yellow);
+        }
+
+        /* ================= BLOG / ARTIKEL SECTION ================= */
+        .blog-section {
+            background-color: #FFFFFF;
         }
 
         .blog-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 32px;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: left;
         }
 
         .blog-card {
-            background-color: #ffffff;
-            border: 1px solid #eaeaea;
-            border-radius: 14px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-soft);
+            border-radius: 20px;
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            transition: all 0.3s ease;
         }
 
         .blog-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
-            border-color: #FFC107;
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
         }
 
-        .blog-img-wrapper {
+        .blog-thumb {
             width: 100%;
             height: 210px;
             overflow: hidden;
-            background-color: #fffdf5;
+            background: #FFFBEB;
         }
 
-        .blog-img-wrapper img {
+        .blog-thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
 
-        .blog-card:hover .blog-img-wrapper img {
-            transform: scale(1.05);
+        .blog-card:hover .blog-thumb img {
+            transform: scale(1.06);
         }
 
-        .blog-content {
+        .blog-body {
             padding: 24px;
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
-            justify-content: space-between;
+            flex: 1;
         }
 
-        .blog-category {
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: #e6a800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            display: inline-block;
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
         }
 
-        .blog-card h3 {
-            font-size: 1.25rem;
+        .blog-cat-badge {
+            background: #FEF3C7;
+            color: #92400E;
+            padding: 3px 10px;
+            border-radius: 12px;
             font-weight: 700;
-            color: #111111;
+        }
+
+        .blog-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1E293B;
             line-height: 1.4;
             margin-bottom: 12px;
         }
 
-        .blog-card p {
-            font-size: 0.93rem;
-            color: #666666;
-            line-height: 1.55;
+        .blog-snippet {
+            font-size: 0.92rem;
+            color: #64748B;
+            line-height: 1.6;
             margin-bottom: 20px;
+            flex: 1;
         }
 
-        .blog-link {
-            font-size: 0.95rem;
+        .blog-read-more {
+            color: #D97706;
             font-weight: 700;
-            color: #111111;
+            font-size: 0.9rem;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: color 0.2s ease;
+            transition: gap 0.2s;
         }
 
-        .blog-link:hover {
-            color: #e6a800;
+        .blog-read-more:hover {
+            gap: 10px;
         }
 
-        @media (max-width: 992px) {
-            .blog-grid {
+        /* ================= LOKASI OUTLET & GOOGLE MAPS ================= */
+        .location-section {
+            background-color: var(--bg-page);
+        }
+
+        .maps-card-wrapper {
+            background: #FFFFFF;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--border-soft);
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+        }
+
+        .maps-iframe-box {
+            width: 100%;
+            height: 100%;
+            min-height: 380px;
+        }
+
+        .maps-iframe-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .outlet-info-box {
+            padding: 45px 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .outlet-badge {
+            display: inline-block;
+            background: #DCFCE7;
+            color: #166534;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .outlet-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 14px;
+        }
+
+        .outlet-detail-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .outlet-icon {
+            font-size: 1.35rem;
+            color: #D97706;
+            margin-top: 2px;
+        }
+
+        /* ================= FOOTER ================= */
+        .footer-section {
+            background-color: #1E293B;
+            color: #E2E8F0;
+            padding: 75px 0 30px 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-brand-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #FFB703;
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-decoration: none;
+            margin-bottom: 14px;
+        }
+
+        .footer-text {
+            color: #94A3B8;
+            font-size: 0.93rem;
+            line-height: 1.65;
+            margin-bottom: 22px;
+        }
+
+        .footer-social-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-social-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #334155;
+            color: #FFB703;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+
+        .footer-social-btn:hover {
+            background: #FFB703;
+            color: #1E293B;
+            transform: translateY(-3px);
+        }
+
+        .footer-heading {
+            color: #FFFFFF;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer-links-list {
+            list-style: none;
+        }
+
+        .footer-links-list li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links-list a {
+            color: #94A3B8;
+            text-decoration: none;
+            font-size: 0.93rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links-list a:hover {
+            color: #FFB703;
+        }
+
+        .footer-bottom-bar {
+            border-top: 1px solid #334155;
+            padding-top: 25px;
+            text-align: center;
+            font-size: 0.88rem;
+            color: #64748B;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .hero-grid {
                 grid-template-columns: 1fr;
-                max-width: 480px;
+                gap: 45px;
+                text-align: center;
+            }
+            .hero-desc {
+                margin: 0 auto 34px auto;
+            }
+            .hero-cta-group, .hero-badges-row {
+                justify-content: center;
+            }
+            .products-grid, .testimonials-grid, .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .about-grid, .maps-card-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        /* ================= CSS FOOTER PRESISI & KE TENGAH ================= */
-.footer-section {
-    background-color: #f8f9fa;
-    border-top: 1px solid #eaeaea;
-    color: #222222;
-    padding: 65px 20px 30px 20px;
-}
-
-.footer-container {
-    max-width: 1120px; /* Ukuran pas agar lebih ke tengah */
-    margin: 0 auto 45px auto;
-    display: grid;
-    /* Proporsi kolom seimbang untuk 1 lokasi saja */
-    grid-template-columns: 1.6fr 1fr 1fr 1.1fr 1.3fr;
-    gap: 35px;
-    align-items: start;
-}
-
-.footer-col h3 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #111111;
-    margin-top: 0;
-    margin-bottom: 18px;
-    line-height: 1.4;
-}
-
-.footer-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    color: #111111;
-    font-size: 1.3rem;
-    font-weight: 800;
-    margin-bottom: 14px;
-    line-height: 1.2;
-}
-
-.footer-brand i {
-    color: #e6a800;
-    font-size: 1.6rem;
-}
-
-.footer-tagline {
-    font-size: 0.9rem;
-    color: #666666;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.footer-socials {
-    display: flex;
-    gap: 12px;
-}
-
-.footer-socials a {
-    width: 36px;
-    height: 36px;
-    background-color: #111111;
-    color: #FFC107;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.15rem;
-    text-decoration: none;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.footer-socials a:hover {
-    background-color: #FFC107;
-    color: #111111;
-    transform: translateY(-2px);
-}
-
-.footer-col ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-col ul li {
-    margin-bottom: 12px;
-}
-
-.footer-col ul li:last-child {
-    margin-bottom: 0;
-}
-
-.footer-col ul li a {
-    text-decoration: none;
-    color: #555555;
-    font-size: 0.92rem;
-    transition: color 0.2s ease;
-}
-
-.footer-col ul li a:hover {
-    color: #e6a800;
-}
-
-.footer-contact-info {
-    font-size: 0.92rem;
-    color: #555555;
-    line-height: 1.7;
-}
-
-.location-grid {
-    display: grid;
-    grid-template-columns: 1fr; /* Diubah dari 2 kolom menjadi 1 kolom penuh */
-    gap: 15px;
-}
-
-.footer-locations h4 {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #111111;
-    margin-bottom: 6px;
-}
-
-.footer-locations p {
-    font-size: 0.9rem;
-    color: #666666;
-    line-height: 1.6;
-    margin: 0;
-}
-
-.footer-bottom {
-    max-width: 1120px;
-    margin: 0 auto;
-    border-top: 1px solid #e0e0e0;
-    padding-top: 24px;
-    text-align: center;
-    font-size: 0.88rem;
-    color: #777777;
-}
-
-@media (max-width: 1024px) {
-    .footer-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 32px;
-    }
-    .footer-col.footer-locations {
-        grid-column: span 2;
-    }
-}
-
-@media (max-width: 600px) {
-    .footer-container {
-        grid-template-columns: 1fr;
-    }
-    .footer-col.footer-locations {
-        grid-column: span 1;
-    }
-    .location-grid {
-        grid-template-columns: 1fr;
-    }
-}
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.35rem;
+            }
+            .products-grid, .testimonials-grid, .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .floating-badge {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- NAVIGATION BAR GLOBAL -->
+    <!-- NAVBAR GLOBAL -->
     {% include 'store/navbar.html' %}
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-        <div class="hero-box">
-            <span style="display: inline-block; background-color: #F5EAB9; color: #254E06; font-size: 12px; font-weight: 700; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; margin-bottom: 16px;">100% MANGGA PILIHAN & SEGAR</span>
-            <h1 style="color: #254E06; font-size: 34px; font-weight: 800; margin: 0 0 16px 0; line-height: 1.2;">
-             Kesegaran <span style="color: #EAC800;">Mangga Asli</span> di Setiap Tegukan
-            </h1>
-            <p style="color: #7E8407; font-size: 15px; line-height: 1.6; margin-bottom: 32px;">
-             Nikmati perpaduan manis alami buah mangga segar dengan topping premium pilihan. Pesan sekarang dan kami antar langsung ke tempatmu.
-            </p>
-            <div style="display: flex; gap: 15px; justify-content: center;">
-                <a href="{% url 'menu' %}" style="background-color: #EAC800; color: #254E06; padding: 13px 26px; border-radius: 12px; font-weight: bold; text-decoration: none; box-shadow: 0 6px 16px rgba(234,200,0,0.35);">Pesan Sekarang</a>
-                <a href="#lokasi" style="background-color: #FFFFFF; color: #254E06; border: 2px solid #254E06; padding: 13px 26px; border-radius: 12px; font-weight: bold; text-decoration: none;">Cek Lokasi Outlet</a>
+    <!-- PESAN FLASH (NOTIFIKASI) -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-toast">
+                <i class='bx bxs-check-circle' style="font-size: 1.4rem; color: #EAC800;"></i>
+                <span>{{ message }}</span>
             </div>
-        </div>
-    </section>
+        {% endfor %}
+    {% endif %}
 
-    <!-- FEATURED PRODUCTS SECTION -->
-    <section class="featured-section">
-        <div class="section-header">
-            <h2>Nikmati Olahan Segar <span>Yellow Mango's</span></h2>
-            <p>
-                Kami menghadirkan berbagai kreasi mangga pilihan berkualitas tinggi. 
-                Cicipi tiga menu favorit pelanggan kami di bawah ini atau jelajahi seluruh varian di halaman menu.
-            </p>
-        </div>
-
-        <div class="product-grid">
-            <!-- Kartu 1 -->
-            <div class="product-card">
+    <!-- ================= 1. HERO SECTION (SPLIT TWO-COLUMN) ================= -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-grid">
+                <!-- Kolom Teks / Ajakan Pesan -->
                 <div>
-                    <div class="product-img-wrapper">
-                        <img src="{% static 'images/mangga.jpg' %}" alt="Smoothies Mangga">
+                    <span class="hero-pill">
+                        <i class='bx bxs-badge-check'></i> 100% Buah Mangga Segar Pilihan • Makassar Pusat
+                    </span>
+                    <h1 class="hero-title">
+                        Sensasi Kesegaran <span>Mangga Asli</span> di Setiap Tegukan
+                    </h1>
+                    <p class="hero-desc">
+                        Nikmati perpaduan manis alami buah mangga harum manis pilihan dengan tekstur lembut, racikan resep kafe kekinian, dan topping melimpah. Pesan sekarang mudah via WhatsApp dan siap antar ke tempatmu!
+                    </p>
+
+                    <div class="hero-cta-group">
+                        <a href="{% url 'menu' %}" class="btn-hero-primary">
+                            <i class='bx bx-shopping-bag' style="font-size: 1.3rem;"></i>
+                            <span>Pesan Sekarang</span>
+                        </a>
+                        <a href="#terlaris" class="btn-hero-outline">
+                            <i class='bx bx-star'></i>
+                            <span>Menu Terlaris</span>
+                        </a>
                     </div>
-                    <h3>Smoothies Mangga</h3>
-                    <p>Perpaduan buah mangga matang pilihan yang diblender lembut dengan es dan krim segar, menghadirkan rasa manis alami yang menyegarkan.</p>
-                </div>
-                <a href="{% url 'menu' %}" class="btn-card">Pesan Menu</a>
-            </div>
 
-            <!-- Kartu 2 -->
-            <div class="product-card">
-                <div>
-                    <div class="product-img-wrapper">
-                        <img src="{% static 'images/mango sticky rice.jpg' %}" alt="Mango Sticky Rice">
-                    </div>
-                    <h3>Mango Sticky Rice</h3>
-                    <p>Ketan pulen gurih yang disiram saus santan kental hangat dengan potongan mangga manis segar pilihan.</p>
-                </div>
-                <a href="{% url 'menu' %}" class="btn-card">Pesan Menu</a>
-            </div>
-
-            <!-- Kartu 3 -->
-            <div class="product-card">
-                <div>
-                    <div class="product-img-wrapper">
-                        <img src="{% static 'images/popsicle mango.jpg' %}" alt="Popsicle Mango">
-                    </div>
-                    <h3>Popsicle Mango</h3>
-                    <p>Es loli mangga murni yang manis dan dingin menyegarkan, sangat pas dinikmati di cuaca panas.</p>
-                </div>
-                <a href="{% url 'menu' %}" class="btn-card">Pesan Menu</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ================= TESTIMONIALS SECTION ================= -->
-    <section class="testimonial-section">
-        <div class="testimonial-header">
-            <h2>Apa Kata Mereka Tentang <span style="color: #FFC107;">Yellow Mango's</span>?</h2>
-            <p>Ulasan jujur dari para pelanggan setia yang sudah menikmati kesegaran olahan mangga kami.</p>
-        </div>
-
-        <div class="testimonial-container">
-            <button class="testi-nav-btn prev-btn" aria-label="Sebelumnya">
-                <i class='bx bx-chevron-left'></i>
-            </button>
-
-            <div class="testimonial-grid">
-                <!-- Testimoni 1 -->
-                <div class="testimonial-card">
-                    <div class="testimonial-top">
-                        <div class="stars">
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star'></i>
+                    <div class="hero-badges-row">
+                        <div class="hero-badge-item">
+                            <i class='bx bxs-check-shield'></i> Tanpa Pemanis Buatan
                         </div>
-                        <i class='bx bxs-quote-alt-right quote-icon'></i>
-                    </div>
-                    <h3>Sangat Segar & Manis Alami!</h3>
-                    <p>"Smoothies mangga dan mango sticky rice-nya juara banget! Rasanya pas, tidak bikin enek, dan mangganya benar-benar manis segar pilihan. Pasti jadi langganan terus."</p>
-                    <div class="customer-info">
-                        <div class="avatar-placeholder">NA</div>
-                        <div>
-                            <h4 class="customer-name">Nurul Amsari</h4>
-                            <span class="customer-status">Mahasiswa</span>
+                        <div class="hero-badge-item">
+                            <i class='bx bxs-leaf'></i> Mangga Matang Pohon
+                        </div>
+                        <div class="hero-badge-item">
+                            <i class='bx bxs-rocket'></i> Delivery Cepat
                         </div>
                     </div>
                 </div>
 
-                <!-- Testimoni 2 -->
-                <div class="testimonial-card">
-                    <div class="testimonial-top">
-                        <div class="stars">
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star'></i>
-                            <i class='bx bxs-star'></i>
+                <!-- Kolom Foto Produk Menonjol -->
+                <div class="hero-visual">
+                    <div class="hero-img-card">
+                        <div class="hero-img-inner">
+                            {% if best_sellers.0.image %}
+                                <img src="{{ best_sellers.0.image.url }}" alt="{{ best_sellers.0.name }}">
+                            {% else %}
+                                <img src="{% static 'images/mangga.jpg' %}" alt="Smoothies Mangga">
+                            {% endif %}
                         </div>
-                        <i class='bx bxs-quote-alt-right quote-icon'></i>
-                    </div>
-                    <h3>Popsicle-nya Paling Pas di Cuaca Panas!</h3>
-                    <p>"Popsicle mango dari Yellow Mango's ini penyelamat banget pas cuaca terik di Makassar. Rasanya murni buah mangga dingin menyegarkan. Pelayanannya juga cepat!"</p>
-                    <div class="customer-info">
-                        <div class="avatar-placeholder" style="background-color: #111; color: #FFC107;">RA</div>
-                        <div>
-                            <h4 class="customer-name">Rizky Ananda</h4>
-                            <span class="customer-status">Mahasiswa</span>
+
+                        <!-- Floating Badges Interaktif -->
+                        <div class="floating-badge badge-pos-1">
+                            <div class="floating-icon">🥭</div>
+                            <div>
+                                <strong style="font-size: 0.9rem; color: #1E293B; display:block;">Best Seller #1</strong>
+                                <span style="font-size: 0.78rem; color: #16A34A; font-weight:700;">Segar & Manis Alami</span>
+                            </div>
+                        </div>
+
+                        <div class="floating-badge badge-pos-2">
+                            <div class="floating-icon" style="background:#DCFCE7; color:#16A34A;">⭐</div>
+                            <div>
+                                <strong style="font-size: 0.9rem; color: #1E293B; display:block;">4.9 / 5 Rating</strong>
+                                <span style="font-size: 0.78rem; color: #64748B;">1,200+ Pelanggan Puas</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <button class="testi-nav-btn next-btn" aria-label="Selanjutnya">
-                <i class='bx bx-chevron-right'></i>
-            </button>
-        </div>
-    </section>
-
-    <!-- ================= BLOG / ARTICLE SECTION ================= -->
-    <section class="blog-section">
-        <div class="blog-header">
-            <h2>Baca Artikel & Tips Seputar <span style="color: #FFC107;">Yellow Mango's</span></h2>
-            <p>Temukan informasi menarik mulai dari kesehatan buah mangga, ide olahan kuliner kekinian, hingga inovasi camilan sehat.</p>
-        </div>
-
-        <div class="blog-grid">
-            <!-- Artikel 1 -->
-            <div class="blog-card">
-                <div class="blog-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=800&auto=format&fit=crop" alt="Manfaat Buah Mangga">
-                </div>
-                <div class="blog-content">
-                    <span class="blog-category">Kesehatan & Nutrisi</span>
-                    <h3>Segudang Manfaat dari Buah Mangga untuk Kesehatan Tubuh</h3>
-                    <p>Ketahui kandungan vitamin, antioksidan, dan serat tinggi dalam buah mangga yang sangat baik untuk menjaga daya tahan tubuh...</p>
-                    <a href="https://www.halodoc.com/artikel/segudang-manfaat-dari-buah-mangga-untuk-kesehatan-tubuh?srsltid=AYCX9vKCZixTu5y-DW7BEviT_7qKZ11u6wTdhV9nDf4QiElQL5cIl9tz" target="_blank" class="blog-link">Read More &rarr;</a>
-                </div>
-            </div>
-
-            <!-- Artikel 2 -->
-            <div class="blog-card">
-                <div class="blog-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1621293954908-907159247fc8?q=80&w=800&auto=format&fit=crop" alt="Ide Olahan Mangga">
-                </div>
-                <div class="blog-content">
-                    <span class="blog-category">Kuliner & Resep</span>
-                    <h3>Lagi Musim Ini! 12 Ide Makanan Berbahan Mangga, Resep dan Cara Membuatnya</h3>
-                    <p>Bingung mengolah mangga saat musim panen tiba? Simak belasan ide resep menu olahan mangga lezat yang bisa dicoba di rumah...</p>
-                    <a href="https://www.detik.com/jabar/kuliner/d-7585466/lagi-musim-ini-12-ide-makanan-berbahan-mangga-resep-dan-cara-membuatnya" target="_blank" class="blog-link">Read More &rarr;</a>
-                </div>
-            </div>
-
-            <!-- Artikel 3 -->
-            <div class="blog-card">
-                <div class="blog-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?q=80&w=800&auto=format&fit=crop" alt="Fruit Leather Mangga">
-                </div>
-                <div class="blog-content">
-                    <span class="blog-category">Inovasi & Bisnis</span>
-                    <h3>Fruit Leather Mangga: Inovasi Camilan Sehat, Mudah, dan Bernilai Ekonomi Tinggi</h3>
-                    <p>Mengenal lebih dekat inovasi camilan lembaran buah mangga kering (fruit leather) yang menyehatkan serta berpotensi bisnis...</p>
-                    <a href="https://www.kompasiana.com/putrinurarrufitasari2852/6735dc5434777c285b79fca2/fruit-leather-mangga-inovasi-camilan-sehat-mudah-dan-nilai-ekonomi-tinggi" target="_blank" class="blog-link">Read More &rarr;</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ================= FOOTER SECTION ================= -->
-    <footer class="footer-section" id="about">
-        <div class="footer-container">
-            
-            <!-- Kolom 1 -->
-            <div class="footer-col footer-brand-col">
-                <a href="{% url 'index' %}" class="footer-brand">
-                    <i class='bx bxs-drink'></i>
-                    <span>Yellow Mango's</span>
-                </a>
-                <p class="footer-tagline">Kesegaran mangga asli pilihan berkualitas tinggi di setiap tegukan dan gigitan untuk harimu.</p>
-                <div class="footer-socials">
-                    <a href="#" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
-                    <a href="#" aria-label="TikTok"><i class='bx bxl-tiktok'></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class='bx bxl-whatsapp'></i></a>
-                </div>
-            </div>
-
-            <!-- Kolom 2 -->
-            <div class="footer-col">
-                <h3>Learn More</h3>
-                <ul>
-                    <li><a href="{% url 'menu' %}">Menu Pilihan</a></li>
-                    <li><a href="#pesanan">Cara Pemesanan</a></li>
-                    <li><a href="#keranjang">Keranjang Belanja</a></li>
-                    <li><a href="#">Syarat & Ketentuan</a></li>
-                </ul>
-            </div>
-
-            <!-- Kolom 3 -->
-            <div class="footer-col">
-                <h3>About Us</h3>
-                <ul>
-                    <li><a href="#about">Tentang Kami</a></li>
-                    <li><a href="#">Blog & Artikel</a></li>
-                    <li><a href="{% url 'menu' %}">Daftar Harga</a></li>
-                </ul>
-            </div>
-
-            <!-- Kolom 4 -->
-            <div class="footer-col">
-                <h3>Contact</h3>
-                <p class="footer-contact-info">
-                    <strong>Layanan Pelanggan:</strong><br>
-                    0821-YELLOW-M<br>
-                    (0411) 123-4567
+    <!-- ================= 2. MENU DENGAN KATEGORI TERLARIS (DARI DATABASE) ================= -->
+    <section class="section-padding" id="terlaris">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Paling Banyak Dipesan</span>
+                <h2 class="section-title">Menu Favorit & Terlaris Minggu Ini</h2>
+                <p class="section-desc">
+                    Dipilih langsung oleh pencinta mangga di Makassar. Dibuat segar saat kamu memesan!
                 </p>
             </div>
 
-            <!-- Kolom 5 -->
-            <div class="footer-col footer-locations" id="lokasi">
-                <h3>Outlet Kami</h3>
-                <div class="location-grid">
-                    <div>
-                        <h4>Makassar Pusat</h4>
-                        <p>Jl. Andi Pangeran Pettarani No. 45<br>Makassar, Sulawesi Selatan</p>
+            <div class="products-grid">
+                {% for product in best_sellers %}
+                <div class="product-card">
+                    <div class="product-card-img-wrap">
+                        {% if product.badge_primary != 'NONE' %}
+                            <span class="product-badge-tag">{{ product.get_badge_primary_display }}</span>
+                        {% else %}
+                            <span class="product-badge-tag" style="background:#EAB308;">FAVORIT</span>
+                        {% endif %}
+
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% elif product.image_url %}
+                            <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'images/mangga.jpg' %}" alt="{{ product.name }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="product-card-body">
+                        <span class="product-category-text">{{ product.get_category_display|default:product.category }}</span>
+                        <h3 class="product-card-title">{{ product.name }}</h3>
+                        <p class="product-card-desc">{{ product.description|default:"Dibuat dari bahan segar berkualitas tinggi dengan rasa manis mangga asli yang memanjakan lidah." }}</p>
+
+                        <div class="product-card-footer">
+                            <span class="product-price">Rp {{ product.price|floatformat:0 }}</span>
+                            <div class="product-btn-group">
+                                <a href="{% url 'product_detail' product.id %}" class="btn-view-detail" title="Lihat Pilihan Rasa & Ukuran">
+                                    Detail
+                                </a>
+                                <form method="POST" action="{% url 'add_to_cart' product.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="1">
+                                    <input type="hidden" name="size" value="Reguler">
+                                    <button type="submit" class="btn-add-cart" title="Tambah Cepat ke Keranjang">
+                                        <i class='bx bx-plus'></i> Pesan
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div style="grid-column: span 3; text-align: center; padding: 50px 20px; background: #FFFFFF; border-radius: 20px; border: 1.5px dashed var(--border-soft);">
+                    <div style="font-size: 3rem; margin-bottom: 12px;">🥭</div>
+                    <h3 style="color: var(--secondary); margin-bottom: 8px;">Daftar Menu Sedang Disiapkan</h3>
+                    <p style="color: #64748B; margin-bottom: 20px;">Menu pilihan akan segera hadir. Administrator dapat menambahkan menu melalui Panel Admin.</p>
+                    {% if user.is_staff %}
+                        <a href="{% url 'admin_products' %}" class="btn-hero-primary" style="display:inline-flex; padding: 12px 24px;">+ Kelola Menu di Panel Admin</a>
+                    {% else %}
+                        <a href="{% url 'menu' %}" class="btn-hero-primary" style="display:inline-flex; padding: 12px 24px;">Lihat Halaman Menu</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div style="text-align: center;">
+                <a href="{% url 'menu' %}" class="btn-hero-primary" style="display: inline-flex;">
+                    <span>Lihat Seluruh Katalog Menu Lengkap ({{ all_products|length }}+ Pilihan)</span>
+                    <i class='bx bx-right-arrow-alt' style="font-size: 1.4rem;"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 4. ABOUT US (CERITA KAMI & NILAI BRAND) ================= -->
+    <section class="section-padding about-section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-story">
+                    <span class="section-subtitle">Cerita di Balik Yellow Mango's</span>
+                    <h3>Komitmen Kami Menghadirkan Mangga Terbaik di Setiap Sajian</h3>
+                    <p>
+                        Berawal dari kecintaan terhadap manis dan aromatiknya buah mangga lokal Indonesia, <strong>Yellow Mango's</strong> didirikan di Makassar sebagai pelopor sajian mangga bercita rasa kafe modern.
+                    </p>
+                    <p>
+                        Kami menolak penggunaan perisa buatan atau konsentrat murahan. Di setiap cangkir smoothies dan mangkuk dessert kami, kamu hanya akan merasakan potongan daging buah mangga segar matang pohon yang diproses secara bersih dan higienis.
+                    </p>
+                    <a href="{% url 'about' %}" class="btn-hero-outline" style="display: inline-flex;">
+                        <span>Baca Selengkapnya Tentang Kami</span>
+                        <i class='bx bx-right-arrow-alt'></i>
+                    </a>
+                </div>
+
+                <div class="about-features">
+                    <div class="feature-card">
+                        <div class="feature-icon-box">
+                            <i class='bx bxs-badge-check'></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Bahan Baku Mangga Pilihan Harian</h4>
+                            <p>Dipasok langsung dari perkebunan terbaik dengan standar kematangan manis alami yang konsisten.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon-box">
+                            <i class='bx bxs-heart'></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Bisa Kustom Ukuran, Gula & Es</h4>
+                            <p>Kamu bebas menentukan tingkat manis (Less Sugar / No Sugar) dan level dingin sesuai seleramu.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon-box">
+                            <i class='bx bxs-truck'></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Pemesanan WhatsApp Super Cepat</h4>
+                            <p>Checkout otomatis terhubung langsung ke WhatsApp Admin kami, tanpa ribet menunggu lama.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
+    </section>
 
-        <div class="footer-bottom">
-            <p>&copy; 2026 Yellow Mango's. All rights reserved. Powered by Reka Niskala.</p>
+    <!-- ================= 5. TESTIMONI PELANGGAN (DARI DATABASE) ================= -->
+    <section class="section-padding" id="testimoni" style="background-color: #FFFDF7;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Ulasan Jujur</span>
+                <h2 class="section-title">Apa Kata Pelanggan Kami?</h2>
+                <p class="section-desc">
+                    Kepuasan dan kesegaran rasa yang dirasakan langsung oleh pencinta mangga di Makassar.
+                </p>
+            </div>
+
+            <div class="testimonials-grid">
+                {% for testi in testimonials %}
+                <div class="testi-card">
+                    <div>
+                        <div class="testi-stars">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div>
+                        <p class="testi-msg">"{{ testi.message }}"</p>
+                    </div>
+
+                    <div class="testi-author">
+                        <div class="testi-avatar">
+                            {{ testi.sender_name|slice:":2"|upper }}
+                        </div>
+                        <div>
+                            <div class="testi-name">{{ testi.sender_name }}</div>
+                            <div class="testi-role">Pelanggan Terverifikasi</div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div style="grid-column: span 3; text-align: center; color: #64748B;">
+                    <p>Jadilah yang pertama memberikan ulasan untuk Yellow Mango's!</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Tombol Tambah Ulasan -->
+            <div style="text-align: center;">
+                <button type="button" class="btn-hero-outline" onclick="openTestiModal()">
+                    <i class='bx bx-edit'></i>
+                    <span>Tulis Ulasan & Pengalaman Kamu</span>
+                </button>
+            </div>
         </div>
-    </footer>
+    </section>
 
+    <!-- MODAL TULIS TESTIMONI -->
+    <div class="modal-overlay" id="testiModal">
+        <div class="modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: var(--secondary); font-size: 1.35rem; font-weight: 800;">Tulis Ulasan Kamu 🥭</h3>
+                <button onclick="closeTestiModal()" style="background:none; border:none; font-size: 1.6rem; cursor:pointer;">&times;</button>
+            </div>
+
+            <form method="POST" action="{% url 'submit_testimonial' %}">
+                {% csrf_token %}
+                <div style="margin-bottom: 16px;">
+                    <label style="display:block; font-size: 0.88rem; font-weight: 700; margin-bottom: 6px;">Nama Kamu *</label>
+                    <input type="text" name="name" required placeholder="Contoh: Rian Pratama" style="width: 100%; padding: 12px; border-radius: 10px; border: 1.5px solid var(--border-soft); font-size: 0.95rem;">
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label style="display:block; font-size: 0.88rem; font-weight: 700; margin-bottom: 6px;">Nomor HP / WhatsApp</label>
+                    <input type="text" name="phone" placeholder="08xxxxxxxxxx" style="width: 100%; padding: 12px; border-radius: 10px; border: 1.5px solid var(--border-soft); font-size: 0.95rem;">
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label style="display:block; font-size: 0.88rem; font-weight: 700; margin-bottom: 6px;">Rating Kepuasan</label>
+                    <select name="rating" style="width: 100%; padding: 12px; border-radius: 10px; border: 1.5px solid var(--border-soft); font-size: 0.95rem; font-weight: 600;">
+                        <option value="5">⭐⭐⭐⭐⭐ (Sangat Puas / 5 Bintang)</option>
+                        <option value="4">⭐⭐⭐⭐ (Puas / 4 Bintang)</option>
+                        <option value="3">⭐⭐⭐ (Cukup / 3 Bintang)</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <label style="display:block; font-size: 0.88rem; font-weight: 700; margin-bottom: 6px;">Ulasan / Pesan *</label>
+                    <textarea name="message" rows="4" required placeholder="Ceritakan rasa mangga dan kepuasanmu..." style="width: 100%; padding: 12px; border-radius: 10px; border: 1.5px solid var(--border-soft); font-size: 0.95rem;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" onclick="closeTestiModal()" style="padding: 12px 20px; border-radius: 10px; border: 1px solid #CBD5E1; background: #fff; font-weight: 700; cursor:pointer;">Batal</button>
+                    <button type="submit" class="btn-hero-primary" style="padding: 12px 24px; border:none; cursor:pointer;">Kirim Ulasan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= 6. BLOG / ARTIKEL TERBARU (INPUT VIA PANEL ADMIN) ================= -->
+    <section class="section-padding blog-section" id="artikel">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Edukasi & Inspirasi</span>
+                <h2 class="section-title">Artikel & Tips Seputar Olahan Mangga</h2>
+                <p class="section-desc">
+                    Temukan manfaat kesehatan buah mangga, inovasi resep kekinian, dan tips menikmati kuliner segar.
+                </p>
+            </div>
+
+            <div class="blog-grid">
+                {% for article in latest_articles %}
+                <div class="blog-card">
+                    <div class="blog-thumb">
+                        {% if article.thumbnail %}
+                            <img src="{{ article.thumbnail.url }}" alt="{{ article.title }}">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=800&auto=format&fit=crop" alt="{{ article.title }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="blog-body">
+                        <div class="blog-meta">
+                            <span class="blog-cat-badge">{{ article.category }}</span>
+                            <span>{{ article.created_at|date:"d M Y" }}</span>
+                        </div>
+                        <h3 class="blog-title">{{ article.title }}</h3>
+                        <p class="blog-snippet">{{ article.content|truncatewords:20 }}</p>
+                        <a href="{% url 'menu' %}" class="blog-read-more">
+                            <span>Jelajahi Menu Terkait</span>
+                            <i class='bx bx-right-arrow-alt'></i>
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div style="grid-column: span 3; text-align: center; padding: 45px 20px; background: #FFFDF7; border-radius: 20px; border: 1.5px dashed var(--border-soft);">
+                    <div style="font-size: 2.8rem; margin-bottom: 12px;">📰</div>
+                    <h3 style="color: var(--secondary); margin-bottom: 6px;">Belum Ada Artikel yang Diterbitkan</h3>
+                    <p style="color: #64748B; margin-bottom: 20px;">Nantikan tips, inspirasi, dan kabar terbaru seputar olahan mangga segera!</p>
+                    {% if user.is_staff %}
+                        <a href="{% url 'admin_articles' %}" class="btn-hero-outline" style="display:inline-flex; padding: 10px 22px; font-size: 0.9rem;">+ Tulis Artikel di Panel Admin</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div style="text-align: center; margin-top: 35px;">
+                <a href="{% url 'articles_list' %}" class="btn-hero-outline">
+                    <span>Buka Halaman Artikel & Blog Lengkap</span>
+                    <i class='bx bx-right-arrow-alt'></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 7. LOKASI OUTLET & GOOGLE MAPS ================= -->
+    <section class="section-padding location-section" id="lokasi">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Kunjungi Kami</span>
+                <h2 class="section-title">Outlet Resmi Makassar Pusat</h2>
+                <p class="section-desc">
+                    Nikmati racikan mangga segar langsung di tempat kami yang nyaman atau pesan untuk dibawa pulang.
+                </p>
+            </div>
+
+            <div class="maps-card-wrapper">
+                <!-- Google Maps Embed Responsif -->
+                <div class="maps-iframe-box">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.733074092306!2d119.432731!3d-5.147665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dbbee3821015555%3A0x403f74817a3a900!2sMakassar%2C%20South%20Sulawesi!5e0!3m2!1sen!2sid!4v1650000000000!5m2!1sen!2sid" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+
+                <!-- Informasi Kontak & Jam Operasional -->
+                <div class="outlet-info-box">
+                    <span class="outlet-badge">Outlet Terbuka Hari Ini</span>
+                    <h3 class="outlet-name">Yellow Mango's Makassar Pusat</h3>
+
+                    <div class="outlet-detail-item">
+                        <i class='bx bxs-map-pin outlet-icon'></i>
+                        <div>
+                            <strong style="color:#1E293B;">Alamat Lengkap:</strong>
+                            <p style="color:#64748B; font-size: 0.95rem; margin-top:2px;">
+                                {{ site_setting.outlet_address|default:"Jl. Andi Pangeran Pettarani No. 45, Makassar, Sulawesi Selatan"|linebreaksbr }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="outlet-detail-item">
+                        <i class='bx bxs-time-five outlet-icon'></i>
+                        <div>
+                            <strong style="color:#1E293B;">Jam Operasional:</strong>
+                            <p style="color:#64748B; font-size: 0.95rem; margin-top:2px;">
+                                Setiap Hari: 09.00 - 22.00 WITA
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="outlet-detail-item">
+                        <i class='bx bxl-whatsapp outlet-icon'></i>
+                        <div>
+                            <strong style="color:#1E293B;">Hotline Pemesanan:</strong>
+                            <p style="color:#64748B; font-size: 0.95rem; margin-top:2px;">
+                                {{ site_setting.phone_primary|default:"0821-YELLOW-M" }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 15px; display:flex; gap:12px; flex-wrap:wrap;">
+                        <a href="https://maps.google.com/?q=Makassar+Pusat" target="_blank" class="btn-hero-primary" style="padding: 12px 22px; font-size: 0.92rem;">
+                            <i class='bx bx-map'></i>
+                            <span>Buka di Google Maps</span>
+                        </a>
+                        <a href="{% url 'menu' %}" class="btn-hero-outline" style="padding: 12px 22px; font-size: 0.92rem;">
+                            <i class='bx bx-shopping-bag'></i>
+                            <span>Pesan Sekarang</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 8. FOOTER RESMI ================= -->
+    {% include 'store/footer.html' %}
+
+    <!-- Script Modal Testimoni & Toast Autohide -->
+    <script>
+        function openTestiModal() {
+            document.getElementById('testiModal').style.display = 'flex';
+        }
+        function closeTestiModal() {
+            document.getElementById('testiModal').style.display = 'none';
+        }
+
+        // Hilangkan alert toast setelah 4 detik
+        setTimeout(() => {
+            const toast = document.querySelector('.alert-toast');
+            if (toast) {
+                toast.style.transition = 'opacity 0.5s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 500);
+            }
+        }, 4000);
+    </script>
 </body>
 </html>
